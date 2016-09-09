@@ -24,7 +24,7 @@ export function createBot(db) {
       return;
     }
 
-    db.collection('notes').insert({
+    db.collection('updates').insert({
       author,
       channel,
       text: message.slice(BUTLER.length + 2),
@@ -37,7 +37,7 @@ export function createBot(db) {
   client.addListener('pm', function (author, message) {
     console.log(author + ' => (pm) ' + message);
 
-    db.collection('notes').insert({
+    db.collection('updates').insert({
       author,
       channel: author,
       text: message,
