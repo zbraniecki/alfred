@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Inbox from './Inbox';
-import { API_URL } from './config';
+import Review from './Review';
+import { API_URL } from '../config';
 
-export default class InboxContainer extends Component {
+export default class ReviewContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +23,7 @@ export default class InboxContainer extends Component {
 
   render() {
     return (
-      <Inbox
+      <Review
         author={this.state.author}
         updates={this.state.updates}
       />
