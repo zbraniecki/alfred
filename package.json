@@ -7,5 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Staś Małolepszy <stas@mozilla.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "irc": "^0.5.0"
+  }
 }
