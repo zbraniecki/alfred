@@ -13,7 +13,7 @@ export default class InboxContainer extends Component {
 
   componentDidMount() {
     const { author } = this.props.params;
-    fetch(`http://localhost:4001/updates?author=${author}`).then(
+    fetch(`http://localhost:4002/updates?author=${author}`).then(
       response => response.json()
     ).then(
       updates => this.setState({author, updates})
