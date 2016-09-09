@@ -33,4 +33,17 @@ export function createBot(db) {
       () => client.say(channel, `${author}: ${randElem(CONFIRMATIONS)}`)
     );
   });
+
+  client.addListener('pm', function (author, message) {
+    console.log(author + ' => (pm) ' + message);
+
+    db.collection('notes').insert({
+      author,
+      channel: author,
+      text: message,
+      createdAt: new Date()
+    }).then(
+      () => client.say(author, `${randElem(CONFIRMATIONS)}`)
+    );
+  });
 }
