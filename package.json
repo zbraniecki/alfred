@@ -1,0 +1,11 @@
+{
+  "name": "alfred",
+  "version": "0.0.1",
+  "description": "the irc butler",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Staś Małolepszy <stas@mozilla.com>",
+  "license": "ISC"
+}
