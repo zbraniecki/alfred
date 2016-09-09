@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Inbox from './Inbox';
+import { API_URL } from './config';
 
 export default class InboxContainer extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export default class InboxContainer extends Component {
 
   componentDidMount() {
     const { author } = this.props.params;
-    fetch(`http://localhost:4002/updates?author=${author}`).then(
+    fetch(`${API_URL}/updates?author=${author}`).then(
       response => response.json()
     ).then(
       updates => this.setState({author, updates})
