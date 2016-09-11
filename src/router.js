@@ -29,8 +29,9 @@ export function getUpdates(coll) {
 
 export function resolveUpdate(coll) {
   return function(req, res, next) {
-    resolve(coll, req.body).then(function() {
-      res.sendStatus(200);
+    resolve(coll, req.body).then(function(result) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(result.ops[0]));
     }).catch(console.error);
   }
 }
@@ -62,7 +63,9 @@ function find(coll, raw) {
 
 function resolve(coll, body) {
   const _id = new ObjectID(body._id);
-  return coll.findOne({_id}, {_id: 0}).then(parent => {
+  return coll.update({_id}, { $set: { resolved: true } }).then(
+    () => coll.findOne({_id}, {_id: 0})
+  ).then(parent => {
     const child = Object.assign({}, parent, {
       prev: _id,
       status: body.status,
@@ -70,7 +73,5 @@ function resolve(coll, body) {
       resolved: false,
     });
     return coll.insert(child);
-  }).then(
-    res => coll.update({_id}, { $set: { resolved: true } })
-  );
+  });
 }
