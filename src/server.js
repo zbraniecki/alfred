@@ -7,7 +7,6 @@ export function createServer(db) {
   const app = express();
 
   app.use(morgan('combined'))
-  app.use(cors);
   app.use('/', createRouter(db));
 
   const server = app.listen(process.env.PORT, function() {
@@ -28,9 +27,4 @@ export function createServer(db) {
 
   process.on('SIGINT', cleanup);
   process.on('SIGTERM', cleanup);
-}
-
-function cors(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  next();
 }
