@@ -1,0 +1,4 @@
+.alf-review {
+    display: flex;
+    flex-flow: row wrap;
+}

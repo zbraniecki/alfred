@@ -38,6 +38,17 @@ export default function Review(props) {
               </UntriagedUpdate>
             )}
           </div>
+          <h2>Previously Todo</h2>
+          <div>
+            {Array.from(props.prevtodo).map(update =>
+              <UntriagedUpdate
+                handleTriage={status => props.handleTriage(update, status, props.reportDate)}
+                key={update.createdAt}
+              >
+                {update.text}
+              </UntriagedUpdate>
+            )}
+          </div>
         </div>
 
         <div>

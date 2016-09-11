@@ -3,33 +3,45 @@ import React, { Component } from 'react';
 import Review from './Review';
 import { API_URL } from '../config';
 
+function get(url) {
+  return fetch(url).then(resp => resp.json());
+}
+
+function post(url, body) {
+  return fetch(url, {
+    method: 'POST',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }),
+    body: JSON.stringify(body)
+  });
+}
+
 export default class ReviewContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       author: '',
       inbox: [],
-      todos: [],
+      prevtodo: [],
       done: [],
-      struggles: [],
       reportDate: new Date()
     };
     this.handleTriage = this.handleTriage.bind(this);
   }
 
   handleTriage(update, status, reportDate) {
-    fetch(`${API_URL}/updates/${update._id}`, {
-      method: 'POST',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }),
-      body: JSON.stringify({
-        status, reportDate
-      })
+    const prevstatus = update.status === 'inbox' ?
+      'inbox' : `prev${update.status}`;
+
+    post(`${API_URL}/updates/${update._id}`, {
+      status, reportDate
     }).then(
       response => this.setState({
-        inbox: this.state.inbox.filter(other => other._id !== update._id),
+        [prevstatus]: this.state[prevstatus].filter(
+          other => other._id !== update._id
+        ),
         [status]: [...this.state[status], update]
       })
     )
@@ -37,13 +49,18 @@ export default class ReviewContainer extends Component {
 
   componentDidMount() {
     const { author, year, month, day } = this.props.params;
-    fetch(`${API_URL}/updates?author=${author}`).then(
-      response => response.json()
-    ).then(
-      updates => this.setState({
+    const report = `${year}-${month}-${day}`;
+    Promise.all([
+      get(`${API_URL}/updates?author=${author}&status=inbox`),
+      get(`${API_URL}/updates?author=${author}&report=${report}&offset=1&status=todo`),
+      get(`${API_URL}/updates?author=${author}&report=${report}&status=done`)
+    ]).then(
+      ([inbox, prevtodo, done]) => this.setState({
         author,
-        reportDate: new Date(`${year}-${month}-${day}`),
-        inbox: updates
+        reportDate: new Date(report),
+        inbox,
+        prevtodo,
+        done
       })
     ).catch(
       () => console.log(this.state)
@@ -57,9 +74,8 @@ export default class ReviewContainer extends Component {
         reportDate={this.state.reportDate}
 
         inbox={this.state.inbox}
-        todos={this.state.todos}
+        prevtodo={this.state.prevtodo}
         done={this.state.done}
-        struggles={this.state.struggles}
 
         handleTriage={this.handleTriage}
       />
