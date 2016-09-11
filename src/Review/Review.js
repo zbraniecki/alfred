@@ -24,14 +24,14 @@ export default function Review(props) {
             <h2># Inbox</h2>
 
             <ul>
-              {Array.from(props.inbox).map(update => createUpdate(Previous, props, update))}
+              {props.inbox.map(update => createUpdate(Previous, props, update))}
             </ul>
           </section>
 
           <section>
             <h2># Previous Todo</h2>
             <ul>
-              {Array.from(props.prevtodo).map(update => createUpdate(Previous, props, update))}
+              {props.prevtodo.map(update => createUpdate(Previous, props, update))}
             </ul>
           </section>
         </div>
@@ -40,21 +40,21 @@ export default function Review(props) {
           <section>
             <h2># Done last week</h2>
             <ul>
-              {Array.from(props.done).map(update => createUpdate(Reviewed, props, update))}
+              {props.done.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
 
           <section>
             <h2># Todo this week</h2>
             <ul>
-              {Array.from(props.todo).map(update => createUpdate(Reviewed, props, update))}
+              {props.todo.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
 
           <section>
             <h2># Struggles last week</h2>
             <ul>
-              {Array.from(props.struggle).map(update => createUpdate(Reviewed, props, update))}
+              {props.struggle.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
         </div>
