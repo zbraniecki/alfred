@@ -1,32 +1,12 @@
 import React from 'react';
 
+import { createUpdate, Previous, Reviewed } from './Update';
+
 const dtf = Intl.DateTimeFormat('en', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 });
-
-function PreviousUpdate(props) {
-  return (
-    <li>
-      <span>{props.children}</span>
-      <div className="toolbar">
-        <button onClick={() => props.handleResolve('done')}>done</button>
-        <button onClick={() => props.handleResolve('todo')}>todo</button>
-        <button onClick={() => props.handleResolve('struggle')}>struggle</button>
-      </div>
-    </li>
-  );
-}
-
-function ReviewedUpdate(props) {
-  return (
-    <li>
-      <span>{props.children}</span>
-    </li>
-  );
-}
-
 
 export default function Review(props) {
   return (
@@ -44,24 +24,14 @@ export default function Review(props) {
             <h2># Inbox</h2>
 
             <ul>
-              {Array.from(props.inbox).map(update =>
-                <PreviousUpdate
-                  key={update.createdAt}
-                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
-                >{update.text}</PreviousUpdate>
-              )}
+              {Array.from(props.inbox).map(update => createUpdate(Previous, props, update))}
             </ul>
           </section>
 
           <section>
             <h2># Previous Todo</h2>
             <ul>
-              {Array.from(props.prevtodo).map(update =>
-                <PreviousUpdate
-                  key={update.createdAt}
-                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
-                >{update.text}</PreviousUpdate>
-              )}
+              {Array.from(props.prevtodo).map(update => createUpdate(Previous, props, update))}
             </ul>
           </section>
         </div>
@@ -70,36 +40,21 @@ export default function Review(props) {
           <section>
             <h2># Done last week</h2>
             <ul>
-              {Array.from(props.done).map(update =>
-                <ReviewedUpdate
-                  key={update.createdAt}
-                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
-                >{update.text}</ReviewedUpdate>
-              )}
+              {Array.from(props.done).map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
 
           <section>
             <h2># Todo this week</h2>
             <ul>
-              {Array.from(props.todo).map(update =>
-                <ReviewedUpdate
-                  key={update.createdAt}
-                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
-                >{update.text}</ReviewedUpdate>
-              )}
+              {Array.from(props.todo).map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
 
           <section>
             <h2># Struggles last week</h2>
             <ul>
-              {Array.from(props.struggle).map(update =>
-                <ReviewedUpdate
-                  key={update.createdAt}
-                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
-                >{update.text}</ReviewedUpdate>
-              )}
+              {Array.from(props.struggle).map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
         </div>
