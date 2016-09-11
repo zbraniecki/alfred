@@ -26,6 +26,8 @@ export default class ReviewContainer extends Component {
       inbox: [],
       prevtodo: [],
       done: [],
+      todo: [],
+      struggle: [],
       reportDate: new Date()
     };
     this.handleTriage = this.handleTriage.bind(this);
@@ -53,14 +55,14 @@ export default class ReviewContainer extends Component {
     Promise.all([
       get(`${API_URL}/updates?author=${author}&status=inbox`),
       get(`${API_URL}/updates?author=${author}&report=${report}&offset=1&status=todo`),
-      get(`${API_URL}/updates?author=${author}&report=${report}&status=done`)
+      get(`${API_URL}/updates?author=${author}&report=${report}&status=done`),
+      get(`${API_URL}/updates?author=${author}&report=${report}&status=todo`),
+      get(`${API_URL}/updates?author=${author}&report=${report}&status=struggle`)
     ]).then(
-      ([inbox, prevtodo, done]) => this.setState({
-        author,
-        reportDate: new Date(report),
-        inbox,
-        prevtodo,
-        done
+      ([inbox, prevtodo, done, todo, struggle]) => this.setState({
+        author, reportDate: new Date(report),
+        inbox, prevtodo,
+        done, todo, struggle
       })
     ).catch(
       () => console.log(this.state)
@@ -75,7 +77,10 @@ export default class ReviewContainer extends Component {
 
         inbox={this.state.inbox}
         prevtodo={this.state.prevtodo}
+
         done={this.state.done}
+        todo={this.state.todo}
+        struggle={this.state.struggle}
 
         handleTriage={this.handleTriage}
       />

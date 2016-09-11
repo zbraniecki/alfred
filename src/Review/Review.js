@@ -7,7 +7,7 @@ function UntriagedUpdate(props) {
       <div className="toolbar">
         <button onClick={() => props.handleTriage('done')}>done</button>
         <button onClick={() => props.handleTriage('todo')}>todo</button>
-        <button className="danger" onClick={props.handleRemove}>x</button>
+        <button onClick={() => props.handleTriage('struggle')}>struggle</button>
       </div>
     </li>
   );
@@ -48,7 +48,7 @@ export default function Review(props) {
           </section>
 
           <section>
-            <h2># Previous Todo</h2>
+            <h2># Todo last week</h2>
             <ul>
               {Array.from(props.prevtodo).map(update =>
                 <UntriagedUpdate
@@ -62,7 +62,7 @@ export default function Review(props) {
 
         <div className="next">
           <section>
-            <h2># Done</h2>
+            <h2># Done last week</h2>
             <ul>
               {Array.from(props.done).map(update =>
                 <TriagedUpdate
@@ -74,8 +74,26 @@ export default function Review(props) {
           </section>
 
           <section>
-            <h2># Todo</h2>
+            <h2># Todo this week</h2>
             <ul>
+              {Array.from(props.todo).map(update =>
+                <TriagedUpdate
+                  key={update.createdAt}
+                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
+                >{update.text}</TriagedUpdate>
+              )}
+            </ul>
+          </section>
+
+          <section>
+            <h2># Struggles last week</h2>
+            <ul>
+              {Array.from(props.struggle).map(update =>
+                <TriagedUpdate
+                  key={update.createdAt}
+                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
+                >{update.text}</TriagedUpdate>
+              )}
             </ul>
           </section>
         </div>
