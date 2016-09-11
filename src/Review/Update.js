@@ -26,7 +26,11 @@ function Editable(props) {
   return (
     <li>
       <form onSubmit={handleSubmitEdit}>
-        <input type="text" value={update.text} onChange={handleTextChange}/>
+        <input type="text" autoFocus
+          value={update.text}
+          onChange={handleTextChange}
+          onBlur={handleSubmitEdit}
+        />
       </form>
     </li>
   );
