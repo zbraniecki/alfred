@@ -36,7 +36,20 @@ export function postUpdate(coll) {
 }
 
 function find(coll, query) {
-  return coll.find(query).limit(1000).toArray();
+  let reportDate = null;
+
+  if (query.report) {
+    reportDate = new Date(query.report);
+    if (query.offset) {
+      reportDate.setDate(reportDate.getDate() - query.offset * 7);
+    }
+  }
+
+  return coll.find({
+    author: query.author,
+    reportDate: query.report ? reportDate : null,
+    status: Array.isArray(query.status) ? { $in: query.status } : query.status
+  }).limit(1000).toArray();
 }
 
 function update(coll, id, body) {
