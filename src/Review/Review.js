@@ -2,10 +2,14 @@ import React from 'react';
 
 function UntriagedUpdate(props) {
   return (
-    <div>
-      {props.children}
-      <button onClick={() => props.handleTriage('done')}>done</button>
-    </div>
+    <li>
+      <span>{props.children}</span>
+      <div className="toolbar">
+        <button onClick={() => props.handleTriage('done')}>done</button>
+        <button onClick={() => props.handleTriage('todo')}>todo</button>
+        <button className="danger" onClick={props.handleRemove}>x</button>
+      </div>
+    </li>
   );
 }
 
@@ -21,49 +25,62 @@ function TriagedUpdate(props) {
 export default function Review(props) {
   return (
     <div>
-      <h1>{props.author} — {props.reportDate.toDateString()}</h1>
 
-      <div className="alf-review">
-        <div>
-          <h2>Inbox</h2>
-          <div>
-            {Array.from(props.inbox).map(update =>
-              <UntriagedUpdate
-                handleTriage={status => props.handleTriage(update, status, props.reportDate)}
-                key={update.createdAt}
-              >
-                {update.text}
-              </UntriagedUpdate>
-            )}
-          </div>
-          <h2>Previously Todo</h2>
-          <div>
-            {Array.from(props.prevtodo).map(update =>
-              <UntriagedUpdate
-                handleTriage={status => props.handleTriage(update, status, props.reportDate)}
-                key={update.createdAt}
-              >
-                {update.text}
-              </UntriagedUpdate>
-            )}
-          </div>
+      <header>
+        <div className="logo"></div>
+        <h1>{props.author} · {props.reportDate.toDateString()}</h1>
+      </header>
+
+      <div className="content flex">
+
+        <div className="previous">
+          <section>
+            <h2># Inbox</h2>
+
+            <ul>
+              {Array.from(props.inbox).map(update =>
+                <UntriagedUpdate
+                  key={update.createdAt}
+                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
+                >{update.text}</UntriagedUpdate>
+              )}
+            </ul>
+          </section>
+
+          <section>
+            <h2># Previous Todo</h2>
+            <ul>
+              {Array.from(props.prevtodo).map(update =>
+                <UntriagedUpdate
+                  key={update.createdAt}
+                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
+                >{update.text}</UntriagedUpdate>
+              )}
+            </ul>
+          </section>
         </div>
 
-        <div>
-          <h2>Done</h2>
-          <div>
-            {Array.from(props.done).map(update =>
-              <TriagedUpdate
-                handleTriage={status => props.handleTriage(update, props.reportDate, status)}
-                key={update.createdAt}
-              >
-                {update.text}
-              </TriagedUpdate>
-            )}
-          </div>
+        <div className="next">
+          <section>
+            <h2># Done</h2>
+            <ul>
+              {Array.from(props.done).map(update =>
+                <TriagedUpdate
+                  key={update.createdAt}
+                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
+                >{update.text}</TriagedUpdate>
+              )}
+            </ul>
+          </section>
+
+          <section>
+            <h2># Todo</h2>
+            <ul>
+            </ul>
+          </section>
         </div>
+
       </div>
-
     </div>
   );
 }
