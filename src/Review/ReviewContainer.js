@@ -37,8 +37,8 @@ export default class ReviewContainer extends Component {
     const prevstatus = update.status === 'inbox' ?
       'inbox' : `prev${update.status}`;
 
-    post(`${API_URL}/updates/${update._id}`, {
-      status, reportDate
+    post(`${API_URL}/resolve`, {
+      _id: update._id, status, reportDate
     }).then(
       response => this.setState({
         [prevstatus]: this.state[prevstatus].filter(
