@@ -1,5 +1,11 @@
 import React from 'react';
 
+const dtf = Intl.DateTimeFormat('en', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
 function UntriagedUpdate(props) {
   return (
     <li>
@@ -28,7 +34,7 @@ export default function Review(props) {
 
       <header>
         <div className="logo"></div>
-        <h1>{props.author} · {props.reportDate.toDateString()}</h1>
+        <h1>{props.author} · {dtf.format(props.reportDate)}</h1>
       </header>
 
       <div className="content flex">
