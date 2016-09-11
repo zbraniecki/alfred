@@ -8,6 +8,7 @@ export function createRouter(db) {
   router.use(bodyParser.json());
   const updates = db.collection('updates');
   router.route('/updates').get(getUpdates(updates))
+  router.route('/updates/:id').post(postUpdate(updates))
   router.route('/resolve').post(resolveUpdate(updates));
   return router;
 }
@@ -27,11 +28,19 @@ export function getUpdates(coll) {
   }
 }
 
+export function postUpdate(coll) {
+  return function(req, res, next) {
+    update(coll, req.params.id, req.body).then(function({result}) {
+      res.sendStatus(result.ok ? 200 : 500);
+    }).catch(console.error);
+  }
+}
+
 export function resolveUpdate(coll) {
   return function(req, res, next) {
-    resolve(coll, req.body).then(function(result) {
+    resolve(coll, req.body).then(function({ops}) {
       res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(result.ops[0]));
+      res.send(JSON.stringify(ops[0]));
     }).catch(console.error);
   }
 }
@@ -59,6 +68,11 @@ function find(coll, raw) {
   }
 
   return coll.find(query).limit(1000).toArray();
+}
+
+function update(coll, id, body) {
+  const _id = new ObjectID(id);
+  return coll.update({_id}, { $set: body });
 }
 
 function resolve(coll, body) {
