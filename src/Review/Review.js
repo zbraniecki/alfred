@@ -6,24 +6,24 @@ const dtf = Intl.DateTimeFormat('en', {
   day: 'numeric'
 });
 
-function UntriagedUpdate(props) {
+function PreviousUpdate(props) {
   return (
     <li>
       <span>{props.children}</span>
       <div className="toolbar">
-        <button onClick={() => props.handleTriage('done')}>done</button>
-        <button onClick={() => props.handleTriage('todo')}>todo</button>
-        <button onClick={() => props.handleTriage('struggle')}>struggle</button>
+        <button onClick={() => props.handleResolve('done')}>done</button>
+        <button onClick={() => props.handleResolve('todo')}>todo</button>
+        <button onClick={() => props.handleResolve('struggle')}>struggle</button>
       </div>
     </li>
   );
 }
 
-function TriagedUpdate(props) {
+function ReviewedUpdate(props) {
   return (
-    <div>
-      {props.children}
-    </div>
+    <li>
+      <span>{props.children}</span>
+    </li>
   );
 }
 
@@ -45,22 +45,22 @@ export default function Review(props) {
 
             <ul>
               {Array.from(props.inbox).map(update =>
-                <UntriagedUpdate
+                <PreviousUpdate
                   key={update.createdAt}
-                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
-                >{update.text}</UntriagedUpdate>
+                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
+                >{update.text}</PreviousUpdate>
               )}
             </ul>
           </section>
 
           <section>
-            <h2># Todo last week</h2>
+            <h2># Previous Todo</h2>
             <ul>
               {Array.from(props.prevtodo).map(update =>
-                <UntriagedUpdate
+                <PreviousUpdate
                   key={update.createdAt}
-                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
-                >{update.text}</UntriagedUpdate>
+                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
+                >{update.text}</PreviousUpdate>
               )}
             </ul>
           </section>
@@ -71,10 +71,10 @@ export default function Review(props) {
             <h2># Done last week</h2>
             <ul>
               {Array.from(props.done).map(update =>
-                <TriagedUpdate
+                <ReviewedUpdate
                   key={update.createdAt}
-                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
-                >{update.text}</TriagedUpdate>
+                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
+                >{update.text}</ReviewedUpdate>
               )}
             </ul>
           </section>
@@ -83,10 +83,10 @@ export default function Review(props) {
             <h2># Todo this week</h2>
             <ul>
               {Array.from(props.todo).map(update =>
-                <TriagedUpdate
+                <ReviewedUpdate
                   key={update.createdAt}
-                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
-                >{update.text}</TriagedUpdate>
+                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
+                >{update.text}</ReviewedUpdate>
               )}
             </ul>
           </section>
@@ -95,10 +95,10 @@ export default function Review(props) {
             <h2># Struggles last week</h2>
             <ul>
               {Array.from(props.struggle).map(update =>
-                <TriagedUpdate
+                <ReviewedUpdate
                   key={update.createdAt}
-                  handleTriage={status => props.handleTriage(update, status, props.reportDate)}
-                >{update.text}</TriagedUpdate>
+                  handleResolve={status => props.handleResolve(update, status, props.reportDate)}
+                >{update.text}</ReviewedUpdate>
               )}
             </ul>
           </section>

@@ -30,10 +30,10 @@ export default class ReviewContainer extends Component {
       struggle: [],
       reportDate: new Date()
     };
-    this.handleTriage = this.handleTriage.bind(this);
+    this.handleResolve = this.handleResolve.bind(this);
   }
 
-  handleTriage(update, status, reportDate) {
+  handleResolve(update, status, reportDate) {
     const prevstatus = update.status === 'inbox' ?
       'inbox' : `prev${update.status}`;
 
@@ -53,8 +53,8 @@ export default class ReviewContainer extends Component {
     const { author, year, month, day } = this.props.params;
     const report = `${year}-${month}-${day}`;
     Promise.all([
-      get(`${API_URL}/updates?author=${author}&status=inbox`),
-      get(`${API_URL}/updates?author=${author}&report=${report}&offset=1&status=todo`),
+      get(`${API_URL}/updates?author=${author}&resolved=0&status=inbox`),
+      get(`${API_URL}/updates?author=${author}&resolved=0&status=todo&before=${report}`),
       get(`${API_URL}/updates?author=${author}&report=${report}&status=done`),
       get(`${API_URL}/updates?author=${author}&report=${report}&status=todo`),
       get(`${API_URL}/updates?author=${author}&report=${report}&status=struggle`)
@@ -82,7 +82,7 @@ export default class ReviewContainer extends Component {
         todo={this.state.todo}
         struggle={this.state.struggle}
 
-        handleTriage={this.handleTriage}
+        handleResolve={this.handleResolve}
       />
     );
   }
