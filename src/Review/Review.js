@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './Review.css';
-
 function UntriagedUpdate(props) {
   return (
     <div>
