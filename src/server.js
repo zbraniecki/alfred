@@ -22,7 +22,7 @@ export function createServer(db) {
     setTimeout(function() {
       console.error("Could not close connections in time, forcing shut down");
       process.exit(1);
-    }, 10 * 1000);
+    }, 1 * 1000);
   }
 
   process.on('SIGINT', cleanup);
