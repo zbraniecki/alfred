@@ -15,9 +15,7 @@ function post(url, body) {
       'Content-Type': 'application/json'
     }),
     body: JSON.stringify(body)
-  }).then(
-    resp => resp.json()
-  )
+  });
 }
 
 export default class ReviewContainer extends Component {
@@ -28,6 +26,10 @@ export default class ReviewContainer extends Component {
       updates: [],
       reportDate: new Date()
     };
+
+    this.handleStartEdit = this.handleStartEdit.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleResolve = this.handleResolve.bind(this);
   }
 
@@ -53,10 +55,45 @@ export default class ReviewContainer extends Component {
     );
   }
 
+  handleStartEdit(update) {
+    this.setState({
+      updates: this.state.updates.map(
+        other => other._id === update._id ?
+          Object.assign({}, other, { editable: true }) : other
+      )
+    });
+  }
+
+  handleTextChange(update, evt) {
+    this.setState({
+      updates: this.state.updates.map(
+        other => other._id === update._id ?
+          Object.assign({}, other, { text: evt.target.value }) : other
+      )
+    });
+  }
+
+  handleSubmitEdit(update, evt) {
+    evt.preventDefault();
+    post(`${API_URL}/updates/${update._id}`, {
+      text: update.text
+    }).then(result => {
+      this.setState({
+        updates: this.state.updates.map(
+          other => other._id === update._id ?
+            Object.assign({}, other, { editable: false }) : other
+        )
+      });
+    });
+  }
+
   handleResolve(update, status, reportDate) {
     post(`${API_URL}/resolve`, {
       _id: update._id, status, reportDate
     }).then(
+      // XXX find a better way to get the newly created update?
+      resp => resp.json()
+    ).then(
       created => this.setState({
         updates: this.state.updates.map(
           up => up._id === update._id ?
@@ -85,6 +122,9 @@ export default class ReviewContainer extends Component {
         )}
         struggle={this.state.updates.filter(up => up.status === 'struggle')}
 
+        handleStartEdit={this.handleStartEdit}
+        handleTextChange={this.handleTextChange}
+        handleSubmitEdit={this.handleSubmitEdit}
         handleResolve={this.handleResolve}
       />
     );
