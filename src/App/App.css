@@ -1,0 +1,153 @@
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Space Mono'), local('SpaceMono-Regular'), url(https://fonts.gstatic.com/s/spacemono/v1/adVweg3BJhE6r8jYmXseHQzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Space Mono Bold'), local('SpaceMono-Bold'), url(https://fonts.gstatic.com/l/font?kit=vdpMRWfyjfCvDYTz00NEPNQorD5bQ0NIbSizZi2x-3SmPy-iglUPfjxIuULkVZpV&skey=a27e16c9683017d3&v=v1) format('woff2');
+}
+
+*, :after, :before {
+  box-sizing: inherit;
+}
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  box-sizing: border-box;
+  color: #424242;
+  font-family: Space Mono, monaco, Consolas, Lucida Console, monospace;
+  line-height: 1.5;
+}
+
+body {
+  background: #ebebeb;
+  margin: 0;
+  padding: 2rem;
+}
+
+header {
+  margin-bottom: 4rem;    
+}
+
+h1 {
+  display: inline-block;
+  height: 4rem;
+  margin: 0;
+  padding-top: 0.5rem;
+  vertical-align: top;
+}
+
+h2 {
+  color: #121212;
+  font-size: 1.25rem;
+}
+
+.logo {
+  background-color: #121212;
+  border-radius: 50%;
+  display: inline-block;
+  height: 4rem;
+  margin-right: 1rem;
+  position: relative;
+  width: 4rem;
+}
+
+.logo:after {
+  content: 'alf';
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.content > div {
+  display: inline-block;
+  width: 50%;
+}
+
+.content > div.previous {
+  padding-right: 2rem;
+}
+
+.flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.no {
+  color: #424242;
+  opacity: 0.3;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 0;
+  margin-bottom: 4rem;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 1rem;
+}
+
+ul li:hover {
+  background: #f7f7f7;
+}
+
+ul li button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #424242;
+  margin-right: .5rem;
+  opacity: 0.3;
+  text-decoration: underline;
+}
+
+ul li:hover button {
+  color: #1a00f2;
+  opacity: 1;
+}
+
+ul li button.danger {
+  color: #f2001a;
+}
+
+ul li button:active, ul li button:hover {
+  background: #1a00f2;
+  color: #fff;
+  outline-width: 0;
+}
+
+ul li button.danger:hover {
+  background: #f2001a;
+}
+
+[type=text] {
+  width: 100%;
+  color: #424242;
+  font-family: Space Mono, monaco, Consolas, Lucida Console, monospace;
+  line-height: 1.5;
+}
+
+/* UNSUSED */
+[type=reset],[type=submit],html [type=button]{-webkit-appearance:button}
+[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner{border-style:none;padding:0}
+[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring{outline:ButtonText dotted 1px}
+[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}
+[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}
+[type=search]{-webkit-appearance:textfield;outline-offset:-2px}
+[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}
+::-webkit-input-placeholder{color:inherit;opacity:.54}
+::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
