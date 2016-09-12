@@ -5,23 +5,14 @@ import { createUpdate, Previous, Reviewed } from './Update';
 import { reportName } from '../utils';
 
 function Inbox(props) {
-  if (props.inbox.length === 0) {
-    return (
-      <section>
-        <h2>Inbox</h2>
-        <div className="support">
-          (Have a wonderful day!)
-        </div>
-      </section>
-    );
-  }
+  const content = props.inbox.length === 0 ?
+    <div className="support">(Have a wonderful day!)</div> :
+    <ul>{props.inbox.map(up => createUpdate(Previous, props, up))}</ul>
 
   return (
     <section>
       <h2>Inbox</h2>
-      <ul>
-        {props.inbox.map(update => createUpdate(Previous, props, update))}
-      </ul>
+      {content}
     </section>
   );
 }
