@@ -7,10 +7,15 @@ import { get, post } from '../utils';
 export default class ReviewContainer extends Component {
   constructor(props) {
     super(props);
+
+    const { author, year, month, day } = this.props.params;
+    const report = `${year}-${month}-${day}`;
+
     this.state = {
-      author: '',
+      author,
       updates: [],
-      reportDate: new Date()
+      report,
+      reportDate: new Date(report)
     };
 
     this.handleStartEdit = this.handleStartEdit.bind(this);
@@ -20,8 +25,7 @@ export default class ReviewContainer extends Component {
   }
 
   componentDidMount() {
-    const { author, year, month, day } = this.props.params;
-    const report = `${year}-${month}-${day}`;
+    const { author, report } = this.state;
     const updatesByAuthor = `${API_URL}/updates?author=${author}`;
     Promise.all([
       get(`${updatesByAuthor}&resolved=0&status=inbox`),
@@ -29,7 +33,6 @@ export default class ReviewContainer extends Component {
       get(`${updatesByAuthor}&report=${report}&status=done&status=todo&status=struggle`),
     ]).then(
       ([inbox, prevtodo, current]) => this.setState({
-        author, reportDate: new Date(report),
         updates: [...inbox, ...prevtodo, ...current].map(
           up => Object.assign(up, {
             reportDate: new Date(up.reportDate)
