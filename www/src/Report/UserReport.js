@@ -10,8 +10,8 @@ function Update(props) {
 
 export default function UserReport(props) {
   return (
-    <section>
-      <h2># {props.author}</h2>
+    <section className="user-report">
+      <h2>{props.author}</h2>
 
       <h3>Goals for this week</h3>
       <ul>

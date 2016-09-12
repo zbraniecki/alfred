@@ -8,7 +8,7 @@ function Inbox(props) {
   if (props.inbox.length === 0) {
     return (
       <section>
-        <h2># Inbox</h2>
+        <h2>Inbox</h2>
         <div className="support">
           (Have a wonderful day!)
         </div>
@@ -18,7 +18,7 @@ function Inbox(props) {
 
   return (
     <section>
-      <h2># Inbox</h2>
+      <h2>Inbox</h2>
       <ul>
         {props.inbox.map(update => createUpdate(Previous, props, update))}
       </ul>
@@ -41,7 +41,7 @@ export default function Review(props) {
           <Inbox {...props}/>
 
           <section>
-            <h2># Previous Todo</h2>
+            <h2>Your goals from last week</h2>
             <ul>
               {props.prevtodo.map(update => createUpdate(Previous, props, update))}
             </ul>
@@ -49,28 +49,23 @@ export default function Review(props) {
         </div>
 
         <div className="next">
-          <h2># Report for {reportName(props.reportDate)}</h2>
-          <section>
+          <section className="user-report">
+            <h2>Report for {reportName(props.reportDate)}</h2>
             <h3>Goals for this week</h3>
             <ul>
               {props.todo.map(update => createUpdate(Reviewed, props, update))}
             </ul>
-          </section>
 
-          <section>
             <h3>Struggles last week</h3>
             <ul>
               {props.struggle.map(update => createUpdate(Reviewed, props, update))}
             </ul>
-          </section>
 
-          <section>
             <h3>Achievements last week</h3>
             <ul>
               {props.done.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
-
         </div>
 
       </div>
