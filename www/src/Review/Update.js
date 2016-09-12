@@ -4,7 +4,7 @@ export function Previous(props) {
   return (
     <li>
       <span onClick={props.handleStartEdit}>{props.children}</span>
-      <div className="toolbar">
+      <div>
         <button onClick={() => props.handleResolve('done')}>done</button>
         <button onClick={() => props.handleResolve('todo')}>todo</button>
         <button onClick={() => props.handleResolve('struggle')}>struggle</button>

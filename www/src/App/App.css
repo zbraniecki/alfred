@@ -83,19 +83,21 @@ h3 {
   padding-right: 2rem;
 }
 
+.content > div.next {
+  background-color: #f9f9f9;
+  padding: 0 1rem;
+}
+
 .flex {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.no {
+.support {
   color: #424242;
   opacity: 0.3;
-}
-
-section {
-  margin-bottom: 4rem;
+  font-size: 13px;
 }
 
 ul {
