@@ -1,35 +1,37 @@
 import React from 'react';
 
 export function Previous(props) {
+  const { onStartEdit, onResolve } = props;
   return (
     <li>
-      <span onClick={props.handleStartEdit}>{props.children}</span>
+      <span onClick={onStartEdit}>{props.children}</span>
       <div>
-        <button onClick={() => props.handleResolve('done')}>done</button>
-        <button onClick={() => props.handleResolve('todo')}>todo</button>
-        <button onClick={() => props.handleResolve('struggle')}>struggle</button>
+        <button onClick={() => onResolve('done')}>done</button>
+        <button onClick={() => onResolve('todo')}>todo</button>
+        <button onClick={() => onResolve('struggle')}>struggle</button>
       </div>
     </li>
   );
 }
 
 export function Reviewed(props) {
+  const { onStartEdit } = props;
   return (
     <li>
-      <span onClick={props.handleStartEdit}>{props.children}</span>
+      <span onClick={onStartEdit}>{props.children}</span>
     </li>
   );
 }
 
 function Editable(props) {
-  const { update, handleTextChange, handleSubmitEdit } = props;
+  const { value, onChange, onSubmit } = props;
   return (
     <li>
-      <form onSubmit={handleSubmitEdit}>
+      <form onSubmit={onSubmit}>
         <input type="text" autoFocus
-          value={update.text}
-          onChange={handleTextChange}
-          onBlur={handleSubmitEdit}
+          value={value}
+          onChange={onChange}
+          onBlur={onSubmit}
         />
       </form>
     </li>
@@ -40,16 +42,17 @@ export function createUpdate(Update, props, update) {
   if (update.editable) {
     return <Editable
       key={update._id}
-      handleTextChange={evt => props.handleTextChange(update, evt)}
-      handleSubmitEdit={evt => props.handleSubmitEdit(update, evt)}
-      update={update}/>
+      onChange={evt => props.handleTextChange(update, evt)}
+      onSubmit={evt => props.handleSubmitEdit(update, evt)}
+      value={update.text}
+    />
   }
 
   return (
     <Update
       key={update._id}
-      handleStartEdit={() => props.handleStartEdit(update)}
-      handleResolve={status => props.handleResolve(update, status, props.reportDate)}
+      onStartEdit={() => props.handleStartEdit(update)}
+      onResolve={status => props.handleResolve(update, status, props.reportDate)}
     >
       {update.text}
     </Update>
