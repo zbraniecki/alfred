@@ -5,11 +5,9 @@ node_modules
 coverage
 
 # production
-build
 dist
+www/src/config.js
 
 # misc
 .DS_Store
 npm-debug.log
-
-src/config.js
