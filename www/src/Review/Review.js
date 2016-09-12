@@ -38,14 +38,7 @@ export default function Review(props) {
 
         <div className="next">
           <section>
-            <h2># Done last week</h2>
-            <ul>
-              {props.done.map(update => createUpdate(Reviewed, props, update))}
-            </ul>
-          </section>
-
-          <section>
-            <h2># Todo this week</h2>
+            <h2># Goals for this week</h2>
             <ul>
               {props.todo.map(update => createUpdate(Reviewed, props, update))}
             </ul>
@@ -57,6 +50,14 @@ export default function Review(props) {
               {props.struggle.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
+
+          <section>
+            <h2># Achievements last week</h2>
+            <ul>
+              {props.done.map(update => createUpdate(Reviewed, props, update))}
+            </ul>
+          </section>
+
         </div>
 
       </div>
