@@ -2,21 +2,7 @@ import React, { Component } from 'react';
 
 import Review from './Review';
 import { API_URL } from '../config';
-
-function get(url) {
-  return fetch(url).then(resp => resp.json());
-}
-
-function post(url, body) {
-  return fetch(url, {
-    method: 'POST',
-    headers: new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify(body)
-  });
-}
+import { get, post } from '../utils';
 
 export default class ReviewContainer extends Component {
   constructor(props) {
