@@ -2,11 +2,7 @@ import React from 'react';
 
 import { createUpdate, Previous, Reviewed } from './Update';
 
-const dtf = Intl.DateTimeFormat('en', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
+import { reportName } from '../utils';
 
 export default function Review(props) {
   return (
@@ -14,7 +10,7 @@ export default function Review(props) {
 
       <header>
         <div className="logo"></div>
-        <h1>{props.author} · {dtf.format(props.reportDate)}</h1>
+        <h1>{props.author} · {reportName(props.reportDate)}</h1>
       </header>
 
       <div className="content flex">

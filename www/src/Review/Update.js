@@ -39,7 +39,7 @@ function Editable(props) {
 export function createUpdate(Update, props, update) {
   if (update.editable) {
     return <Editable
-      key={update.createdAt}
+      key={update._id}
       handleTextChange={evt => props.handleTextChange(update, evt)}
       handleSubmitEdit={evt => props.handleSubmitEdit(update, evt)}
       update={update}/>
@@ -47,7 +47,7 @@ export function createUpdate(Update, props, update) {
 
   return (
     <Update
-      key={update.createdAt}
+      key={update._id}
       handleStartEdit={() => props.handleStartEdit(update)}
       handleResolve={status => props.handleResolve(update, status, props.reportDate)}
     >

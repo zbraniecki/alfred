@@ -49,6 +49,11 @@ h2 {
   font-size: 1.25rem;
 }
 
+h3 {
+  color: #121212;
+  font-size: 1rem;
+}
+
 .logo {
   background-color: #121212;
   border-radius: 50%;
@@ -89,10 +94,13 @@ h2 {
   opacity: 0.3;
 }
 
+section {
+  margin-bottom: 4rem;
+}
+
 ul {
   list-style-type: none;
   margin-top: 0;
-  margin-bottom: 4rem;
   padding: 0;
 }
 

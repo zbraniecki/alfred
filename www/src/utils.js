@@ -12,3 +12,13 @@ export function post(url, body) {
     body: JSON.stringify(body)
   });
 }
+
+const dtf = Intl.DateTimeFormat('en', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+export function reportName(date) {
+  return dtf.format(date);
+}
