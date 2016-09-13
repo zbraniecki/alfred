@@ -62,8 +62,7 @@ body {
 }
 
 .content__tile {
-  min-width: 30rem;
-  width: 47%;
+  width: 31.25rem;
   margin: 1rem;
 }
 
