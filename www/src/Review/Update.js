@@ -24,14 +24,14 @@ export function Reviewed(props) {
 }
 
 function Editable(props) {
-  const { value, onChange, onSubmit } = props;
+  const { value, onChange, onBlur, onSubmit } = props;
   return (
     <li>
       <form onSubmit={onSubmit}>
         <input type="text" autoFocus required
           value={value}
           onChange={onChange}
-          onBlur={onSubmit}
+          onBlur={onBlur}
         />
       </form>
     </li>
@@ -41,11 +41,14 @@ function Editable(props) {
 // XXX should this be an intermediary component?
 export function createUpdate(Update, props, update) {
   if (update.editable) {
+    const handleCancel = update.adding ?
+      props.handleCancelAdd : props.handleCancelEdit;
     const handleSubmit = update.adding ?
       props.handleSubmitAdd : props.handleSubmitEdit;
     return <Editable
       key={update._id}
       onChange={evt => props.handleTextChange(update, evt)}
+      onBlur={evt => handleCancel(update, evt)}
       onSubmit={evt => handleSubmit(update, evt)}
       value={update.text}
     />

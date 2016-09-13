@@ -18,11 +18,16 @@ export default class ReviewContainer extends Component {
       reportDate: new Date(report)
     };
 
-    this.handleStartEdit = this.handleStartEdit.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
+
+    this.handleStartEdit = this.handleStartEdit.bind(this);
+    this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+
     this.handleStartAdd = this.handleStartAdd.bind(this);
+    this.handleCancelAdd = this.handleCancelAdd.bind(this);
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
+
     this.handleResolve = this.handleResolve.bind(this);
   }
 
@@ -46,7 +51,10 @@ export default class ReviewContainer extends Component {
     this.setState({
       updates: this.state.updates.map(
         other => other._id === update._id ?
-          Object.assign({}, other, { editable: true }) : other
+          Object.assign({}, other, {
+            bkptext: update.text,
+            editable: true
+          }) : other
       )
     });
   }
@@ -56,6 +64,19 @@ export default class ReviewContainer extends Component {
       updates: this.state.updates.map(
         other => other._id === update._id ?
           Object.assign({}, other, { text: evt.target.value }) : other
+      )
+    });
+  }
+
+  handleCancelEdit(update, evt) {
+    evt.preventDefault();
+    this.setState({
+      updates: this.state.updates.map(
+        other => other._id === update._id ?
+          Object.assign({}, other, {
+            text: update.bkptext,
+            editable: false
+          }) : other
       )
     });
   }
@@ -82,6 +103,15 @@ export default class ReviewContainer extends Component {
     };
     this.setState({
       updates: updates.concat(update)
+    });
+  }
+
+  handleCancelAdd(update, evt) {
+    evt.preventDefault();
+    this.setState({
+      updates: this.state.updates.filter(
+        other => other._id !== update._id
+      )
     });
   }
 
@@ -132,11 +162,16 @@ export default class ReviewContainer extends Component {
         )}
         struggle={this.state.updates.filter(up => up.status === 'struggle')}
 
-        handleStartEdit={this.handleStartEdit}
         handleTextChange={this.handleTextChange}
+
+        handleStartEdit={this.handleStartEdit}
+        handleCancelEdit={this.handleCancelEdit}
         handleSubmitEdit={this.handleSubmitEdit}
+
         handleStartAdd={this.handleStartAdd}
+        handleCancelAdd={this.handleCancelAdd}
         handleSubmitAdd={this.handleSubmitAdd}
+
         handleResolve={this.handleResolve}
       />
     );
