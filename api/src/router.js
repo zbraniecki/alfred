@@ -82,9 +82,8 @@ function find(coll, raw) {
 
 function create(coll, body) {
   delete body._id;
-  delete body.editable;
-  delete body.adding;
   return coll.insert(Object.assign(body, {
+    createdAt: new Date(),
     reportDate: new Date(body.reportDate)
   }));
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Review from './Review';
 import { API_URL } from '../config';
-import { get, post } from '../utils';
+import { makeUpdate, get, post } from '../utils';
 
 export default class ReviewContainer extends Component {
   constructor(props) {
@@ -35,11 +35,7 @@ export default class ReviewContainer extends Component {
       get(`${updatesByAuthor}&report=${report}&status=done&status=todo&status=struggle`),
     ]).then(
       ([inbox, prevtodo, current]) => this.setState({
-        updates: [...inbox, ...prevtodo, ...current].map(
-          up => Object.assign(up, {
-            reportDate: new Date(up.reportDate)
-          })
-        )
+        updates: [...inbox, ...prevtodo, ...current].map(makeUpdate)
       })
     ).catch(
       () => console.log(this.state)
@@ -91,21 +87,13 @@ export default class ReviewContainer extends Component {
 
   handleSubmitAdd(update, evt) {
     evt.preventDefault();
-    post(`${API_URL}/updates`, {
-      author: update.author,
-      reportDate: update.reportDate,
-      status: update.status,
-      text: update.text,
-      resolved: update.resolved,
-    }).then(
+    post(`${API_URL}/updates`, makeUpdate(update)).then(
       resp => resp.json()
     ).then(
       created => this.setState({
         updates: this.state.updates.map(
           up => up._id === update._id ?
-            Object.assign(created, {
-              reportDate: new Date(created.reportDate)
-            }) : up
+            makeUpdate(created) : up
         )
       })
     )
@@ -121,9 +109,7 @@ export default class ReviewContainer extends Component {
       created => this.setState({
         updates: this.state.updates.map(
           up => up._id === update._id ?
-            Object.assign({}, created, {
-              reportDate: new Date(created.reportDate)
-            }) : up
+            makeUpdate(created) : up
         )
       })
     )

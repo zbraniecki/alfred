@@ -22,3 +22,17 @@ const dtf = Intl.DateTimeFormat('en', {
 export function reportName(date) {
   return dtf.format(date);
 }
+
+export function makeUpdate(up) {
+  return {
+    _id: up._id,
+    author: up.author,
+    channel: up.channel,
+    status: up.status,
+    resolved: up.resolved,
+    text: up.text,
+    createdAt: new Date(up.createdAt),
+    reportDate: new Date(up.reportDate),
+    prev: up.prev
+  };
+}

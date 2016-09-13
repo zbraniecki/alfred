@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Report from  './Report';
 import { API_URL } from '../config';
-import { get } from '../utils';
+import { makeUpdate, get } from '../utils';
 
 export default class ReportContainer extends Component {
   constructor(props) {
@@ -23,11 +23,7 @@ export default class ReportContainer extends Component {
     const url = `${API_URL}/updates?report=${report}`;
     get(url).then(
       updates => this.setState({
-        updates: updates.map(
-          up => Object.assign(up, {
-            reportDate: new Date(up.reportDate)
-          })
-        )
+        updates: updates.map(makeUpdate)
       })
     ).catch(
       err => console.log(err)
