@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import Review from './Review';
-import { API_URL } from '../config';
+import Review from '../components/review/Review';
+import { API_URL } from '../../config';
 import { makeUpdate, get, post } from '../utils';
 
 export default class ReviewContainer extends Component {

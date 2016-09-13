@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import Report from  './Report';
-import { API_URL } from '../config';
+import Report from  '../components/report/Report';
+import { API_URL } from '../../config';
 import { makeUpdate, get } from '../utils';
 
 function byAuthorThenDate(a, b) {

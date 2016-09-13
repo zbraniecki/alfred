@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { createUpdate, Previous, Reviewed } from './Update';
 
-import { reportName } from '../utils';
+import { reportName } from '../../utils';
 
 function Inbox(props) {
   const content = props.inbox.length === 0 ?

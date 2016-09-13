@@ -1,7 +1,7 @@
 import React from 'react';
 
 import UserReport from './UserReport';
-import { reportName } from '../utils';
+import { reportName } from '../../utils';
 
 export default function Report(props) {
   return (
