@@ -18,6 +18,7 @@ export default function Report(props) {
             <UserReport
               key={author}
               author={author}
+              report={props.report}
               todo={updates.filter(up => up.status === 'todo')}
               struggle={updates.filter(up => up.status === 'struggle')}
               done={updates.filter(up => up.status === 'done')}

@@ -47,6 +47,7 @@ export default class ReportContainer extends Component {
 
     return (
       <Report
+        report={this.state.report}
         reportDate={this.state.reportDate}
         updatesByAuthor={updatesByAuthor}
       />

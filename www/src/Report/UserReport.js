@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 function Update(props) {
   return (
@@ -11,7 +12,12 @@ function Update(props) {
 export default function UserReport(props) {
   return (
     <section className="report content__tile">
-      <h2 className="report__title">{props.author}</h2>
+      <h2 className="report__title">
+        {props.author}
+        <div className="report__actions report__actions--inline">
+          <Link className="report__action" to={`/review/${props.author}/${props.report}`}>review</Link>
+        </div>
+      </h2>
 
       <h3 className="report__subtitle">Goals for this week</h3>
       <ul className="report__list">

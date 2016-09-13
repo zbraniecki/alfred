@@ -126,6 +126,7 @@ body {
   cursor: pointer;
   color: #424242;
   font-size: .8rem;
+  font-weight: normal;
   margin-right: .5rem;
   opacity: 0.3;
   text-decoration: underline;
@@ -136,6 +137,7 @@ body {
 }
 
 .report__item:hover .report__action,
+.report__title:hover .report__action,
 .report__subtitle:hover .report__action {
   color: #1a00f2;
   opacity: 1;
@@ -143,6 +145,8 @@ body {
 
 .report__item:hover .report__action:active,
 .report__item:hover .report__action:hover,
+.report__title:hover .report__action:active,
+.report__title:hover .report__action:hover,
 .report__subtitle:hover .report__action:active,
 .report__subtitle:hover .report__action:hover {
   background: #1a00f2;

@@ -149,6 +149,7 @@ export default class ReviewContainer extends Component {
     return (
       <Review
         author={this.state.author}
+        report={this.state.report}
         reportDate={this.state.reportDate}
 
         inbox={this.state.updates.filter(up => up.status === 'inbox')}

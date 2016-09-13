@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import { createUpdate, Previous, Reviewed } from './Update';
 
@@ -43,7 +44,12 @@ export default function Review(props) {
 
         <div className="content__tile">
           <section className="report">
-            <h2 className="report__title">Report for {reportName(props.reportDate)}</h2>
+            <h2 className="report__title">
+              Report for {reportName(props.reportDate)}
+              <div className="report__actions report__actions--inline">
+                <Link className="report__action" to={`/report/${props.report}`}>see full report</Link>
+              </div>
+            </h2>
             <h3 className="report__subtitle">
               Goals for this week
               <div className="report__actions report__actions--inline">
