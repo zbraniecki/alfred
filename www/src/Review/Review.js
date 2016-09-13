@@ -6,12 +6,14 @@ import { reportName } from '../utils';
 
 function Inbox(props) {
   const content = props.inbox.length === 0 ?
-    <div className="support">(Have a wonderful day!)</div> :
-    <ul>{props.inbox.map(up => createUpdate(Previous, props, up))}</ul>
+    <div className="suggestions__tip">(Have a wonderful day!)</div> :
+    <ul className="report__list">
+      {props.inbox.map(up => createUpdate(Previous, props, up))}
+    </ul>
 
   return (
-    <section>
-      <h2>Inbox</h2>
+    <section className="suggestions">
+      <h2 className="suggestions__title">Inbox</h2>
       {content}
     </section>
   );
@@ -21,48 +23,54 @@ export default function Review(props) {
   return (
     <div>
 
-      <header>
+      <header className="header">
         <div className="logo"></div>
-        <h1>{props.author}</h1>
+        <h1 className="header__title">{props.author}</h1>
       </header>
 
-      <div className="content flex">
+      <div className="content content--flex">
 
-        <div className="previous">
+        <div className="content__suggestions">
           <Inbox {...props}/>
 
-          <section>
-            <h2>Your goals from last week</h2>
-            <ul>
+          <section className="suggestions">
+            <h2 className="suggestions__title">Your goals from last week</h2>
+            <ul className="report__list">
               {props.prevtodo.map(update => createUpdate(Previous, props, update))}
             </ul>
           </section>
         </div>
 
-        <div className="next">
-          <section className="user-report">
-            <h2>Report for {reportName(props.reportDate)}</h2>
-            <h3>
+        <div className="content__preview">
+          <section className="report">
+            <h2 className="report__title">Report for {reportName(props.reportDate)}</h2>
+            <h3 className="report__status-title">
               Goals for this week
-              <button onClick={() => props.handleStartAdd('todo')}>add</button>
+              <div className="report__actions report__actions--inline">
+                <button className="report__action" onClick={() => props.handleStartAdd('todo')}>add</button>
+              </div>
             </h3>
-            <ul>
+            <ul className="report__list">
               {props.todo.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3>
+            <h3 className="report__status-title">
               Struggles last week
-              <button onClick={() => props.handleStartAdd('struggle')}>add</button>
+              <div className="report__actions report__actions--inline">
+                <button className="report__action" onClick={() => props.handleStartAdd('struggle')}>add</button>
+              </div>
             </h3>
-            <ul>
+            <ul className="report__list">
               {props.struggle.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3>
+            <h3 className="report__status-title">
               Achievements last week
-              <button onClick={() => props.handleStartAdd('done')}>add</button>
+              <div className="report__actions report__actions--inline">
+                <button className="report__action" onClick={() => props.handleStartAdd('done')}>add</button>
+              </div>
             </h3>
-            <ul>
+            <ul className="report__list">
               {props.done.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>

@@ -3,12 +3,12 @@ import React from 'react';
 export function Previous(props) {
   const { onStartEdit, onResolve } = props;
   return (
-    <li>
+    <li className="report__item">
       <span onClick={onStartEdit}>{props.children}</span>
-      <div>
-        <button onClick={() => onResolve('done')}>done</button>
-        <button onClick={() => onResolve('todo')}>todo</button>
-        <button onClick={() => onResolve('struggle')}>struggle</button>
+      <div className="report__actions">
+        <button className="report__action" onClick={() => onResolve('done')}>done</button>
+        <button className="report__action" onClick={() => onResolve('todo')}>todo</button>
+        <button className="report__action" onClick={() => onResolve('struggle')}>struggle</button>
       </div>
     </li>
   );
@@ -17,7 +17,7 @@ export function Previous(props) {
 export function Reviewed(props) {
   const { onStartEdit } = props;
   return (
-    <li>
+    <li className="report__item">
       <span onClick={onStartEdit}>{props.children}</span>
     </li>
   );
@@ -26,9 +26,12 @@ export function Reviewed(props) {
 function Editable(props) {
   const { value, onChange, onBlur, onSubmit } = props;
   return (
-    <li>
+    <li className="report__item">
       <form onSubmit={onSubmit}>
-        <input type="text" autoFocus required
+        <input type="text"
+          className="report__edit"
+          autoFocus
+          required
           value={value}
           onChange={onChange}
           onBlur={onBlur}

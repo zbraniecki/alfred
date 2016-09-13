@@ -17,30 +17,16 @@ body {
   padding: 2rem;
 }
 
-header {
+.header {
   margin-bottom: 4rem;    
 }
 
-h1 {
+.header__title {
   display: inline-block;
   height: 4rem;
   margin: 0;
   padding-top: 0.5rem;
   vertical-align: top;
-}
-
-h2 {
-  color: #121212;
-  font-size: 1.25rem;
-}
-
-.user-report h2 {
-  border-bottom: 1px solid #121212;
-}
-
-h3 {
-  color: #121212;
-  font-size: 1rem;
 }
 
 .logo {
@@ -63,47 +49,73 @@ h3 {
   transform: translate(-50%, -50%);
 }
 
-.content > div {
-  display: inline-block;
-  width: 50%;
-}
-
-.content > div.previous {
-  padding-right: 2rem;
-}
-
-.content > div.next {
-  background-color: #f9f9f9;
-  padding: 0 1rem;
-}
-
-.flex {
-  display: -webkit-box;
-  display: -ms-flexbox;
+.content--flex {
   display: flex;
 }
 
-.support {
+.content__suggestions {
+  width: 50%;
+  padding-right: 2rem;
+}
+
+.content__preview {
+  width: 50%;
+}
+
+
+.suggestions {
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.suggestions__title {
+  color: #121212;
+  font-size: 1.25rem;
+}
+
+.suggestions__tip {
   color: #121212;
   opacity: 0.3;
   font-size: .8rem;
 }
 
-ul {
+.report {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.report__title {
+  color: #121212;
+  font-size: 1.25rem;
+  border-bottom: 1px solid #121212;
+}
+
+.report__status-title {
+  color: #121212;
+  font-size: 1rem;
+}
+
+.report__list {
   list-style-type: none;
   margin-top: 0;
   padding: 0;
 }
 
-ul li {
+.report__item {
   margin-bottom: 1rem;
 }
 
-ul li:hover {
+.report__item:hover {
   background: #ffffff;
 }
 
-ul li button {
+.report__actions--inline {
+  display: inline-block;
+  margin-left: .3rem;
+}
+
+.report__action {
   background: none;
   border: none;
   padding: 0;
@@ -115,39 +127,32 @@ ul li button {
   text-decoration: underline;
 }
 
-ul li:hover button {
+.report__action--danger {
+  color: #f2001a;
+}
+
+.report__item:hover .report__action,
+.report__status-title:hover .report__action {
   color: #1a00f2;
   opacity: 1;
 }
 
-ul li button.danger {
-  color: #f2001a;
-}
-
-ul li button:active, ul li button:hover {
+.report__item:hover .report__action:active,
+.report__item:hover .report__action:hover,
+.report__status-title:hover .report__action:active,
+.report__status-title:hover .report__action:hover {
   background: #1a00f2;
   color: #fff;
   outline-width: 0;
 }
 
-ul li button.danger:hover {
+.report__item:hover .report__action--danger:hover {
   background: #f2001a;
 }
 
-[type=text] {
+.report__edit {
   width: 100%;
   color: #424242;
   font-family: Arial, sans-serif;
   line-height: 1.5;
 }
-
-/* UNSUSED */
-[type=reset],[type=submit],html [type=button]{-webkit-appearance:button}
-[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner{border-style:none;padding:0}
-[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring{outline:ButtonText dotted 1px}
-[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}
-[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}
-[type=search]{-webkit-appearance:textfield;outline-offset:-2px}
-[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}
-::-webkit-input-placeholder{color:inherit;opacity:.54}
-::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
