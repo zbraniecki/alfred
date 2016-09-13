@@ -28,7 +28,7 @@ function Editable(props) {
   return (
     <li>
       <form onSubmit={onSubmit}>
-        <input type="text" autoFocus
+        <input type="text" autoFocus required
           value={value}
           onChange={onChange}
           onBlur={onSubmit}
@@ -38,12 +38,15 @@ function Editable(props) {
   );
 }
 
+// XXX should this be an intermediary component?
 export function createUpdate(Update, props, update) {
   if (update.editable) {
+    const handleSubmit = update.adding ?
+      props.handleSubmitAdd : props.handleSubmitEdit;
     return <Editable
       key={update._id}
       onChange={evt => props.handleTextChange(update, evt)}
-      onSubmit={evt => props.handleSubmitEdit(update, evt)}
+      onSubmit={evt => handleSubmit(update, evt)}
       value={update.text}
     />
   }

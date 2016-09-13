@@ -21,6 +21,8 @@ export default class ReviewContainer extends Component {
     this.handleStartEdit = this.handleStartEdit.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+    this.handleStartAdd = this.handleStartAdd.bind(this);
+    this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleResolve = this.handleResolve.bind(this);
   }
 
@@ -76,6 +78,39 @@ export default class ReviewContainer extends Component {
     });
   }
 
+  handleStartAdd(status) {
+    const { author, updates, reportDate } = this.state;
+    const update = {
+      _id: Date.now(), author, reportDate, status,
+      text: '', resolved: false, editable: true, adding: true
+    };
+    this.setState({
+      updates: updates.concat(update)
+    });
+  }
+
+  handleSubmitAdd(update, evt) {
+    evt.preventDefault();
+    post(`${API_URL}/updates`, {
+      author: update.author,
+      reportDate: update.reportDate,
+      status: update.status,
+      text: update.text,
+      resolved: update.resolved,
+    }).then(
+      resp => resp.json()
+    ).then(
+      created => this.setState({
+        updates: this.state.updates.map(
+          up => up._id === update._id ?
+            Object.assign(created, {
+              reportDate: new Date(created.reportDate)
+            }) : up
+        )
+      })
+    )
+  }
+
   handleResolve(update, status, reportDate) {
     post(`${API_URL}/resolve`, {
       _id: update._id, status, reportDate
@@ -114,6 +149,8 @@ export default class ReviewContainer extends Component {
         handleStartEdit={this.handleStartEdit}
         handleTextChange={this.handleTextChange}
         handleSubmitEdit={this.handleSubmitEdit}
+        handleStartAdd={this.handleStartAdd}
+        handleSubmitAdd={this.handleSubmitAdd}
         handleResolve={this.handleResolve}
       />
     );

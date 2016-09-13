@@ -8,7 +8,8 @@ export function createRouter(db) {
   router.use(bodyParser.json());
   const updates = db.collection('updates');
   router.route('/updates').get(getUpdates(updates))
-  router.route('/updates/:id').post(postUpdate(updates))
+  router.route('/updates').post(createUpdate(updates))
+  router.route('/updates/:id').post(updateUpdate(updates))
   router.route('/resolve').post(resolveUpdate(updates));
   return router;
 }
@@ -28,7 +29,16 @@ export function getUpdates(coll) {
   }
 }
 
-export function postUpdate(coll) {
+export function createUpdate(coll) {
+  return function(req, res, next) {
+    create(coll, req.body).then(function({ops}) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(ops[0]));
+    }).catch(console.error);
+  }
+}
+
+export function updateUpdate(coll) {
   return function(req, res, next) {
     update(coll, req.params.id, req.body).then(function({result}) {
       res.sendStatus(result.ok ? 200 : 500);
@@ -68,6 +78,15 @@ function find(coll, raw) {
   }
 
   return coll.find(query).limit(1000).toArray();
+}
+
+function create(coll, body) {
+  delete body._id;
+  delete body.editable;
+  delete body.adding;
+  return coll.insert(Object.assign(body, {
+    reportDate: new Date(body.reportDate)
+  }));
 }
 
 function update(coll, id, body) {

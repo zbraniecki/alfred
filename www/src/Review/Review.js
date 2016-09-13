@@ -42,17 +42,26 @@ export default function Review(props) {
         <div className="next">
           <section className="user-report">
             <h2>Report for {reportName(props.reportDate)}</h2>
-            <h3>Goals for this week</h3>
+            <h3>
+              Goals for this week
+              <button onClick={() => props.handleStartAdd('todo')}>add</button>
+            </h3>
             <ul>
               {props.todo.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3>Struggles last week</h3>
+            <h3>
+              Struggles last week
+              <button onClick={() => props.handleStartAdd('struggle')}>add</button>
+            </h3>
             <ul>
               {props.struggle.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3>Achievements last week</h3>
+            <h3>
+              Achievements last week
+              <button onClick={() => props.handleStartAdd('done')}>add</button>
+            </h3>
             <ul>
               {props.done.map(update => createUpdate(Reviewed, props, update))}
             </ul>
