@@ -90,7 +90,7 @@ body {
   margin: 0;
 }
 
-.report__status-title {
+.report__subtitle {
   color: #121212;
   font-size: 1rem;
 }
@@ -131,15 +131,15 @@ body {
 }
 
 .report__item:hover .report__action,
-.report__status-title:hover .report__action {
+.report__subtitle:hover .report__action {
   color: #1a00f2;
   opacity: 1;
 }
 
 .report__item:hover .report__action:active,
 .report__item:hover .report__action:hover,
-.report__status-title:hover .report__action:active,
-.report__status-title:hover .report__action:hover {
+.report__subtitle:hover .report__action:active,
+.report__subtitle:hover .report__action:hover {
   background: #1a00f2;
   color: #fff;
   outline-width: 0;

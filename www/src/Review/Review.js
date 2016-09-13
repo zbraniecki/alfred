@@ -44,7 +44,7 @@ export default function Review(props) {
         <div className="content__tile">
           <section className="report">
             <h2 className="report__title">Report for {reportName(props.reportDate)}</h2>
-            <h3 className="report__status-title">
+            <h3 className="report__subtitle">
               Goals for this week
               <div className="report__actions report__actions--inline">
                 <button className="report__action" onClick={() => props.handleStartAdd('todo')}>add</button>
@@ -54,7 +54,7 @@ export default function Review(props) {
               {props.todo.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3 className="report__status-title">
+            <h3 className="report__subtitle">
               Struggles last week
               <div className="report__actions report__actions--inline">
                 <button className="report__action" onClick={() => props.handleStartAdd('struggle')}>add</button>
@@ -64,7 +64,7 @@ export default function Review(props) {
               {props.struggle.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3 className="report__status-title">
+            <h3 className="report__subtitle">
               Achievements last week
               <div className="report__actions report__actions--inline">
                 <button className="report__action" onClick={() => props.handleStartAdd('done')}>add</button>
