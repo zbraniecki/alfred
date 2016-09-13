@@ -7,7 +7,7 @@ html {
   -webkit-text-size-adjust: 100%;
   box-sizing: border-box;
   color: #424242;
-  font-family: Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   line-height: 1.5;
 }
 
@@ -127,6 +127,7 @@ body {
   color: #424242;
   font-size: .8rem;
   font-weight: normal;
+  font-family: Helvetica, Arial, sans-serif;
   margin-right: .5rem;
   opacity: 0.3;
   text-decoration: underline;
@@ -161,6 +162,6 @@ body {
 .report__edit {
   width: 100%;
   color: #424242;
-  font-family: Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   line-height: 1.5;
 }
