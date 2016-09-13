@@ -28,9 +28,9 @@ export default function Review(props) {
         <h1 className="header__title">{props.author}</h1>
       </header>
 
-      <div className="content content--flex">
+      <div className="content">
 
-        <div className="content__suggestions">
+        <div className="content__tile">
           <Inbox {...props}/>
 
           <section className="suggestions">
@@ -41,7 +41,7 @@ export default function Review(props) {
           </section>
         </div>
 
-        <div className="content__preview">
+        <div className="content__tile">
           <section className="report">
             <h2 className="report__title">Report for {reportName(props.reportDate)}</h2>
             <h3 className="report__status-title">

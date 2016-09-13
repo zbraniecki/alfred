@@ -49,19 +49,18 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.content--flex {
+.content {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: space-between;
 }
 
-.content__suggestions {
-  width: 50%;
-  padding-right: 2rem;
+.content__tile {
+  min-width: 30rem;
+  width: 47%;
+  margin: 1rem;
 }
-
-.content__preview {
-  width: 50%;
-}
-
 
 .suggestions {
   padding: 1rem;
@@ -82,7 +81,6 @@ body {
 .report {
   background-color: #f9f9f9;
   padding: 1rem;
-  margin-bottom: 2rem;
 }
 
 .report__title {

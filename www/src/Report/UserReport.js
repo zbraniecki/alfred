@@ -10,7 +10,7 @@ function Update(props) {
 
 export default function UserReport(props) {
   return (
-    <section className="report">
+    <section className="report content__tile">
       <h2 className="report__title">{props.author}</h2>
 
       <h3 className="report__status-title">Goals for this week</h3>
