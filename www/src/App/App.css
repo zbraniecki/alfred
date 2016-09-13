@@ -39,6 +39,10 @@ body {
   width: 4rem;
 }
 
+.logo--reviewing {
+  background-color: #f60;
+}
+
 .logo:after {
   content: 'alf';
   color: #fff;

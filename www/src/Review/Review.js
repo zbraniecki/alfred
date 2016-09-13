@@ -24,7 +24,7 @@ export default function Review(props) {
     <div>
 
       <header className="header">
-        <div className="logo"></div>
+        <div className="logo logo--reviewing"></div>
         <h1 className="header__title">{props.author}</h1>
       </header>
 
