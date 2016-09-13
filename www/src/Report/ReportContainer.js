@@ -4,6 +4,14 @@ import Report from  './Report';
 import { API_URL } from '../config';
 import { makeUpdate, get } from '../utils';
 
+function byAuthorThenDate(a, b) {
+  if (a.author !== b.author) {
+    return a.author < b.author;
+  }
+
+  return a.createdAt < b.createdAt;
+}
+
 export default class ReportContainer extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +39,7 @@ export default class ReportContainer extends Component {
   }
 
   render() {
-    const updatesByAuthor = this.state.updates.reduce(
+    const updatesByAuthor = this.state.updates.sort(byAuthorThenDate).reduce(
       (map, update) => map.set(
         update.author, (map.get(update.author) || []).concat(update)
       ), new Map()
