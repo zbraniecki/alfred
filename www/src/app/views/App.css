@@ -106,25 +106,27 @@ body {
   padding: 0;
 }
 
-.report__item {
+.update {
   margin-bottom: 1rem;
 }
 
-.report__item:hover {
+.update:hover {
   background: #ffffff;
 }
 
-.report__actions--inline {
-  display: inline-block;
-}
-
-.report__hint {
+.report__actions,
+.update__actions {
   color: #424242;
   font-size: .8rem;
   opacity: 0.3;
 }
 
-.report__action {
+.report__actions {
+  display: inline-block;
+}
+
+.report__action,
+.update__action {
   background: none;
   border: none;
   padding: 0;
@@ -134,23 +136,27 @@ body {
   font-weight: normal;
   font-family: Helvetica, Arial, sans-serif;
   margin: 0 .25rem;
-  opacity: 0.3;
   text-decoration: underline;
 }
 
-.report__action--danger {
+.update__action--danger {
   color: #f2001a;
 }
 
-.report__item:hover .report__action,
-.report__title:hover .report__action,
-.report__subtitle:hover .report__action {
-  color: #1a00f2;
+.update:hover .update__actions,
+.report__title:hover .report__actions,
+.report__subtitle:hover .report__actions {
   opacity: 1;
 }
 
-.report__item:hover .report__action:active,
-.report__item:hover .report__action:hover,
+.update:hover .update__action,
+.report__title:hover .report__action,
+.report__subtitle:hover .report__action {
+  color: #1a00f2;
+}
+
+.update:hover .update__action:active,
+.update:hover .update__action:hover,
 .report__title:hover .report__action:active,
 .report__title:hover .report__action:hover,
 .report__subtitle:hover .report__action:active,
@@ -160,7 +166,7 @@ body {
   outline-width: 0;
 }
 
-.report__item:hover .report__action--danger:hover {
+.update:hover .update__action--danger:hover {
   background: #f2001a;
 }
 

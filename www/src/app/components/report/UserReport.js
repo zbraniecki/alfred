@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 function Update(props) {
   return (
-    <li className="report__item">
+    <li className="update">
       <span>{props.children}</span>
     </li>
   );
@@ -14,7 +14,7 @@ export default function UserReport(props) {
     <section className="report content__tile">
       <h2 className="report__title">
         {props.author}
-        <div className="report__actions report__actions--inline">
+        <div className="report__actions">
           <Link className="report__action" to={`/review/${props.author}/${props.report}`}>review</Link>
         </div>
       </h2>

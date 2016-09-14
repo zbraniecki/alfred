@@ -3,15 +3,15 @@ import React from 'react';
 export function Previous(props) {
   const { onStartEdit, onResolve } = props;
   return (
-    <li className="report__item">
+    <li className="update">
       <span onClick={onStartEdit}>{props.children}</span>
-      <div className="report__actions">
-        <span className="report__hint">mark as</span>
-        <button className="report__action" onClick={() => onResolve('done')}>done</button>
-        <span className="report__hint">or report as:</span>
-        <button className="report__action" onClick={() => onResolve('goal')}>goal</button>
-        <button className="report__action" onClick={() => onResolve('struggle')}>struggle</button>
-        <button className="report__action" onClick={() => onResolve('achievement')}>achievement</button>
+      <div className="update__actions">
+        mark as
+        <button className="update__action" onClick={() => onResolve('done')}>done</button>
+        or report as:
+        <button className="update__action" onClick={() => onResolve('goal')}>goal</button>
+        <button className="update__action" onClick={() => onResolve('struggle')}>struggle</button>
+        <button className="update__action" onClick={() => onResolve('achievement')}>achievement</button>
       </div>
     </li>
   );
@@ -20,13 +20,13 @@ export function Previous(props) {
 export function Done(props) {
   const { onStartEdit, onResolve, onArchive } = props;
   return (
-    <li className="report__item">
+    <li className="update">
       <span onClick={onStartEdit}>{props.children}</span>
-      <div className="report__actions">
-        <span className="report__hint">report as</span>
-        <button className="report__action" onClick={() => onResolve('achievement')}>achievement</button>
-        <span className="report__hint">or</span>
-        <button className="report__action" onClick={onArchive}>archive</button>
+      <div className="update__actions">
+        report as
+        <button className="update__action" onClick={() => onResolve('achievement')}>achievement</button>
+        or
+        <button className="update__action" onClick={onArchive}>archive</button>
       </div>
     </li>
   );
@@ -35,7 +35,7 @@ export function Done(props) {
 export function Reviewed(props) {
   const { onStartEdit } = props;
   return (
-    <li className="report__item">
+    <li className="update">
       <span onClick={onStartEdit}>{props.children}</span>
     </li>
   );
@@ -44,7 +44,7 @@ export function Reviewed(props) {
 function Editable(props) {
   const { value, onChange, onBlur, onSubmit } = props;
   return (
-    <li className="report__item">
+    <li className="update">
       <form onSubmit={onSubmit}>
         <input type="text"
           className="report__edit"

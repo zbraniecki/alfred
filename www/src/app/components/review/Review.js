@@ -55,13 +55,13 @@ export default function Review(props) {
           <section className="report">
             <h2 className="report__title">
               Report for {reportName(props.reportDate)}
-              <div className="report__actions report__actions--inline">
+              <div className="report__actions">
                 <Link className="report__action" to={`/report/${props.report}`}>see full report</Link>
               </div>
             </h2>
             <h3 className="report__subtitle">
               Goals for this week
-              <div className="report__actions report__actions--inline">
+              <div className="report__actions">
                 <button className="report__action" onClick={() => props.handleStartAdd('goal')}>add</button>
               </div>
             </h3>
@@ -71,7 +71,7 @@ export default function Review(props) {
 
             <h3 className="report__subtitle">
               Struggles last week
-              <div className="report__actions report__actions--inline">
+              <div className="report__actions">
                 <button className="report__action" onClick={() => props.handleStartAdd('struggle')}>add</button>
               </div>
             </h3>
@@ -81,7 +81,7 @@ export default function Review(props) {
 
             <h3 className="report__subtitle">
               Achievements last week
-              <div className="report__actions report__actions--inline">
+              <div className="report__actions">
                 <button className="report__action" onClick={() => props.handleStartAdd('achievement')}>add</button>
               </div>
             </h3>
