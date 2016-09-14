@@ -74,6 +74,7 @@ body {
 .suggestions__title {
   color: #121212;
   font-size: 1.25rem;
+  margin: 0 0 1rem;
 }
 
 .suggestions__tip {
