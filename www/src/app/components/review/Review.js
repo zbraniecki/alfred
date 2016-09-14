@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { createUpdate, Previous, Done, Reviewed } from './Update';
+import { createUpdate } from '../inbox/Update';
+import { Previous, Done, Reviewed } from './Update';
 
 import { reportName } from '../../utils';
 
@@ -25,7 +26,7 @@ export default function Review(props) {
     <div>
 
       <header className="header">
-        <div className="logo logo--reviewing"></div>
+        <div className="logo logo--orange"></div>
         <h1 className="header__title">{props.author}, review your weekly report</h1>
       </header>
 

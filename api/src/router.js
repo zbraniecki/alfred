@@ -103,10 +103,11 @@ function resolve(coll, body) {
   }).then(
     () => coll.findOne({_id}, {_id: 0})
   ).then(parent => {
+    const { status, reportDate } = body;
     const child = Object.assign({}, parent, {
       prev: _id,
-      status: body.status,
-      reportDate: new Date(body.reportDate),
+      status: status,
+      reportDate: reportDate ? new Date(reportDate) : null,
       resolved: false,
     });
     return coll.insert(child);

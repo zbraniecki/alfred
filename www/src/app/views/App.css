@@ -39,7 +39,11 @@ body {
   width: 4rem;
 }
 
-.logo--reviewing {
+.logo--blue {
+  background-color: #06f;
+}
+
+.logo--orange {
   background-color: #f60;
 }
 
@@ -132,6 +136,11 @@ body {
 
 .report__actions {
   display: inline-block;
+  margin-left: .5rem;
+}
+
+.update__hint {
+  margin-right: .25rem;
 }
 
 .report__action,
@@ -144,7 +153,7 @@ body {
   font-size: .8rem;
   font-weight: normal;
   font-family: Helvetica, Arial, sans-serif;
-  margin: 0 .25rem;
+  margin-right: .25rem;
   text-decoration: underline;
 }
 

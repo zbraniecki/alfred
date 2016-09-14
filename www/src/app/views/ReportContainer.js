@@ -33,9 +33,7 @@ export default class ReportContainer extends Component {
       updates => this.setState({
         updates: updates.map(makeUpdate)
       })
-    ).catch(
-      err => console.log(err)
-    );
+    ).catch(console.error);
   }
 
   render() {

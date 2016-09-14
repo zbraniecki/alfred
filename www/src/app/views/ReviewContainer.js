@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
+import InboxContainer from './InboxContainer';
 import Review from '../components/review/Review';
 import { API_URL } from '../../config';
-import { makeUpdate, get, post } from '../utils';
+import { makeUpdate, get } from '../utils';
 
-export default class ReviewContainer extends Component {
+export default class ReviewContainer extends InboxContainer {
   constructor(props) {
     super(props);
 
@@ -17,19 +18,6 @@ export default class ReviewContainer extends Component {
       report,
       reportDate: new Date(report)
     };
-
-    this.handleTextChange = this.handleTextChange.bind(this);
-
-    this.handleStartEdit = this.handleStartEdit.bind(this);
-    this.handleCancelEdit = this.handleCancelEdit.bind(this);
-    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
-
-    this.handleStartAdd = this.handleStartAdd.bind(this);
-    this.handleCancelAdd = this.handleCancelAdd.bind(this);
-    this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
-
-    this.handleResolve = this.handleResolve.bind(this);
-    this.handleArchive = this.handleArchive.bind(this);
   }
 
   componentDidMount() {
@@ -43,121 +31,7 @@ export default class ReviewContainer extends Component {
       ([inbox, prev, current]) => this.setState({
         updates: [...inbox, ...prev, ...current].map(makeUpdate)
       })
-    ).catch(
-      () => console.log(this.state)
-    );
-  }
-
-  handleStartEdit(update) {
-    this.setState({
-      updates: this.state.updates.map(
-        other => other._id === update._id ?
-          Object.assign({}, other, {
-            bkptext: update.text,
-            editable: true
-          }) : other
-      )
-    });
-  }
-
-  handleTextChange(update, evt) {
-    this.setState({
-      updates: this.state.updates.map(
-        other => other._id === update._id ?
-          Object.assign({}, other, { text: evt.target.value }) : other
-      )
-    });
-  }
-
-  handleCancelEdit(update, evt) {
-    evt.preventDefault();
-    this.setState({
-      updates: this.state.updates.map(
-        other => other._id === update._id ?
-          Object.assign({}, other, {
-            text: update.bkptext,
-            editable: false
-          }) : other
-      )
-    });
-  }
-
-  handleSubmitEdit(update, evt) {
-    evt.preventDefault();
-    post(`${API_URL}/updates/${update._id}`, {
-      text: update.text
-    }).then(result => {
-      this.setState({
-        updates: this.state.updates.map(
-          other => other._id === update._id ?
-            Object.assign({}, other, { editable: false }) : other
-        )
-      });
-    });
-  }
-
-  handleStartAdd(status) {
-    const { author, updates, reportDate } = this.state;
-    const update = {
-      _id: Date.now(), author, reportDate, status,
-      text: '', resolved: false, editable: true, adding: true
-    };
-    this.setState({
-      updates: updates.concat(update)
-    });
-  }
-
-  handleCancelAdd(update, evt) {
-    evt.preventDefault();
-    this.setState({
-      updates: this.state.updates.filter(
-        other => other._id !== update._id
-      )
-    });
-  }
-
-  handleSubmitAdd(update, evt) {
-    evt.preventDefault();
-    post(`${API_URL}/updates`, makeUpdate(update)).then(
-      resp => resp.json()
-    ).then(
-      created => this.setState({
-        updates: this.state.updates.map(
-          up => up._id === update._id ?
-            makeUpdate(created) : up
-        )
-      })
-    )
-  }
-
-  handleResolve(update, status, reportDate) {
-    post(`${API_URL}/resolve`, {
-      _id: update._id, status, reportDate
-    }).then(
-      // XXX find a better way to get the newly created update?
-      resp => resp.json()
-    ).then(
-      created => this.setState({
-        updates: this.state.updates.map(
-          up => up._id === update._id ?
-            makeUpdate(created) : up
-        )
-      })
-    )
-  }
-
-  handleArchive(update) {
-    post(`${API_URL}/updates/${update._id}`, {
-      resolved: true,
-      // XXX set resolveDate on the server
-      resolveDate: new Date()
-    }).then(result => {
-      this.setState({
-        updates: this.state.updates.filter(
-          other => other._id !== update._id
-        )
-      });
-    });
+    ).catch(console.error);
   }
 
   render() {
