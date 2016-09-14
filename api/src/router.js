@@ -95,7 +95,12 @@ function update(coll, id, body) {
 
 function resolve(coll, body) {
   const _id = new ObjectID(body._id);
-  return coll.update({_id}, { $set: { resolved: true } }).then(
+  return coll.update({_id}, {
+    $set: {
+      resolved: true,
+      resolveDate: new Date(),
+    }
+  }).then(
     () => coll.findOne({_id}, {_id: 0})
   ).then(parent => {
     const child = Object.assign({}, parent, {

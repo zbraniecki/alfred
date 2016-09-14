@@ -29,13 +29,14 @@ export default class ReviewContainer extends Component {
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
 
     this.handleResolve = this.handleResolve.bind(this);
+    this.handleArchive = this.handleArchive.bind(this);
   }
 
   componentDidMount() {
     const { author, report } = this.state;
     const updatesByAuthor = `${API_URL}/updates?author=${author}`;
     Promise.all([
-      get(`${updatesByAuthor}&resolved=0&status=inbox`),
+      get(`${updatesByAuthor}&resolved=0&status=inbox&status=done`),
       get(`${updatesByAuthor}&resolved=0&status=goal&before=${report}`),
       get(`${updatesByAuthor}&report=${report}&status=goal&status=struggle&status=achievement`),
     ]).then(
@@ -145,6 +146,20 @@ export default class ReviewContainer extends Component {
     )
   }
 
+  handleArchive(update) {
+    post(`${API_URL}/updates/${update._id}`, {
+      resolved: true,
+      // XXX set resolveDate on the server
+      resolveDate: new Date()
+    }).then(result => {
+      this.setState({
+        updates: this.state.updates.filter(
+          other => other._id !== update._id
+        )
+      });
+    });
+  }
+
   render() {
     return (
       <Review
@@ -156,6 +171,7 @@ export default class ReviewContainer extends Component {
         prevgoals={this.state.updates.filter(
           up => up.status === 'goal' && up.reportDate < this.state.reportDate
         )}
+        done={this.state.updates.filter(up => up.status === 'done')}
         goals={this.state.updates.filter(
           up => up.status === 'goal' &&
             up.reportDate.getTime() === this.state.reportDate.getTime()
@@ -174,6 +190,7 @@ export default class ReviewContainer extends Component {
         handleSubmitAdd={this.handleSubmitAdd}
 
         handleResolve={this.handleResolve}
+        handleArchive={this.handleArchive}
       />
     );
   }

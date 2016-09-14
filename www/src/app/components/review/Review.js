@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { createUpdate, Previous, Reviewed } from './Update';
+import { createUpdate, Previous, Done, Reviewed } from './Update';
 
 import { reportName } from '../../utils';
 
@@ -38,6 +38,15 @@ export default function Review(props) {
             <h2 className="suggestions__title">Your goals from last week</h2>
             <ul className="report__list">
               {props.prevgoals.map(update => createUpdate(Previous, props, update))}
+            </ul>
+          </section>
+        </div>
+
+        <div className="content__tile">
+          <section className="suggestions">
+            <h2 className="suggestions__title">Recently done</h2>
+            <ul className="report__list">
+              {props.done.map(update => createUpdate(Done, props, update))}
             </ul>
           </section>
         </div>
