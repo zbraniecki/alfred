@@ -21,17 +21,17 @@ export default function UserReport(props) {
 
       <h3 className="report__subtitle">Goals for this week</h3>
       <ul className="report__list">
-        {props.todo.map(up => <Update key={up._id}>{up.text}</Update>)}
+        {props.goals.map(up => <Update key={up._id}>{up.text}</Update>)}
       </ul>
 
       <h3 className="report__subtitle">Struggles last week</h3>
       <ul className="report__list">
-        {props.struggle.map(up => <Update key={up._id}>{up.text}</Update>)}
+        {props.struggles.map(up => <Update key={up._id}>{up.text}</Update>)}
       </ul>
 
       <h3 className="report__subtitle">Achievements last week</h3>
       <ul className="report__list">
-        {props.done.map(up => <Update key={up._id}>{up.text}</Update>)}
+        {props.achievements.map(up => <Update key={up._id}>{up.text}</Update>)}
       </ul>
     </section>
   );

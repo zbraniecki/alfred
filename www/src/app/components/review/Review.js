@@ -37,7 +37,7 @@ export default function Review(props) {
           <section className="suggestions">
             <h2 className="suggestions__title">Your goals from last week</h2>
             <ul className="report__list">
-              {props.prevtodo.map(update => createUpdate(Previous, props, update))}
+              {props.prevgoals.map(update => createUpdate(Previous, props, update))}
             </ul>
           </section>
         </div>
@@ -53,11 +53,11 @@ export default function Review(props) {
             <h3 className="report__subtitle">
               Goals for this week
               <div className="report__actions report__actions--inline">
-                <button className="report__action" onClick={() => props.handleStartAdd('todo')}>add</button>
+                <button className="report__action" onClick={() => props.handleStartAdd('goal')}>add</button>
               </div>
             </h3>
             <ul className="report__list">
-              {props.todo.map(update => createUpdate(Reviewed, props, update))}
+              {props.goals.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
             <h3 className="report__subtitle">
@@ -67,17 +67,17 @@ export default function Review(props) {
               </div>
             </h3>
             <ul className="report__list">
-              {props.struggle.map(update => createUpdate(Reviewed, props, update))}
+              {props.struggles.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
             <h3 className="report__subtitle">
               Achievements last week
               <div className="report__actions report__actions--inline">
-                <button className="report__action" onClick={() => props.handleStartAdd('done')}>add</button>
+                <button className="report__action" onClick={() => props.handleStartAdd('achievement')}>add</button>
               </div>
             </h3>
             <ul className="report__list">
-              {props.done.map(update => createUpdate(Reviewed, props, update))}
+              {props.achievements.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>
         </div>

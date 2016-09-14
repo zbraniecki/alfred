@@ -19,9 +19,9 @@ export default function Report(props) {
               key={author}
               author={author}
               report={props.report}
-              todo={updates.filter(up => up.status === 'todo')}
-              struggle={updates.filter(up => up.status === 'struggle')}
-              done={updates.filter(up => up.status === 'done')}
+              goals={updates.filter(up => up.status === 'goal')}
+              struggles={updates.filter(up => up.status === 'struggle')}
+              achievements={updates.filter(up => up.status === 'achievement')}
             />
         )}
       </div>

@@ -36,11 +36,11 @@ export default class ReviewContainer extends Component {
     const updatesByAuthor = `${API_URL}/updates?author=${author}`;
     Promise.all([
       get(`${updatesByAuthor}&resolved=0&status=inbox`),
-      get(`${updatesByAuthor}&resolved=0&status=todo&before=${report}`),
-      get(`${updatesByAuthor}&report=${report}&status=done&status=todo&status=struggle`),
+      get(`${updatesByAuthor}&resolved=0&status=goal&before=${report}`),
+      get(`${updatesByAuthor}&report=${report}&status=goal&status=struggle&status=achievement`),
     ]).then(
-      ([inbox, prevtodo, current]) => this.setState({
-        updates: [...inbox, ...prevtodo, ...current].map(makeUpdate)
+      ([inbox, prev, current]) => this.setState({
+        updates: [...inbox, ...prev, ...current].map(makeUpdate)
       })
     ).catch(
       () => console.log(this.state)
@@ -153,15 +153,15 @@ export default class ReviewContainer extends Component {
         reportDate={this.state.reportDate}
 
         inbox={this.state.updates.filter(up => up.status === 'inbox')}
-        prevtodo={this.state.updates.filter(
-          up => up.status === 'todo' && up.reportDate < this.state.reportDate
+        prevgoals={this.state.updates.filter(
+          up => up.status === 'goal' && up.reportDate < this.state.reportDate
         )}
-        done={this.state.updates.filter(up => up.status === 'done')}
-        todo={this.state.updates.filter(
-          up => up.status === 'todo' &&
+        goals={this.state.updates.filter(
+          up => up.status === 'goal' &&
             up.reportDate.getTime() === this.state.reportDate.getTime()
         )}
-        struggle={this.state.updates.filter(up => up.status === 'struggle')}
+        struggles={this.state.updates.filter(up => up.status === 'struggle')}
+        achievements={this.state.updates.filter(up => up.status === 'achievement')}
 
         handleTextChange={this.handleTextChange}
 

@@ -7,9 +7,9 @@ export function Previous(props) {
       <span onClick={onStartEdit}>{props.children}</span>
       <div className="report__actions">
         <span className="report__hint">mark as:</span>
-        <button className="report__action" onClick={() => onResolve('todo')}>goal</button>
+        <button className="report__action" onClick={() => onResolve('goal')}>goal</button>
         <button className="report__action" onClick={() => onResolve('struggle')}>struggle</button>
-        <button className="report__action" onClick={() => onResolve('done')}>achievement</button>
+        <button className="report__action" onClick={() => onResolve('achievement')}>achievement</button>
       </div>
     </li>
   );
