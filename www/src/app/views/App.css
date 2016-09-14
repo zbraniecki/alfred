@@ -110,8 +110,17 @@ body {
   margin-bottom: 1rem;
 }
 
+.update__text--done {
+  text-decoration: line-through;
+  opacity: 0.3;
+}
+
 .update:hover {
-  background: #ffffff;
+  background: #f9f9f9;
+}
+
+.update:hover .update__text--done {
+  opacity: 1;
 }
 
 .report__actions,

@@ -21,7 +21,7 @@ export function Done(props) {
   const { onStartEdit, onResolve, onArchive } = props;
   return (
     <li className="update">
-      <span onClick={onStartEdit}>{props.children}</span>
+      <del className="update__text--done" onClick={onStartEdit}>{props.children}</del>
       <div className="update__actions">
         report as
         <button className="update__action" onClick={() => onResolve('achievement')}>achievement</button>
