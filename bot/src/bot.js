@@ -15,6 +15,17 @@ function randElem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function saveUpdate(db, author, channel, text) {
+  return db.collection('updates').insert({
+    author,
+    channel,
+    status: 'inbox',
+    resolved: false,
+    text,
+    createdAt: new Date()
+  });
+}
+
 export function createBot(url, name, db) {
   const client = new Client(url, name);
 
@@ -24,36 +35,28 @@ export function createBot(url, name, db) {
     client.join(channel, () => client.say(channel, 'hello'));
   });
 
-  client.addListener('message', function(author, channel, message) {
+  // listen to messages in public channels
+  client.addListener('message#', function(author, channel, message) {
     console.log(` --- got a message from ${author} in ${channel}: ${message}`);
 
     if (message.indexOf(`${name}: `) !== 0) {
+      // the message wasn't directed at the bot
       return;
     }
 
-    db.collection('updates').insert({
-      author,
-      channel,
-      status: 'inbox',
-      resolved: false,
-      text: message.slice(name.length + 2),
-      createdAt: new Date()
-    }).then(
+    const text = message.slice(name.length + 2);
+
+    saveUpdate(db, author, channel, text).then(
       () => client.say(channel, `${author}: ${randElem(CONFIRMATIONS)}`)
     );
   });
 
+  // listen to private messages
   client.addListener('pm', function(author, message) {
     console.log(` --- got a private message from ${author}: ${message}`);
 
-    db.collection('updates').insert({
-      author,
-      channel: author,
-      status: 'inbox',
-      resolved: false,
-      text: message,
-      createdAt: new Date()
-    }).then(
+    // private messages are saved with channel = author
+    saveUpdate(db, author, author, message).then(
       () => client.say(author, `${randElem(CONFIRMATIONS)}`)
     );
   });
