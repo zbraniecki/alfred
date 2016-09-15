@@ -107,6 +107,7 @@ function resolve(coll, body) {
     const child = Object.assign({}, parent, {
       prev: _id,
       status: status,
+      createdAt: new Date(),
       reportDate: reportDate ? new Date(reportDate) : null,
       resolved: false,
     });
