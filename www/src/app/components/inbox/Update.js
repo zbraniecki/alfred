@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { randElem } from '../../utils';
+
 export function Previous(props) {
   const { onStartEdit, onResolve } = props;
   return (
@@ -71,3 +73,19 @@ export function createUpdate(Update, props, update) {
   );
 }
 
+export function UpdateList(props) {
+  const { children, name, item, quips } = props;
+  // XXX should this use React.Children?
+  const content = children.length === 0 ?
+    <div className="suggestions__tip">{randElem(quips)}</div> :
+    <ul className="report__list">
+      {children.map(up => createUpdate(item, props, up))}
+    </ul>
+
+  return (
+    <section className="suggestions">
+      <h2 className="suggestions__title">{name}</h2>
+      {content}
+    </section>
+  );
+}

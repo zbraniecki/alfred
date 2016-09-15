@@ -1,21 +1,8 @@
 import React from 'react';
 
-import { createUpdate, Previous, Done } from './Update';
-
-function Inbox(props) {
-  const content = props.inbox.length === 0 ?
-    <div className="suggestions__tip">(Have a wonderful day!)</div> :
-    <ul className="report__list">
-      {props.inbox.map(up => createUpdate(Previous, props, up))}
-    </ul>
-
-  return (
-    <section className="suggestions">
-      <h2 className="suggestions__title">Inbox</h2>
-      {content}
-    </section>
-  );
-}
+import { UpdateList, Previous, Done } from './Update';
+import { emptyInboxQuips, emptyPreviousQuips, emptyDoneQuips }
+  from '../../messages';
 
 export default function Review(props) {
   return (
@@ -29,23 +16,34 @@ export default function Review(props) {
       <div className="content">
 
         <div className="content__tile">
-          <Inbox {...props}/>
+          <UpdateList
+            {...props}
+            quips={emptyInboxQuips}
+            item={Previous}
+            name="Inbox"
+          >
+            {props.inbox}
+          </UpdateList>
 
-          <section className="suggestions">
-            <h2 className="suggestions__title">Your goals from previous reports</h2>
-            <ul className="report__list">
-              {props.prevgoals.map(update => createUpdate(Previous, props, update))}
-            </ul>
-          </section>
+          <UpdateList
+            {...props}
+            quips={emptyPreviousQuips}
+            item={Previous}
+            name="Your goals from previous reports"
+          >
+            {props.prevgoals}
+          </UpdateList>
         </div>
 
         <div className="content__tile">
-          <section className="suggestions">
-            <h2 className="suggestions__title">Already done</h2>
-            <ul className="report__list">
-              {props.done.map(update => createUpdate(Done, props, update))}
-            </ul>
-          </section>
+          <UpdateList
+            {...props}
+            quips={emptyDoneQuips}
+            item={Done}
+            name="Already done"
+          >
+            {props.done}
+          </UpdateList>
         </div>
 
       </div>
