@@ -7,6 +7,7 @@ coverage
 # production
 dist
 www/src/config.js
+conf/env.mk
 
 # misc
 .DS_Store

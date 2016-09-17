@@ -1,10 +1,7 @@
 export SHELL := /bin/bash
 export PATH  := $(CURDIR)/node_modules/.bin:$(PATH)
 
-export MONGO_URL   := mongodb://localhost:27017/alfred
-export PORT        := 4001
-export ALFRED_URL  := irc.mozilla.org
-export ALFRED_NAME := alfred
+include conf/env.mk
 
 SERVICES := api bot www
 SUCCESS  := \033[32;01m✓\033[0m
