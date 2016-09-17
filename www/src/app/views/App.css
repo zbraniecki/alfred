@@ -167,18 +167,16 @@ body {
   opacity: 1;
 }
 
-.update:hover .update__action:active,
-.update:hover .update__action:hover,
-.report__title:hover .report__action:active,
-.report__title:hover .report__action:hover,
-.report__subtitle:hover .report__action:active,
-.report__subtitle:hover .report__action:hover {
+.update__action:active,
+.update__action:hover,
+.report__action:active,
+.report__action:hover {
   background: #1a00f2;
   color: #fff;
   outline-width: 0;
 }
 
-.update:hover .update__action--danger:hover {
+.update__action--danger:hover {
   background: #f2001a;
 }
 
