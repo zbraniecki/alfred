@@ -57,10 +57,11 @@ function handleIssue(db, payload) {
   } = payload;
 
   db.collection('users').findOne({github: login}).then(
-    user => saveUpdate(
-      db, user ? user.name : login, `/github/${full_name}`, 
+    // only save if it's a known github user
+    user => user ? saveUpdate(
+      db, user.name, `/github/${full_name}`,
       `${action} issue #${number} in ${full_name}: ${title}`
-    )
+    ) : null
   );
 }
 
