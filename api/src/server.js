@@ -1,13 +1,15 @@
 import express from 'express';
 import morgan from 'morgan';
 
-import { createRouter } from './router';
+import createREST from './restful';
+import createWebhooks from './webhooks';
 
 export function createServer(db) {
   const app = express();
 
   app.use(morgan('combined'))
-  app.use('/', createRouter(db));
+  app.use('/webhook', createWebhooks(db));
+  app.use('/v0', createREST(db));
 
   const server = app.listen(process.env.PORT, function() {
     console.log('Express is listening to http://localhost:' + process.env.PORT);

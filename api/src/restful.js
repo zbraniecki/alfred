@@ -2,15 +2,18 @@ import { ObjectID } from 'mongodb';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-export function createRouter(db) {
+export default function createRouter(db) {
   const router = express.Router();
+  const updates = db.collection('updates');
+
   router.use(cors);
   router.use(bodyParser.json());
-  const updates = db.collection('updates');
+
   router.route('/updates').get(getUpdates(updates))
   router.route('/updates').post(createUpdate(updates))
   router.route('/updates/:id').post(updateUpdate(updates))
   router.route('/resolve').post(resolveUpdate(updates));
+
   return router;
 }
 
@@ -20,7 +23,7 @@ function cors(req, res, next) {
   next();
 }
 
-export function getUpdates(coll) {
+function getUpdates(coll) {
   return function(req, res, next) {
     find(coll, req.query).then(function(updates) {
       res.setHeader('Content-Type', 'application/json');
@@ -29,7 +32,7 @@ export function getUpdates(coll) {
   }
 }
 
-export function createUpdate(coll) {
+function createUpdate(coll) {
   return function(req, res, next) {
     create(coll, req.body).then(function({ops}) {
       res.setHeader('Content-Type', 'application/json');
@@ -38,7 +41,7 @@ export function createUpdate(coll) {
   }
 }
 
-export function updateUpdate(coll) {
+function updateUpdate(coll) {
   return function(req, res, next) {
     update(coll, req.params.id, req.body).then(function({result}) {
       res.sendStatus(result.ok ? 200 : 500);
@@ -46,7 +49,7 @@ export function updateUpdate(coll) {
   }
 }
 
-export function resolveUpdate(coll) {
+function resolveUpdate(coll) {
   return function(req, res, next) {
     resolve(coll, req.body).then(function({ops}) {
       res.setHeader('Content-Type', 'application/json');
