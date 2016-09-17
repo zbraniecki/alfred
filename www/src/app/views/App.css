@@ -149,7 +149,7 @@ body {
   border: none;
   padding: 0;
   cursor: pointer;
-  color: #424242;
+  color: #1a00f2;
   font-size: .8rem;
   font-weight: normal;
   font-family: Helvetica, Arial, sans-serif;
@@ -165,12 +165,6 @@ body {
 .report__title:hover .report__actions,
 .report__subtitle:hover .report__actions {
   opacity: 1;
-}
-
-.update:hover .update__action,
-.report__title:hover .report__action,
-.report__subtitle:hover .report__action {
-  color: #1a00f2;
 }
 
 .update:hover .update__action:active,
@@ -193,4 +187,29 @@ body {
   color: #424242;
   font-family: Helvetica, Arial, sans-serif;
   line-height: 1.5;
+}
+
+.footer {
+  padding: 2rem;
+  color: #424242;
+  font-size: .8rem;
+  opacity: 0.3;
+}
+
+.footer:hover {
+  opacity: 1;
+}
+
+.footer__link {
+  color: #1a00f2;
+  font-size: .8rem;
+  font-weight: normal;
+  font-family: Helvetica, Arial, sans-serif;
+  text-decoration: underline;
+}
+
+.footer__link:hover {
+  background: #1a00f2;
+  color: #fff;
+  outline-width: 0;
 }
