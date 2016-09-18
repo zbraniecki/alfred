@@ -25,13 +25,11 @@ function createGitHubWebhook(db) {
       }
       case 'issues': {
         res.sendStatus(200);
-        handleIssue(db, payload);
-        break;
+        return handleIssue(db, payload);
       }
       case 'pull_request': {
         res.sendStatus(200);
-        handlePullRequest(db, payload);
-        break;
+        return handlePullRequest(db, payload);
       }
       default: {
         console.log(req.headers['x-github-event']);
@@ -43,49 +41,77 @@ function createGitHubWebhook(db) {
 
 function handleIssue(db, payload) {
   const {
-    action,
-    issue: {
-      number,
-      title,
-      user: {
-        login
-      }
-    },
-    repository: {
-      full_name
-    }
+    sender: { login },
+    repository: { full_name }
   } = payload;
 
-  db.collection('users').findOne({github: login}).then(
-    // only save if it's a known github user
+  const message = getIssueEventMessage(payload);
+
+  if (!message) {
+    return;
+  }
+
+  return db.collection('users').findOne({github: login}).then(
     user => user ? saveUpdate(
-      db, user.name, `/github/${full_name}`,
-      `${action} issue #${number} in ${full_name}: ${title}`
+      db, user.name, `/github/${full_name}`, message
     ) : null
-  );
+  ).catch(console.error);
+}
+
+function getIssueEventMessage(payload) {
+  const {
+    action,
+    issue: { number, title },
+    repository: { full_name }
+  } = payload;
+
+  switch (action) {
+    case 'opened':
+    case 'closed':
+    case 'reopened':
+      return `${action} issue #${number} in ${full_name}: ${title}`;
+    default:
+      return null;
+  }
 }
 
 function handlePullRequest(db, payload) {
   const {
-    action,
-    pull_request: {
-      number,
-      title,
-      user: {
-        login
-      }
-    },
-    repository: {
-      full_name
-    }
+    sender: { login },
+    repository: { full_name }
   } = payload;
 
-  db.collection('users').findOne({github: login}).then(
-    user => saveUpdate(
-      db, user ? user.name : login, `/github/${full_name}`, 
-      `${action} pull request #${number} in ${full_name}: ${title}`
-    )
-  );
+  const message = getPullRequestEventMessage(payload);
+
+  if (!message) {
+    return;
+  }
+
+  return db.collection('users').findOne({github: login}).then(
+    user => user ? saveUpdate(
+      db, user.name, `/github/${full_name}`, message
+    ) : null
+  ).catch(console.error);
+}
+
+function getPullRequestEventMessage(payload) {
+  const {
+    action,
+    pull_request: { number, title, merged },
+    repository: { full_name }
+  } = payload;
+
+  switch (action) {
+    case 'opened':
+    case 'reopened':
+      return `${action} pull request #${number} in ${full_name}: ${title}`;
+    case 'closed': {
+      const actn = merged ? 'merged' : 'closed';
+      return `${actn} pull request #${number} in ${full_name}: ${title}`;
+    }
+    default:
+      return null;
+  }
 }
 
 function saveUpdate(db, author, channel, text) {
