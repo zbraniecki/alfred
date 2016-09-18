@@ -8,7 +8,7 @@ export const emptyPreviousQuips = [
 
 export const emptyDoneQuips = [
   'Just do it!',
-  'Don\'t let your dreams be dream',
+  'Don\'t let your dreams be dreams',
   'Yesterday you said tomorrow',
   'Make your dreams come true',
   'Nothing is impossible',
