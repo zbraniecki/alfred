@@ -70,6 +70,7 @@ body {
   margin: 1rem;
 }
 
+.tile__section,
 .suggestions {
   padding: 1rem;
   margin-bottom: 2rem;
@@ -99,6 +100,7 @@ body {
   margin: 0;
 }
 
+.tile__subtitle,
 .report__subtitle {
   color: #121212;
   font-size: 1rem;
