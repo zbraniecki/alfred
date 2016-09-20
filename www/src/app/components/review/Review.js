@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import { UpdateList, createUpdate } from '../inbox/Update';
 import { Previous, Done, Reviewed } from './Update';
+import { WikiTextLink } from '../report/WikiTextLink';
 
 import { reportName } from '../../utils';
 import { emptyInboxQuips, emptyPreviousQuips, emptyDoneQuips }
@@ -56,6 +57,7 @@ export default function Review(props) {
               Report for {reportName(props.reportDate)}
               <div className="report__actions">
                 <Link className="report__action" to={`/report/${props.report}`}>see full report</Link>
+                <WikiTextLink {...props} className="report__action">wikify</WikiTextLink>
               </div>
             </h2>
             <h3 className="report__subtitle">

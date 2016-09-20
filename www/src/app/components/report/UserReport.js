@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import { WikiTextLink } from './WikiTextLink';
+
 function Update(props) {
   return (
     <li className="update">
@@ -16,6 +18,7 @@ export default function UserReport(props) {
         {props.author}
         <div className="report__actions">
           <Link className="report__action" to={`/review/${props.author}/${props.report}`}>review</Link>
+          <WikiTextLink {...props} className="report__action">wikify</WikiTextLink>
         </div>
       </h2>
 
