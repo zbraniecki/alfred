@@ -16,27 +16,3 @@ export function Previous(props) {
     </li>
   );
 }
-
-export function Done(props) {
-  const { onStartEdit, onResolve, onArchive } = props;
-  return (
-    <li className="update">
-      <del className="update__text--done" onClick={onStartEdit}>{props.children}</del>
-      <div className="update__actions">
-        <span className="update__hint">report as</span>
-        <button className="update__action" onClick={() => onResolve('achievement')}>achievement</button>
-        <span className="update__hint">or</span>
-        <button className="update__action" onClick={onArchive}>archive</button>
-      </div>
-    </li>
-  );
-}
-
-export function Reviewed(props) {
-  const { onStartEdit } = props;
-  return (
-    <li className="update">
-      <span onClick={onStartEdit}>{props.children}</span>
-    </li>
-  );
-}

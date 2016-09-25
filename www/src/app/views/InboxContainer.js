@@ -8,11 +8,14 @@ export default class InboxContainer extends Component {
   constructor(props) {
     super(props);
 
-    const { author } = this.props.params;
+    const { author, year, month, day } = this.props.params;
+    const report = `${year}-${month}-${day}`;
 
     this.state = {
       author,
-      updates: []
+      updates: [],
+      report,
+      reportDate: new Date(report)
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -30,14 +33,15 @@ export default class InboxContainer extends Component {
   }
 
   componentDidMount() {
-    const { author } = this.state;
+    const { author, report } = this.state;
     const updatesByAuthor = `${API_URL}/updates?author=${author}`;
     Promise.all([
-      get(`${updatesByAuthor}&resolved=0&status=inbox&status=done`),
-      get(`${updatesByAuthor}&resolved=0&status=goal`)
+      get(`${updatesByAuthor}&resolved=0&status=inbox&status=todo&status=done`),
+      get(`${updatesByAuthor}&resolved=0&status=goal&before=${report}`),
+      get(`${updatesByAuthor}&report=${report}&status=goal&status=struggle&status=achievement`),
     ]).then(
-      ([inbox, prev]) => this.setState({
-        updates: [...inbox, ...prev].map(makeUpdate)
+      ([current, prev, next]) => this.setState({
+        updates: [...current, ...prev, ...next].map(makeUpdate)
       })
     ).catch(console.error);
   }
@@ -158,10 +162,23 @@ export default class InboxContainer extends Component {
     return (
       <Inbox
         author={this.state.author}
+        report={this.state.report}
+        reportDate={this.state.reportDate}
 
         inbox={this.state.updates.filter(up => up.status === 'inbox')}
-        prevgoals={this.state.updates.filter(up => up.status === 'goal')}
+
+        prevgoals={this.state.updates.filter(
+          up => up.status === 'goal' && up.reportDate < this.state.reportDate
+        )}
+        todo={this.state.updates.filter(up => up.status === 'todo')}
         done={this.state.updates.filter(up => up.status === 'done')}
+
+        goals={this.state.updates.filter(
+          up => up.status === 'goal' &&
+            up.reportDate.getTime() === this.state.reportDate.getTime()
+        )}
+        struggles={this.state.updates.filter(up => up.status === 'struggle')}
+        achievements={this.state.updates.filter(up => up.status === 'achievement')}
 
         handleTextChange={this.handleTextChange}
 

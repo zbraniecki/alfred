@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { UpdateList, createUpdate } from '../inbox/Update';
-import { Previous, Done, Reviewed } from './Update';
+import { UpdateList, createUpdate, Done, Reviewed } from '../inbox/Update';
+import { Previous } from './Update';
 import { WikiTextLink } from '../report/WikiTextLink';
 
 import { reportName } from '../../utils';

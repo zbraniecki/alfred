@@ -6,20 +6,6 @@ import { API_URL } from '../../config';
 import { makeUpdate, get } from '../utils';
 
 export default class ReviewContainer extends InboxContainer {
-  constructor(props) {
-    super(props);
-
-    const { author, year, month, day } = this.props.params;
-    const report = `${year}-${month}-${day}`;
-
-    this.state = {
-      author,
-      updates: [],
-      report,
-      reportDate: new Date(report)
-    };
-  }
-
   componentDidMount() {
     const { author, report } = this.state;
     const updatesByAuthor = `${API_URL}/updates?author=${author}`;
