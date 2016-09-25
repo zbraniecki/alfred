@@ -6,9 +6,8 @@ import {
 } from './Update';
 import { WikiTextLink } from '../report/WikiTextLink';
 
-import { reportName } from '../../utils';
-import { emptyInboxQuips, emptyPreviousQuips, emptyDoneQuips }
-  from '../../messages';
+import { randElem, reportName } from '../../utils';
+import { genericMessages, headerMessages } from '../../messages';
 
 export default function Review(props) {
   return (
@@ -16,7 +15,9 @@ export default function Review(props) {
 
       <header className="header">
         <div className="logo logo--blue"></div>
-        <h1 className="header__title">{props.author}, here's your inbox</h1>
+        <h1 className="header__title">
+          {`${randElem(headerMessages)}, ${props.author}`}
+        </h1>
       </header>
 
       <div className="content">
@@ -24,7 +25,7 @@ export default function Review(props) {
         <div className="content__tile">
           <UpdateList
             {...props}
-            quips={emptyPreviousQuips}
+            quips={genericMessages}
             item={Incoming}
             name="Your goals from previous reports"
           >
@@ -33,7 +34,7 @@ export default function Review(props) {
 
           <UpdateList
             {...props}
-            quips={emptyInboxQuips}
+            quips={genericMessages}
             item={Incoming}
             name="Your activity"
           >
@@ -44,7 +45,7 @@ export default function Review(props) {
         <div className="content__tile">
           <UpdateList
             {...props}
-            quips={emptyPreviousQuips}
+            quips={genericMessages}
             item={Todo}
             name="To do this week"
           >
@@ -53,7 +54,7 @@ export default function Review(props) {
 
           <UpdateList
             {...props}
-            quips={emptyDoneQuips}
+            quips={genericMessages}
             item={Done}
             name="Already done"
           >

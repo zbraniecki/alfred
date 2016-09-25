@@ -6,8 +6,7 @@ import { Previous } from './Update';
 import { WikiTextLink } from '../report/WikiTextLink';
 
 import { reportName } from '../../utils';
-import { emptyInboxQuips, emptyPreviousQuips, emptyDoneQuips }
-  from '../../messages';
+import { genericMessages } from '../../messages';
 
 export default function Review(props) {
   return (
@@ -23,7 +22,7 @@ export default function Review(props) {
         <div className="content__tile">
           <UpdateList
             {...props}
-            quips={emptyInboxQuips}
+            quips={genericMessages}
             item={Previous}
             name="Inbox"
           >
@@ -32,7 +31,7 @@ export default function Review(props) {
 
           <UpdateList
             {...props}
-            quips={emptyPreviousQuips}
+            quips={genericMessages}
             item={Previous}
             name="Your goals from previous reports"
           >
@@ -43,7 +42,7 @@ export default function Review(props) {
         <div className="content__tile">
           <UpdateList
             {...props}
-            quips={emptyDoneQuips}
+            quips={genericMessages}
             item={Done}
             name="Already done"
           >
