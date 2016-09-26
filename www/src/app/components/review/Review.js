@@ -22,6 +22,7 @@ export default function Review(props) {
         <div className="content__column">
           <UpdateList
             {...props}
+            className="tile"
             quips={genericMessages}
             item={Previous}
             name="Inbox"
@@ -31,6 +32,7 @@ export default function Review(props) {
 
           <UpdateList
             {...props}
+            className="tile"
             quips={genericMessages}
             item={Previous}
             name="Your goals from previous reports"
@@ -42,6 +44,7 @@ export default function Review(props) {
         <div className="content__column">
           <UpdateList
             {...props}
+            className="tile"
             quips={genericMessages}
             item={Done}
             name="Already done"

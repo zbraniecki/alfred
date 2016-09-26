@@ -107,7 +107,7 @@ export function createUpdate(Update, props, update) {
 }
 
 export function UpdateList(props) {
-  const { children, name, item, quips } = props;
+  const { className, children, name, item, quips } = props;
   // XXX should this use React.Children?
   const content = children.length === 0 ?
     <div className="tile__empty-msg">{randElem(quips)}</div> :
@@ -116,7 +116,7 @@ export function UpdateList(props) {
     </ul>
 
   return (
-    <section className="tile">
+    <section className={className}>
       <h2 className="tile__title">{name}</h2>
       {content}
     </section>

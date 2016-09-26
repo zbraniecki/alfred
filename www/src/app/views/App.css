@@ -75,6 +75,11 @@ body {
   margin-bottom: 2rem;
 }
 
+.tile--scratchpad {
+  background-color: #ffffaa;
+  padding: 1rem;
+}
+
 .tile--report {
   background-color: #f9f9f9;
   padding: 1rem;
@@ -125,8 +130,12 @@ body {
   opacity: 0.3;
 }
 
-.update:hover {
+.tile .update:hover {
   background: #f9f9f9;
+}
+
+.tile--scratchpad .update:hover {
+  background: #ffffcc;
 }
 
 .update:hover .update__text--done {
