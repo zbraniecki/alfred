@@ -60,7 +60,7 @@ export default function Review(props) {
             className="tile tile--scratchpad"
             quips={genericMessages}
             item={Todo}
-            name="To do this week"
+            name="To do"
           >
             {props.todo}
           </UpdateList>
@@ -70,7 +70,7 @@ export default function Review(props) {
             className="tile tile--scratchpad"
             quips={genericMessages}
             item={Done}
-            name="Already done"
+            name="Done"
           >
             {props.done}
           </UpdateList>
