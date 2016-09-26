@@ -45,7 +45,6 @@ export default class ReportContainer extends Component {
 
     return (
       <Report
-        reportSlug={this.state.reportSlug}
         reportDate={this.state.reportDate}
         updatesByAuthor={updatesByAuthor}
       />

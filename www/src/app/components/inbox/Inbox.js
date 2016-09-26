@@ -9,7 +9,7 @@ import { WikiTextLink } from '../report/WikiTextLink';
 import { randElem, reportName } from '../../utils';
 import { genericMessages, headerMessages } from '../../messages';
 
-export default function Review(props) {
+export default function Inbox(props) {
   return (
     <div>
 
