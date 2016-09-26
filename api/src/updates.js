@@ -62,8 +62,10 @@ function getUpdates(coll, raw) {
 
 function createUpdate(coll, body) {
   delete body._id;
+  const d = new Date();
   return coll.insert(Object.assign(body, {
-    createdAt: new Date(),
+    createdAt: d,
+    firstCreatedAt: d,
     reportDate: new Date(body.reportDate)
   }));
 }
@@ -78,7 +80,6 @@ function resolveUpdate(coll, body) {
   return coll.update({_id}, {
     $set: {
       resolved: true,
-      resolveDate: new Date(),
     }
   }).then(
     () => coll.findOne({_id}, {_id: 0})

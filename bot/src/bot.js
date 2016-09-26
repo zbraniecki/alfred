@@ -16,13 +16,15 @@ function randElem(arr) {
 }
 
 function saveUpdate(db, author, channel, text) {
+  const d = new Date();
   return db.collection('updates').insert({
     author,
     channel,
     status: 'inbox',
     resolved: false,
     text,
-    createdAt: new Date()
+    createdAt: d,
+    firstCreatedAt: d,
   });
 }
 
