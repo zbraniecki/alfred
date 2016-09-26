@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import {
-  UpdateList, createUpdate, Incoming, Todo, Done, Reviewed
+  UpdateList, createUpdate, Incoming, CurrentGoal, Todo, Done, Reviewed
 } from './Update';
 import { WikiTextLink } from '../report/WikiTextLink';
 
@@ -49,7 +49,7 @@ export default function Review(props) {
             {...props}
             className="tile tile--scratchpad"
             quips={genericMessages}
-            item={Incoming}
+            item={CurrentGoal}
             name="Your current goals"
           >
             {props.prevgoals}
@@ -79,9 +79,9 @@ export default function Review(props) {
         <div className="content__column">
           <section className="tile tile--report">
             <h2 className="tile__title tile__title--report">
-              Report for {reportName(props.reportDate)}
+              Report for {reportName(props.nextReportDate)}
               <div className="tile__actions">
-                <Link className="action" to={`/report/${props.report}`}>see full report</Link>
+                <Link className="action" to={`/report/${props.nextReportSlug}`}>see full report</Link>
                 <WikiTextLink {...props} className="action">wikify</WikiTextLink>
               </div>
             </h2>

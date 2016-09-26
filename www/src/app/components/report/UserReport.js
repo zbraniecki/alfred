@@ -17,7 +17,7 @@ export default function UserReport(props) {
       <h2 className="tile__title tile__title--report">
         {props.author}
         <div className="tile__actions">
-          <Link className="action" to={`/review/${props.author}/${props.report}`}>review</Link>
+          <Link className="action" to={`/review/${props.author}/${props.reportSlug}`}>review</Link>
           <WikiTextLink {...props} className="action">wikify</WikiTextLink>
         </div>
       </h2>

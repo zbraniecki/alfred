@@ -9,10 +9,25 @@ export function Incoming(props) {
       <span onClick={onStartEdit}>{props.children}</span>
       <div className="update__actions">
         <span className="update__hint">mark as</span>
-        <button className="action" onClick={() => onResolve('xxx')}>current goal</button>
+        <button className="action" onClick={() => onResolve('curgoal')}>current goal</button>
         <button className="action" onClick={() => onResolve('todo')}>todo</button>
         <button className="action" onClick={() => onResolve('done')}>done</button>
         <button className="action action--danger" title="remove forever" onClick={() => onArchive('removed')}>x</button>
+      </div>
+    </li>
+  );
+}
+
+export function CurrentGoal(props) {
+  const { onStartEdit, onResolve } = props;
+  return (
+    <li className="update">
+      <span onClick={onStartEdit}>{props.children}</span>
+      <div className="update__actions">
+        <span className="update__hint">report as</span>
+        <button className="action" onClick={() => onResolve('goal')}>goal for next week</button>
+        <button className="action" onClick={() => onResolve('struggle')}>struggle</button>
+        <button className="action" onClick={() => onResolve('achievement')}>achievement</button>
       </div>
     </li>
   );

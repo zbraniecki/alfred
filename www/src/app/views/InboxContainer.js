@@ -13,8 +13,9 @@ export default class InboxContainer extends Component {
     this.state = {
       author,
       updates: [],
-      report: '',
-      reportDate: new Date()
+      prevReportDate: new Date(),
+      nextReportDate: new Date(),
+      nextReportSlug: ''
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -33,19 +34,21 @@ export default class InboxContainer extends Component {
 
   componentDidMount() {
     const { author } = this.state;
-    const nextReport = `${API_URL}/reports/next`;
+    const currentReportsInfo = `${API_URL}/reports/current`;
     const updatesByAuthor = `${API_URL}/updates?author=${author}`;
-    get(nextReport).then(
-      report => Promise.all([
-        report,
+
+    get(currentReportsInfo).then(
+      ([prevReport, nextReport]) => Promise.all([
+        prevReport, nextReport,
         get(`${updatesByAuthor}&resolved=0&status=inbox&status=event&status=todo&status=done`),
-        get(`${updatesByAuthor}&resolved=0&status=goal&before=${report.slug}`),
-        get(`${updatesByAuthor}&report=${report.slug}&status=goal&status=struggle&status=achievement`),
+        get(`${updatesByAuthor}&resolved=0&status=goal&before=${nextReport.slug}`),
+        get(`${updatesByAuthor}&report=${nextReport.slug}&status=goal&status=struggle&status=achievement`),
       ])
     ).then(
-      ([{slug, reportDate}, current, prev, next]) => this.setState({
-        report: slug,
-        reportDate: new Date(reportDate),
+      ([prevReport, nextReport, current, prev, next]) => this.setState({
+        prevReportDate: new Date(prevReport.reportDate),
+        nextReportDate: new Date(nextReport.reportDate),
+        nextReportSlug: nextReport.slug,
         updates: [...current, ...prev, ...next].map(makeUpdate)
       })
     ).catch(console.error);
@@ -100,9 +103,9 @@ export default class InboxContainer extends Component {
   }
 
   handleStartAdd(status) {
-    const { author, updates, reportDate } = this.state;
+    const { author, updates, nextReportDate } = this.state;
     const update = {
-      _id: Date.now(), author, reportDate, status,
+      _id: Date.now(), author, reportDate: nextReportDate, status,
       text: '', resolved: false, editable: true, adding: true
     };
     this.setState({
@@ -144,11 +147,12 @@ export default class InboxContainer extends Component {
       case 'goal':
       case 'struggle':
       case 'achievement':
-        body.reportDate = this.state.reportDate;
+        body.reportDate = this.state.nextReportDate;
         break;
-      case 'xxx':
-        alert('Not implemented yet. I\'m working on it…');
-        return;
+      case 'curgoal':
+        body.status = 'goal';
+        body.reportDate = this.state.prevReportDate;
+        break;
       default:
         break;
     }
@@ -186,21 +190,22 @@ export default class InboxContainer extends Component {
     return (
       <Inbox
         author={this.state.author}
-        report={this.state.report}
-        reportDate={this.state.reportDate}
+        prevReportDate={this.state.prevReportDate}
+        nextReportDate={this.state.nextReportDate}
+        nextReportSlug={this.state.nextReportSlug}
 
         inbox={this.state.updates.filter(up => up.status === 'inbox')}
         events={this.state.updates.filter(up => up.status === 'event')}
 
         prevgoals={this.state.updates.filter(
-          up => up.status === 'goal' && up.reportDate < this.state.reportDate
+          up => up.status === 'goal' && up.reportDate < this.state.nextReportDate
         )}
         todo={this.state.updates.filter(up => up.status === 'todo')}
         done={this.state.updates.filter(up => up.status === 'done')}
 
         goals={this.state.updates.filter(
           up => up.status === 'goal' &&
-            up.reportDate.getTime() === this.state.reportDate.getTime()
+            up.reportDate.getTime() === this.state.nextReportDate.getTime()
         )}
         struggles={this.state.updates.filter(up => up.status === 'struggle')}
         achievements={this.state.updates.filter(up => up.status === 'achievement')}

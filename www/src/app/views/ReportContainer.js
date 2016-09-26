@@ -17,18 +17,18 @@ export default class ReportContainer extends Component {
     super(props);
 
     const { year, month, day } = this.props.params;
-    const report = `${year}-${month}-${day}`;
+    const reportSlug = `${year}-${month}-${day}`;
 
     this.state = {
       updates: [],
-      report,
-      reportDate: new Date(report)
+      reportSlug,
+      reportDate: new Date(reportSlug)
     };
   }
 
   componentDidMount() {
-    const { report } = this.state;
-    const url = `${API_URL}/updates?report=${report}`;
+    const { reportSlug } = this.state;
+    const url = `${API_URL}/updates?report=${reportSlug}`;
     get(url).then(
       updates => this.setState({
         updates: updates.map(makeUpdate)
@@ -45,7 +45,7 @@ export default class ReportContainer extends Component {
 
     return (
       <Report
-        report={this.state.report}
+        reportSlug={this.state.reportSlug}
         reportDate={this.state.reportDate}
         updatesByAuthor={updatesByAuthor}
       />

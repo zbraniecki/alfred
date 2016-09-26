@@ -12,7 +12,7 @@ export default function createRouter(db) {
   router.use(cors);
   router.use(bodyParser.json());
 
-  router.route('/reports/next').get(reports.next(reportsColl))
+  router.route('/reports/current').get(reports.current(reportsColl))
 
   router.route('/updates').get(updates.get(updatesColl))
   router.route('/updates').post(updates.create(updatesColl))
