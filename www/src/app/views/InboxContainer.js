@@ -134,6 +134,11 @@ export default class InboxContainer extends Component {
   }
 
   handleResolve(update, status, reportDate) {
+    if (status === 'xxx') {
+      alert('Not implemented yet. I\'m working on it…');
+      return;
+    }
+
     post(`${API_URL}/resolve`, {
       _id: update._id, status, reportDate
     }).then(
