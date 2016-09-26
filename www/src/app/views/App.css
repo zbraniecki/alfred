@@ -98,7 +98,7 @@ body {
   margin: 0;
 }
 
-.tile__empty-msg {
+.tile__hint {
   color: #121212;
   opacity: 0.3;
   font-size: .8rem;

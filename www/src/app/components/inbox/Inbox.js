@@ -85,7 +85,7 @@ export default function Review(props) {
                 <WikiTextLink {...props} className="action">wikify</WikiTextLink>
               </div>
             </h2>
-            <p><em>Prepare the report for the next weekly meeting.</em></p>
+            <p className="tile__hint">Prepare the report for the next weekly meeting.</p>
             <h3 className="tile__subtitle">
               Goals for next week
               <div className="tile__actions">

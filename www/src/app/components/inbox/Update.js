@@ -125,7 +125,7 @@ export function UpdateList(props) {
   const { className, children, name, item, quips } = props;
   // XXX should this use React.Children?
   const content = children.length === 0 ?
-    <div className="tile__empty-msg">{randElem(quips)}</div> :
+    <div className="tile__hint">{randElem(quips)}</div> :
     <ul className="tile__updates">
       {children.map(up => createUpdate(item, props, up))}
     </ul>
