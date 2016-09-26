@@ -12,7 +12,7 @@ export default (
     <Route path="about" component={About} />
     <Route path="report/:year-:month-:day" component={ReportContainer} />
     <Route path="review/:author/:year-:month-:day" component={ReviewContainer} />
-    <Route path="inbox/:author/:year-:month-:day" component={InboxContainer} />
+    <Route path="inbox/:author" component={InboxContainer} />
     </Route>
   </Router>
 )

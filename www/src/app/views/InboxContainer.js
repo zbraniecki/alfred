@@ -8,14 +8,13 @@ export default class InboxContainer extends Component {
   constructor(props) {
     super(props);
 
-    const { author, year, month, day } = this.props.params;
-    const report = `${year}-${month}-${day}`;
+    const { author } = this.props.params;
 
     this.state = {
       author,
       updates: [],
-      report,
-      reportDate: new Date(report)
+      report: '',
+      reportDate: new Date()
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -33,14 +32,20 @@ export default class InboxContainer extends Component {
   }
 
   componentDidMount() {
-    const { author, report } = this.state;
+    const { author } = this.state;
+    const nextReport = `${API_URL}/reports/next`;
     const updatesByAuthor = `${API_URL}/updates?author=${author}`;
-    Promise.all([
-      get(`${updatesByAuthor}&resolved=0&status=inbox&status=todo&status=done`),
-      get(`${updatesByAuthor}&resolved=0&status=goal&before=${report}`),
-      get(`${updatesByAuthor}&report=${report}&status=goal&status=struggle&status=achievement`),
-    ]).then(
-      ([current, prev, next]) => this.setState({
+    get(nextReport).then(
+      report => Promise.all([
+        report,
+        get(`${updatesByAuthor}&resolved=0&status=inbox&status=todo&status=done`),
+        get(`${updatesByAuthor}&resolved=0&status=goal&before=${report}`),
+        get(`${updatesByAuthor}&report=${report}&status=goal&status=struggle&status=achievement`),
+      ])
+    ).then(
+      ([{slug, reportDate}, current, prev, next]) => this.setState({
+        report: slug,
+        reportDate: new Date(reportDate),
         updates: [...current, ...prev, ...next].map(makeUpdate)
       })
     ).catch(console.error);
