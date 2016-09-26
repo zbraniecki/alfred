@@ -9,12 +9,12 @@ export function Incoming(props) {
       <span onClick={onStartEdit}>{props.children}</span>
       <div className="update__actions">
         <span className="update__hint">mark as</span>
-        <button className="update__action" onClick={() => onResolve('todo')}>todo</button>
-        <button className="update__action" onClick={() => onResolve('done')}>done</button>
+        <button className="action" onClick={() => onResolve('todo')}>todo</button>
+        <button className="action" onClick={() => onResolve('done')}>done</button>
         <span className="update__hint">or report as</span>
-        <button className="update__action" onClick={() => onResolve('goal')}>goal for next week</button>
-        <button className="update__action" onClick={() => onResolve('struggle')}>struggle</button>
-        <button className="update__action" onClick={() => onResolve('achievement')}>achievement</button>
+        <button className="action" onClick={() => onResolve('goal')}>goal for next week</button>
+        <button className="action" onClick={() => onResolve('struggle')}>struggle</button>
+        <button className="action" onClick={() => onResolve('achievement')}>achievement</button>
       </div>
     </li>
   );
@@ -27,10 +27,10 @@ export function Todo(props) {
       <span onClick={onStartEdit}>{props.children}</span>
       <div className="update__actions">
         <span className="update__hint">mark as</span>
-        <button className="update__action" onClick={() => onResolve('done')}>done</button>
+        <button className="action" onClick={() => onResolve('done')}>done</button>
         <span className="update__hint">or report as</span>
-        <button className="update__action" onClick={() => onResolve('goal')}>goal for next week</button>
-        <button className="update__action" onClick={() => onResolve('struggle')}>struggle</button>
+        <button className="action" onClick={() => onResolve('goal')}>goal for next week</button>
+        <button className="action" onClick={() => onResolve('struggle')}>struggle</button>
       </div>
     </li>
   );
@@ -43,9 +43,9 @@ export function Done(props) {
       <del className="update__text--done" onClick={onStartEdit}>{props.children}</del>
       <div className="update__actions">
         <span className="update__hint">report as</span>
-        <button className="update__action" onClick={() => onResolve('achievement')}>achievement</button>
+        <button className="action" onClick={() => onResolve('achievement')}>achievement</button>
         <span className="update__hint">or</span>
-        <button className="update__action" onClick={onArchive}>archive</button>
+        <button className="action" onClick={onArchive}>archive</button>
       </div>
     </li>
   );
@@ -66,7 +66,7 @@ function Editable(props) {
     <li className="update">
       <form onSubmit={onSubmit}>
         <input type="text"
-          className="report__edit"
+          className="update__edit"
           autoFocus
           required
           value={value}
@@ -110,14 +110,14 @@ export function UpdateList(props) {
   const { children, name, item, quips } = props;
   // XXX should this use React.Children?
   const content = children.length === 0 ?
-    <div className="suggestions__tip">{randElem(quips)}</div> :
-    <ul className="report__list">
+    <div className="tile__empty-msg">{randElem(quips)}</div> :
+    <ul className="tile__updates">
       {children.map(up => createUpdate(item, props, up))}
     </ul>
 
   return (
-    <section className="suggestions">
-      <h2 className="suggestions__title">{name}</h2>
+    <section className="tile">
+      <h2 className="tile__title">{name}</h2>
       {content}
     </section>
   );

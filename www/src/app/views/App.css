@@ -65,48 +65,52 @@ body {
   align-items: flex-start;
 }
 
-.content__tile {
+.content__column {
   width: 31.25rem;
   margin: 1rem;
 }
 
-.tile__section,
-.suggestions {
+.tile {
   padding: 1rem;
   margin-bottom: 2rem;
 }
 
-.suggestions__title {
+.tile--report {
+  background-color: #f9f9f9;
+  padding: 1rem;
+}
+
+.tile__title {
   color: #121212;
   font-size: 1.25rem;
   margin: 0 0 1rem;
 }
 
-.suggestions__tip {
+.tile__title--report {
+  border-bottom: 1px solid #121212;
+  margin: 0;
+}
+
+.tile__empty-msg {
   color: #121212;
   opacity: 0.3;
   font-size: .8rem;
 }
 
-.report {
-  background-color: #f9f9f9;
-  padding: 1rem;
-}
-
-.report__title {
-  color: #121212;
-  font-size: 1.25rem;
-  border-bottom: 1px solid #121212;
-  margin: 0;
-}
-
-.tile__subtitle,
-.report__subtitle {
+.tile__subtitle {
   color: #121212;
   font-size: 1rem;
 }
 
-.report__list {
+.tile__actions {
+  color: #424242;
+  font-size: .8rem;
+  opacity: 0.3;
+  display: inline-block;
+  margin-left: .5rem;
+}
+
+.tile__updates {
   list-style-type: none;
   margin-top: 0;
   padding: 0;
@@ -129,24 +133,17 @@ body {
   opacity: 1;
 }
 
-.report__actions,
 .update__actions {
   color: #424242;
   font-size: .8rem;
   opacity: 0.3;
 }
 
-.report__actions {
-  display: inline-block;
-  margin-left: .5rem;
-}
-
 .update__hint {
   margin-right: .25rem;
 }
 
-.report__action,
-.update__action {
+.action {
   background: none;
   border: none;
   padding: 0;
@@ -159,30 +156,28 @@ body {
   text-decoration: underline;
 }
 
-.update__action--danger {
+.action--danger {
   color: #f2001a;
 }
 
-.update:hover .update__actions,
-.report__title:hover .report__actions,
-.report__subtitle:hover .report__actions {
+.tile__title:hover .tile__actions,
+.tile__subtitle:hover .tile__actions,
+.update:hover .update__actions {
   opacity: 1;
 }
 
-.update__action:active,
-.update__action:hover,
-.report__action:active,
-.report__action:hover {
+.action:active,
+.action:hover {
   background: #1a00f2;
   color: #fff;
   outline-width: 0;
 }
 
-.update__action--danger:hover {
+.action--danger:hover {
   background: #f2001a;
 }
 
-.report__edit {
+.update__edit {
   width: 100%;
   color: #424242;
   font-family: Helvetica, Arial, sans-serif;

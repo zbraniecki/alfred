@@ -11,8 +11,8 @@ export default function About() {
       </header>
 
       <div className="content">
-        <div className="content__tile">
-          <section className="tile__section">
+        <div className="content__column">
+          <section className="tile">
             <p>
               Alfred is an IRC bot and a status board. It automatically tracks 
               GitHub issues and pull requests, and listens to IRC conversations. 

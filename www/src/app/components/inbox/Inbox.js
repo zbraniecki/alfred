@@ -22,7 +22,7 @@ export default function Review(props) {
 
       <div className="content">
 
-        <div className="content__tile">
+        <div className="content__column">
           <UpdateList
             {...props}
             quips={genericMessages}
@@ -42,7 +42,7 @@ export default function Review(props) {
           </UpdateList>
         </div>
 
-        <div className="content__tile">
+        <div className="content__column">
           <UpdateList
             {...props}
             quips={genericMessages}
@@ -62,42 +62,42 @@ export default function Review(props) {
           </UpdateList>
         </div>
 
-        <div className="content__tile">
-          <section className="report">
-            <h2 className="report__title">
+        <div className="content__column">
+          <section className="tile tile--report">
+            <h2 className="tile__title tile__title--report">
               Report for {reportName(props.reportDate)}
-              <div className="report__actions">
-                <Link className="report__action" to={`/report/${props.report}`}>see full report</Link>
-                <WikiTextLink {...props} className="report__action">wikify</WikiTextLink>
+              <div className="tile__actions">
+                <Link className="action" to={`/report/${props.report}`}>see full report</Link>
+                <WikiTextLink {...props} className="action">wikify</WikiTextLink>
               </div>
             </h2>
-            <h3 className="report__subtitle">
+            <h3 className="tile__subtitle">
               Goals for next week
-              <div className="report__actions">
-                <button className="report__action" onClick={() => props.handleStartAdd('goal')}>add</button>
+              <div className="tile__actions">
+                <button className="action" onClick={() => props.handleStartAdd('goal')}>add</button>
               </div>
             </h3>
-            <ul className="report__list">
+            <ul className="tile__updates">
               {props.goals.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3 className="report__subtitle">
+            <h3 className="tile__subtitle">
               Struggles last week
-              <div className="report__actions">
-                <button className="report__action" onClick={() => props.handleStartAdd('struggle')}>add</button>
+              <div className="tile__actions">
+                <button className="action" onClick={() => props.handleStartAdd('struggle')}>add</button>
               </div>
             </h3>
-            <ul className="report__list">
+            <ul className="tile__updates">
               {props.struggles.map(update => createUpdate(Reviewed, props, update))}
             </ul>
 
-            <h3 className="report__subtitle">
+            <h3 className="tile__subtitle">
               Achievements last week
-              <div className="report__actions">
-                <button className="report__action" onClick={() => props.handleStartAdd('achievement')}>add</button>
+              <div className="tile__actions">
+                <button className="action" onClick={() => props.handleStartAdd('achievement')}>add</button>
               </div>
             </h3>
-            <ul className="report__list">
+            <ul className="tile__updates">
               {props.achievements.map(update => createUpdate(Reviewed, props, update))}
             </ul>
           </section>

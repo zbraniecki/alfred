@@ -13,27 +13,27 @@ function Update(props) {
 
 export default function UserReport(props) {
   return (
-    <section className="report content__tile">
-      <h2 className="report__title">
+    <section className="tile tile--report content__column">
+      <h2 className="tile__title tile__title--report">
         {props.author}
-        <div className="report__actions">
-          <Link className="report__action" to={`/review/${props.author}/${props.report}`}>review</Link>
-          <WikiTextLink {...props} className="report__action">wikify</WikiTextLink>
+        <div className="tile__actions">
+          <Link className="action" to={`/review/${props.author}/${props.report}`}>review</Link>
+          <WikiTextLink {...props} className="action">wikify</WikiTextLink>
         </div>
       </h2>
 
-      <h3 className="report__subtitle">Goals for this week</h3>
-      <ul className="report__list">
+      <h3 className="tile__subtitle">Goals for this week</h3>
+      <ul className="tile__updates">
         {props.goals.map(up => <Update key={up._id}>{up.text}</Update>)}
       </ul>
 
-      <h3 className="report__subtitle">Struggles last week</h3>
-      <ul className="report__list">
+      <h3 className="tile__subtitle">Struggles last week</h3>
+      <ul className="tile__updates">
         {props.struggles.map(up => <Update key={up._id}>{up.text}</Update>)}
       </ul>
 
-      <h3 className="report__subtitle">Achievements last week</h3>
-      <ul className="report__list">
+      <h3 className="tile__subtitle">Achievements last week</h3>
+      <ul className="tile__updates">
         {props.achievements.map(up => <Update key={up._id}>{up.text}</Update>)}
       </ul>
     </section>
