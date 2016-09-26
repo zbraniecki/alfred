@@ -167,18 +167,19 @@ export default class InboxContainer extends Component {
   }
 
   // used when an update is removed from the page
-  handleArchive(update) {
-    post(`${API_URL}/updates/${update._id}`, {
-      resolved: true,
-      // XXX set resolveDate on the server
-      resolveDate: new Date()
-    }).then(result => {
-      this.setState({
+  handleArchive(update, status) {
+    const body = {
+      _id: update._id,
+      status
+    };
+
+    post(`${API_URL}/resolve`, body).then(
+      () => this.setState({
         updates: this.state.updates.filter(
           other => other._id !== update._id
         )
-      });
-    });
+      })
+    );
   }
 
   render() {

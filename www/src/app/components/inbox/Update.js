@@ -3,7 +3,7 @@ import React from 'react';
 import { randElem } from '../../utils';
 
 export function Incoming(props) {
-  const { onStartEdit, onResolve } = props;
+  const { onStartEdit, onResolve, onArchive } = props;
   return (
     <li className="update">
       <span onClick={onStartEdit}>{props.children}</span>
@@ -12,19 +12,21 @@ export function Incoming(props) {
         <button className="action" onClick={() => onResolve('xxx')}>current goal</button>
         <button className="action" onClick={() => onResolve('todo')}>todo</button>
         <button className="action" onClick={() => onResolve('done')}>done</button>
+        <button className="action action--danger" title="remove forever" onClick={() => onArchive('removed')}>x</button>
       </div>
     </li>
   );
 }
 
 export function Todo(props) {
-  const { onStartEdit, onResolve } = props;
+  const { onStartEdit, onResolve, onArchive } = props;
   return (
     <li className="update">
       <span onClick={onStartEdit}>{props.children}</span>
       <div className="update__actions">
         <span className="update__hint">mark as</span>
         <button className="action" onClick={() => onResolve('done')}>done</button>
+        <button className="action action--danger" title="remove forever" onClick={() => onArchive('removed')}>x</button>
         <span className="update__hint">or report as</span>
         <button className="action" onClick={() => onResolve('goal')}>goal for next week</button>
         <button className="action" onClick={() => onResolve('struggle')}>struggle</button>
@@ -42,7 +44,8 @@ export function Done(props) {
         <span className="update__hint">report as</span>
         <button className="action" onClick={() => onResolve('achievement')}>achievement</button>
         <span className="update__hint">or</span>
-        <button className="action" onClick={onArchive}>archive</button>
+        <button className="action" onClick={() => onArchive('archived')}>archive</button>
+        <button className="action action--danger" title="remove forever" onClick={() => onArchive('removed')}>x</button>
       </div>
     </li>
   );
@@ -96,7 +99,7 @@ export function createUpdate(Update, props, update) {
       key={update._id}
       onStartEdit={() => props.handleStartEdit(update)}
       onResolve={status => props.handleResolve(update, status)}
-      onArchive={() => props.handleArchive(update)}
+      onArchive={status => props.handleArchive(update, status)}
     >
       {update.text}
     </Update>

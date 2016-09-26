@@ -85,12 +85,15 @@ function resolveUpdate(coll, body) {
     () => coll.findOne({_id}, {_id: 0})
   ).then(parent => {
     const { status, reportDate } = body;
+    // the 'archived' and 'removed' states are terminal and the new update 
+    // should be resolved: true
+    const resolved = status === 'archived' || status === 'removed';
     const child = Object.assign({}, parent, {
       prev: _id,
       status: status,
       createdAt: new Date(),
       reportDate: reportDate ? new Date(reportDate) : null,
-      resolved: false,
+      resolved
     });
     return coll.insert(child);
   });
