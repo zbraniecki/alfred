@@ -133,15 +133,27 @@ export default class InboxContainer extends Component {
     )
   }
 
-  handleResolve(update, status, reportDate) {
-    if (status === 'xxx') {
-      alert('Not implemented yet. I\'m working on it…');
-      return;
+  // used when an update is moved to another section
+  handleResolve(update, status) {
+    const body = {
+      _id: update._id,
+      status
+    };
+
+    switch (status) {
+      case 'goal':
+      case 'struggle':
+      case 'achievement':
+        body.reportDate = this.state.reportDate;
+        break;
+      case 'xxx':
+        alert('Not implemented yet. I\'m working on it…');
+        return;
+      default:
+        break;
     }
 
-    post(`${API_URL}/resolve`, {
-      _id: update._id, status, reportDate
-    }).then(
+    post(`${API_URL}/resolve`, body).then(
       // XXX find a better way to get the newly created update?
       resp => resp.json()
     ).then(
@@ -154,6 +166,7 @@ export default class InboxContainer extends Component {
     )
   }
 
+  // used when an update is removed from the page
   handleArchive(update) {
     post(`${API_URL}/updates/${update._id}`, {
       resolved: true,

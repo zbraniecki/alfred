@@ -95,7 +95,7 @@ export function createUpdate(Update, props, update) {
     <Update
       key={update._id}
       onStartEdit={() => props.handleStartEdit(update)}
-      onResolve={status => props.handleResolve(update, status, props.reportDate)}
+      onResolve={status => props.handleResolve(update, status)}
       onArchive={() => props.handleArchive(update)}
     >
       {update.text}
