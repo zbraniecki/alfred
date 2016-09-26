@@ -39,8 +39,8 @@ export default class InboxContainer extends Component {
       report => Promise.all([
         report,
         get(`${updatesByAuthor}&resolved=0&status=inbox&status=todo&status=done`),
-        get(`${updatesByAuthor}&resolved=0&status=goal&before=${report}`),
-        get(`${updatesByAuthor}&report=${report}&status=goal&status=struggle&status=achievement`),
+        get(`${updatesByAuthor}&resolved=0&status=goal&before=${report.slug}`),
+        get(`${updatesByAuthor}&report=${report.slug}&status=goal&status=struggle&status=achievement`),
       ])
     ).then(
       ([{slug, reportDate}, current, prev, next]) => this.setState({
