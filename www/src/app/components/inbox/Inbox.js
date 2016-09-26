@@ -28,9 +28,19 @@ export default function Review(props) {
             className="tile"
             quips={genericMessages}
             item={Incoming}
-            name="Your activity"
+            name="Inbox"
           >
             {props.inbox}
+          </UpdateList>
+
+          <UpdateList
+            {...props}
+            className="tile"
+            quips={genericMessages}
+            item={Incoming}
+            name="Recent activity"
+          >
+            {props.events}
           </UpdateList>
         </div>
 

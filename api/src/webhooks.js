@@ -118,7 +118,7 @@ function saveUpdate(db, author, channel, text) {
   return db.collection('updates').insert({
     author,
     channel,
-    status: 'inbox',
+    status: 'event',
     resolved: false,
     text,
     createdAt: new Date()

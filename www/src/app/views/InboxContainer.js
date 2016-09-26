@@ -38,7 +38,7 @@ export default class InboxContainer extends Component {
     get(nextReport).then(
       report => Promise.all([
         report,
-        get(`${updatesByAuthor}&resolved=0&status=inbox&status=todo&status=done`),
+        get(`${updatesByAuthor}&resolved=0&status=inbox&status=event&status=todo&status=done`),
         get(`${updatesByAuthor}&resolved=0&status=goal&before=${report.slug}`),
         get(`${updatesByAuthor}&report=${report.slug}&status=goal&status=struggle&status=achievement`),
       ])
@@ -176,6 +176,7 @@ export default class InboxContainer extends Component {
         reportDate={this.state.reportDate}
 
         inbox={this.state.updates.filter(up => up.status === 'inbox')}
+        events={this.state.updates.filter(up => up.status === 'event')}
 
         prevgoals={this.state.updates.filter(
           up => up.status === 'goal' && up.reportDate < this.state.reportDate
