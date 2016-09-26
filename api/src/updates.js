@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb';
+
 export function get(coll) {
   return function(req, res, next) {
     getUpdates(coll, req.query).then(function(updates) {
