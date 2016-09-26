@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import Inbox from '../components/inbox/Inbox';
 import { API_URL } from '../../config';
-import { makeUpdate, get, post } from '../utils';
+import { makeUpdate, post } from '../utils';
 
-export default class InboxContainer extends Component {
+class InboxContainer extends Component {
   constructor(props) {
     super(props);
 
-    const { author } = this.props.params;
-
     this.state = {
-      author,
-      updates: [],
       prevReportDate: new Date(),
       nextReportDate: new Date(),
       nextReportSlug: ''
@@ -32,31 +30,18 @@ export default class InboxContainer extends Component {
     this.handleArchive = this.handleArchive.bind(this);
   }
 
-  componentDidMount() {
-    const { author } = this.state;
-    const currentReportsInfo = `${API_URL}/reports/current`;
-    const updatesByAuthor = `${API_URL}/updates?author=${author}`;
+  componentWillMount() {
+    const { params, setAuthor } = this.props;
+    const { fetchUpdatesByAuthor } = this.props;
 
-    get(currentReportsInfo).then(
-      ([prevReport, nextReport]) => Promise.all([
-        prevReport, nextReport,
-        get(`${updatesByAuthor}&resolved=0&status=inbox&status=event&status=todo&status=done`),
-        get(`${updatesByAuthor}&resolved=0&status=goal&before=${nextReport.slug}`),
-        get(`${updatesByAuthor}&report=${nextReport.slug}&status=goal&status=struggle&status=achievement`),
-      ])
-    ).then(
-      ([prevReport, nextReport, current, prev, next]) => this.setState({
-        prevReportDate: new Date(prevReport.reportDate),
-        nextReportDate: new Date(nextReport.reportDate),
-        nextReportSlug: nextReport.slug,
-        updates: [...current, ...prev, ...next].map(makeUpdate)
-      })
-    ).catch(console.error);
+    setAuthor(params.author);
+    fetchUpdatesByAuthor(params.author);
   }
 
   handleStartEdit(update) {
+    const { updates } = this.props;
     this.setState({
-      updates: this.state.updates.map(
+      updates: updates.map(
         other => other._id === update._id ?
           Object.assign({}, other, {
             bkptext: update.text,
@@ -67,8 +52,9 @@ export default class InboxContainer extends Component {
   }
 
   handleTextChange(update, evt) {
+    const { updates } = this.props;
     this.setState({
-      updates: this.state.updates.map(
+      updates: updates.map(
         other => other._id === update._id ?
           Object.assign({}, other, { text: evt.target.value }) : other
       )
@@ -76,9 +62,10 @@ export default class InboxContainer extends Component {
   }
 
   handleCancelEdit(update, evt) {
+    const { updates } = this.props;
     evt.preventDefault();
     this.setState({
-      updates: this.state.updates.map(
+      updates: updates.map(
         other => other._id === update._id ?
           Object.assign({}, other, {
             text: update.bkptext,
@@ -89,12 +76,13 @@ export default class InboxContainer extends Component {
   }
 
   handleSubmitEdit(update, evt) {
+    const { updates } = this.props;
     evt.preventDefault();
     post(`${API_URL}/updates/${update._id}`, {
       text: update.text
     }).then(result => {
       this.setState({
-        updates: this.state.updates.map(
+        updates: updates.map(
           other => other._id === update._id ?
             Object.assign({}, other, { editable: false }) : other
         )
@@ -103,7 +91,8 @@ export default class InboxContainer extends Component {
   }
 
   handleStartAdd(status) {
-    const { author, updates, nextReportDate } = this.state;
+    const { nextReportDate } = this.state;
+    const { author, updates } = this.props;
     const update = {
       _id: Date.now(), author, reportDate: nextReportDate, status,
       text: '', resolved: false, editable: true, adding: true
@@ -114,21 +103,23 @@ export default class InboxContainer extends Component {
   }
 
   handleCancelAdd(update, evt) {
+    const { updates } = this.props;
     evt.preventDefault();
     this.setState({
-      updates: this.state.updates.filter(
+      updates: updates.filter(
         other => other._id !== update._id
       )
     });
   }
 
   handleSubmitAdd(update, evt) {
+    const { updates } = this.props;
     evt.preventDefault();
     post(`${API_URL}/updates`, makeUpdate(update)).then(
       resp => resp.json()
     ).then(
       created => this.setState({
-        updates: this.state.updates.map(
+        updates: updates.map(
           up => up._id === update._id ?
             makeUpdate(created) : up
         )
@@ -138,6 +129,7 @@ export default class InboxContainer extends Component {
 
   // used when an update is moved to another section
   handleResolve(update, status) {
+    const { updates } = this.props;
     const body = {
       _id: update._id,
       status
@@ -162,7 +154,7 @@ export default class InboxContainer extends Component {
       resp => resp.json()
     ).then(
       created => this.setState({
-        updates: this.state.updates.map(
+        updates: updates.map(
           up => up._id === update._id ?
             makeUpdate(created) : up
         )
@@ -172,6 +164,7 @@ export default class InboxContainer extends Component {
 
   // used when an update is removed from the page
   handleArchive(update, status) {
+    const { updates } = this.props;
     const body = {
       _id: update._id,
       status
@@ -179,7 +172,7 @@ export default class InboxContainer extends Component {
 
     post(`${API_URL}/resolve`, body).then(
       () => this.setState({
-        updates: this.state.updates.filter(
+        updates: updates.filter(
           other => other._id !== update._id
         )
       })
@@ -187,28 +180,31 @@ export default class InboxContainer extends Component {
   }
 
   render() {
+    const { postReport, updates, author } = this.props;
     return (
+      <section>
+      <button onClick={postReport}>post report</button>
       <Inbox
-        author={this.state.author}
+        author={author}
         prevReportDate={this.state.prevReportDate}
         nextReportDate={this.state.nextReportDate}
         nextReportSlug={this.state.nextReportSlug}
 
-        inbox={this.state.updates.filter(up => up.status === 'inbox')}
-        events={this.state.updates.filter(up => up.status === 'event')}
+        inbox={updates.filter(up => up.status === 'inbox')}
+        events={updates.filter(up => up.status === 'event')}
 
-        prevgoals={this.state.updates.filter(
+        prevgoals={updates.filter(
           up => up.status === 'goal' && up.reportDate < this.state.nextReportDate
         )}
-        todo={this.state.updates.filter(up => up.status === 'todo')}
-        done={this.state.updates.filter(up => up.status === 'done')}
+        todo={updates.filter(up => up.status === 'todo')}
+        done={updates.filter(up => up.status === 'done')}
 
-        goals={this.state.updates.filter(
+        goals={updates.filter(
           up => up.status === 'goal' &&
             up.reportDate.getTime() === this.state.nextReportDate.getTime()
         )}
-        struggles={this.state.updates.filter(up => up.status === 'struggle')}
-        achievements={this.state.updates.filter(up => up.status === 'achievement')}
+        struggles={updates.filter(up => up.status === 'struggle')}
+        achievements={updates.filter(up => up.status === 'achievement')}
 
         handleTextChange={this.handleTextChange}
 
@@ -223,6 +219,22 @@ export default class InboxContainer extends Component {
         handleResolve={this.handleResolve}
         handleArchive={this.handleArchive}
       />
+      </section>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    author: state.user.author,
+    updates: state.updates.inbox
+  };
+}
+
+const mapDispatchToProps = {
+  fetchUpdatesByAuthor: actions.fetchUpdatesByAuthor,
+  setAuthor: actions.setAuthor
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InboxContainer);
+
