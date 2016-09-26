@@ -28,16 +28,6 @@ export default function Review(props) {
             className="tile"
             quips={genericMessages}
             item={Incoming}
-            name="Your goals from previous reports"
-          >
-            {props.prevgoals}
-          </UpdateList>
-
-          <UpdateList
-            {...props}
-            className="tile"
-            quips={genericMessages}
-            item={Incoming}
             name="Your activity"
           >
             {props.inbox}
@@ -45,6 +35,16 @@ export default function Review(props) {
         </div>
 
         <div className="content__column">
+          <UpdateList
+            {...props}
+            className="tile tile--scratchpad"
+            quips={genericMessages}
+            item={Incoming}
+            name="Your current goals"
+          >
+            {props.prevgoals}
+          </UpdateList>
+
           <UpdateList
             {...props}
             className="tile tile--scratchpad"
@@ -75,6 +75,7 @@ export default function Review(props) {
                 <WikiTextLink {...props} className="action">wikify</WikiTextLink>
               </div>
             </h2>
+            <p><em>Prepare the report for the next weekly meeting.</em></p>
             <h3 className="tile__subtitle">
               Goals for next week
               <div className="tile__actions">
@@ -86,7 +87,7 @@ export default function Review(props) {
             </ul>
 
             <h3 className="tile__subtitle">
-              Struggles last week
+              Struggles this week
               <div className="tile__actions">
                 <button className="action" onClick={() => props.handleStartAdd('struggle')}>add</button>
               </div>
@@ -96,7 +97,7 @@ export default function Review(props) {
             </ul>
 
             <h3 className="tile__subtitle">
-              Achievements last week
+              Achievements this week
               <div className="tile__actions">
                 <button className="action" onClick={() => props.handleStartAdd('achievement')}>add</button>
               </div>
