@@ -28,6 +28,25 @@ function saveUpdate(db, author, channel, text) {
   });
 }
 
+const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
+
+function pad(str) {
+  return ('00'+str).slice(-2);
+}
+
+function createReport(db, text) {
+  const result = createDateRe.exec(text);
+  const reportDate = new Date(result[1]);
+  const year = reportDate.getUTCFullYear();
+  const month = reportDate.getUTCMonth() + 1;
+  const day = reportDate.getUTCDate();
+  const slug = `${year}-${pad(month)}-${pad(day)}`;
+  return db.collection('reports').insert({
+    slug,
+    reportDate
+  });
+}
+
 export function createBot(url, name, db) {
   const client = new Client(url, name);
 
@@ -47,6 +66,12 @@ export function createBot(url, name, db) {
     }
 
     const text = message.slice(name.length + 2);
+
+    if (text.startsWith('create a report for')) {
+      return createReport(db, text).then(
+        () => client.say(channel, `${author}: report created.`)
+      );
+    }
 
     saveUpdate(db, author, channel, text).then(
       () => client.say(channel, `${author}: ${randElem(CONFIRMATIONS)}`)
