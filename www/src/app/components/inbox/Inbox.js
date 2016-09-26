@@ -4,21 +4,19 @@ import { Link } from 'react-router';
 import {
   UpdateList, createUpdate, Incoming, CurrentGoal, Todo, Done, Reviewed
 } from './Update';
-import { WikiTextLink } from '../report/WikiTextLink';
+import WikiTextLink from '../report/WikiTextLink';
+import HeaderContainer from '../header/HeaderContainer';
 
-import { randElem, reportName } from '../../utils';
-import { genericMessages, headerMessages } from '../../messages';
+import { reportName } from '../../utils';
+import { genericMessages } from '../../messages';
 
 export default function Inbox(props) {
   return (
     <div>
 
-      <header className="header">
-        <div className="logo logo--blue"></div>
-        <h1 className="header__title">
-          {`${randElem(headerMessages)}, ${props.author}`}
-        </h1>
-      </header>
+      <HeaderContainer
+        author={props.author}
+      />
 
       <div className="content">
 

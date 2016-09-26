@@ -4,7 +4,7 @@ function wikiList(updates) {
   return updates.map(up => '* ' + up.text).join('\n') || '*';
 }
 
-export function WikiTextLink(props) {
+export default function WikiTextLink(props) {
   const {
     author, goals, struggles, achievements, children, className
   } = props;

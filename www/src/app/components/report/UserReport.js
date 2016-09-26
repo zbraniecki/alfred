@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { WikiTextLink } from './WikiTextLink';
+import WikiTextLink from './WikiTextLink';
 
 function Update(props) {
   return (
