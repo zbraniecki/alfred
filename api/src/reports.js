@@ -1,9 +1,8 @@
 export function current(coll) {
   return function(req, res, next) {
-    getCurrent(coll, req.query).then(function(reports) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(reports.reverse()));
-    }).catch(
+    getCurrent(coll, req.query).then(
+      reports => res.json(reports.reverse())
+    ).catch(
       err => res.status(500).send(err.message)
     );
   }
@@ -11,10 +10,9 @@ export function current(coll) {
 
 export function create(coll) {
   return function(req, res, next) {
-    createReport(coll, req.body).then(function({ops}) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(ops[0]));
-    }).catch(
+    createReport(coll, req.body).then(
+      ({ops}) => res.json(ops[0])
+    ).catch(
       err => res.status(500).send(err.message)
     );
   }

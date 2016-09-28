@@ -2,36 +2,33 @@ import { ObjectID } from 'mongodb';
 
 export function get(coll) {
   return function(req, res, next) {
-    getUpdates(coll, req.query).then(function(updates) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(updates));
-    }).catch(console.error);
+    getUpdates(coll, req.query).then(
+      updates => res.json(updates)
+    ).catch(console.error);
   }
 }
 
 export function create(coll) {
   return function(req, res, next) {
-    createUpdate(coll, req.body).then(function({ops}) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(ops[0]));
-    }).catch(console.error);
+    createUpdate(coll, req.body).then(
+      ({ops}) => res.json(ops[0])
+    ).catch(console.error);
   }
 }
 
 export function update(coll) {
   return function(req, res, next) {
-    updateUpdate(coll, req.params.id, req.body).then(function({result}) {
-      res.sendStatus(result.ok ? 200 : 500);
-    }).catch(console.error);
+    updateUpdate(coll, req.params.id, req.body).then(
+      ({result}) => res.sendStatus(result.ok ? 200 : 500)
+    ).catch(console.error);
   }
 }
 
 export function resolve(coll) {
   return function(req, res, next) {
-    resolveUpdate(coll, req.body).then(function({ops}) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(ops[0]));
-    }).catch(console.error);
+    resolveUpdate(coll, req.body).then(
+      ({ops}) => res.json(ops[0])
+    ).catch(console.error);
   }
 }
 
