@@ -1,6 +1,6 @@
 import { Client } from  'irc';
 
-const CONFIRMATIONS = [
+const CONFIRMATION_MESSAGES = [
   'naturally',
   'of course',
   'splendid',
@@ -9,6 +9,11 @@ const CONFIRMATIONS = [
   'point taken',
   'at your service',
   'sounds good'
+];
+
+const ERROR_MESSAGES = [
+  'uh-oh, that didn\'t work out',
+  'something went wrong'
 ];
 
 function randElem(arr) {
@@ -25,26 +30,23 @@ function saveUpdate(db, author, channel, text) {
     text,
     createdAt: d,
     firstCreatedAt: d,
-  });
+  }).then(
+    () => randElem(CONFIRMATION_MESSAGES),
+    () => randElem(ERROR_MESSAGES)
+  );
 }
 
 const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
 
-function pad(str) {
-  return ('00'+str).slice(-2);
-}
-
 function createReport(db, text) {
-  const result = createDateRe.exec(text);
-  const reportDate = new Date(result[1]);
-  const year = reportDate.getUTCFullYear();
-  const month = reportDate.getUTCMonth() + 1;
-  const day = reportDate.getUTCDate();
-  const slug = `${year}-${pad(month)}-${pad(day)}`;
+  const [, slug] = createDateRe.exec(text);
   return db.collection('reports').insert({
     slug,
-    reportDate
-  });
+    reportDate: new Date(slug)
+  }).then(
+    () => 'report created',
+    () => randElem(ERROR_MESSAGES)
+  );
 }
 
 export function createBot(url, name, db) {
@@ -66,15 +68,8 @@ export function createBot(url, name, db) {
     }
 
     const text = message.slice(name.length + 2);
-
-    if (text.startsWith('create a report for')) {
-      return createReport(db, text).then(
-        () => client.say(channel, `${author}: report created.`)
-      );
-    }
-
-    saveUpdate(db, author, channel, text).then(
-      () => client.say(channel, `${author}: ${randElem(CONFIRMATIONS)}`)
+    parseCommand(db, author, channel, text).then(
+      response => client.say(channel, `${author}: ${response}`)
     );
   });
 
@@ -83,8 +78,16 @@ export function createBot(url, name, db) {
     console.log(` --- got a private message from ${author}: ${message}`);
 
     // private messages are saved with channel = author
-    saveUpdate(db, author, author, message).then(
-      () => client.say(author, `${randElem(CONFIRMATIONS)}`)
+    parseCommand(db, author, author, message).then(
+      response => client.say(author, response)
     );
   });
+}
+
+function parseCommand(db, author, channel, message) {
+  if (message.startsWith('create a report for')) {
+    return createReport(db, message);
+  }
+
+  return saveUpdate(db, author, channel, message);
 }
