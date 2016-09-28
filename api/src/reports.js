@@ -3,7 +3,9 @@ export function current(coll) {
     getCurrent(coll, req.query).then(function(reports) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(reports.reverse()));
-    }).catch(console.error);
+    }).catch(
+      err => res.status(500).send(err.message)
+    );
   }
 }
 
@@ -12,7 +14,9 @@ export function create(coll) {
     createReport(coll, req.body).then(function({ops}) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(ops[0]));
-    }).catch(console.error);
+    }).catch(
+      err => res.status(500).send(err.message)
+    );
   }
 }
 
@@ -31,7 +35,14 @@ function pad(str) {
 }
 
 function createReport(coll, body) {
-  const reportDate = new Date(body.date);
+  // XXX should we instead accept date slugs in the request?
+  const ts = Date.parse(body.date);
+
+  if (isNaN(ts)) {
+    return Promise.reject(new Error('Invalid date'));
+  }
+
+  const reportDate = new Date(ts);
   const year = reportDate.getUTCFullYear();
   const month = reportDate.getUTCMonth() + 1;
   const day = reportDate.getUTCDate();

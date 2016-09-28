@@ -40,9 +40,15 @@ const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
 
 function createReport(db, text) {
   const [, slug] = createDateRe.exec(text);
+  const ts = Date.parse(slug);
+
+  if (isNaN(ts)) {
+    return Promise.resolve('that\'s not a valid date');
+  }
+
   return db.collection('reports').insert({
     slug,
-    reportDate: new Date(slug)
+    reportDate: new Date(ts)
   }).then(
     () => 'report created',
     () => randElem(ERROR_MESSAGES)
