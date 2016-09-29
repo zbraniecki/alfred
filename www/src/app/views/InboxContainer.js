@@ -10,12 +10,6 @@ class InboxContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      prevReportDate: new Date(),
-      nextReportDate: new Date(),
-      nextReportSlug: ''
-    };
-
     this.handleTextChange = this.handleTextChange.bind(this);
 
     this.handleStartEdit = this.handleStartEdit.bind(this);
@@ -32,10 +26,12 @@ class InboxContainer extends Component {
 
   componentWillMount() {
     const { params, setAuthor } = this.props;
-    const { fetchUpdatesByAuthor } = this.props;
+    const { fetchCurrentReports, fetchUpdatesByAuthor } = this.props;
 
     setAuthor(params.author);
-    fetchUpdatesByAuthor(params.author);
+    fetchCurrentReports().then(reports => {
+      fetchUpdatesByAuthor(params.author, reports.nextReportSlug).then(res => console.log(res));
+    });
   }
 
   handleStartEdit(update) {
@@ -91,10 +87,10 @@ class InboxContainer extends Component {
   }
 
   handleStartAdd(status) {
-    const { nextReportDate } = this.state;
-    const { author, updates } = this.props;
+    const { inbox, updates } = this.props;
+    const { author } = inbox;
     const update = {
-      _id: Date.now(), author, reportDate: nextReportDate, status,
+      _id: Date.now(), author, reportDate: inbox.nextReportDate, status,
       text: '', resolved: false, editable: true, adding: true
     };
     this.setState({
@@ -129,7 +125,7 @@ class InboxContainer extends Component {
 
   // used when an update is moved to another section
   handleResolve(update, status) {
-    const { updates } = this.props;
+    const { updates, inbox } = this.props;
     const body = {
       _id: update._id,
       status
@@ -139,11 +135,11 @@ class InboxContainer extends Component {
       case 'goal':
       case 'struggle':
       case 'achievement':
-        body.reportDate = this.state.nextReportDate;
+        body.reportDate = inbox.nextReportDate;
         break;
       case 'curgoal':
         body.status = 'goal';
-        body.reportDate = this.state.prevReportDate;
+        body.reportDate = inbox.prevReportDate;
         break;
       default:
         break;
@@ -180,28 +176,26 @@ class InboxContainer extends Component {
   }
 
   render() {
-    const { postReport, updates, author } = this.props;
+    const { updates, inbox } = this.props;
     return (
       <section>
-      <button onClick={postReport}>post report</button>
       <Inbox
-        author={author}
-        prevReportDate={this.state.prevReportDate}
-        nextReportDate={this.state.nextReportDate}
-        nextReportSlug={this.state.nextReportSlug}
+        author={inbox.author}
+        nextReportDate={inbox.nextReportDate}
+        nextReportSlug={inbox.nextReportSlug}
 
         inbox={updates.filter(up => up.status === 'inbox')}
         events={updates.filter(up => up.status === 'event')}
 
         prevgoals={updates.filter(
-          up => up.status === 'goal' && up.reportDate < this.state.nextReportDate
+          up => up.status === 'goal' && up.reportDate < inbox.nextReportDate
         )}
         todo={updates.filter(up => up.status === 'todo')}
         done={updates.filter(up => up.status === 'done')}
 
         goals={updates.filter(
           up => up.status === 'goal' &&
-            up.reportDate.getTime() === this.state.nextReportDate.getTime()
+            up.reportDate.getTime() === inbox.nextReportDate.getTime()
         )}
         struggles={updates.filter(up => up.status === 'struggle')}
         achievements={updates.filter(up => up.status === 'achievement')}
@@ -224,14 +218,13 @@ class InboxContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    author: state.user.author,
-    updates: state.updates.inbox
-  };
-}
+const mapStateToProps = (state) => ({
+    inbox: state.inbox,
+    updates: state.inbox.updates
+});
 
 const mapDispatchToProps = {
+  fetchCurrentReports: actions.fetchCurrentReports,
   fetchUpdatesByAuthor: actions.fetchUpdatesByAuthor,
   setAuthor: actions.setAuthor
 };

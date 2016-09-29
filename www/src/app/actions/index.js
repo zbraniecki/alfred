@@ -1,11 +1,16 @@
 import * as alf from '../services/alfred-api-service';
 
 export const types = {
-  SET_AUTHOR: 'SET_AUTHOR',
-  FETCH_UPDATES_BY_AUTHOR: 'FETCH_UPDATES_BY_AUTHOR',
+  // user
+  SET_AUTHOR:                        'SET_AUTHOR',
+
+  // updates
+  FETCH_UPDATES_BY_AUTHOR:           'FETCH_UPDATES_BY_AUTHOR',
   FETCH_UPDATES_BY_AUTHOR_COMPLETED: 'FETCH_UPDATES_BY_AUTHOR_COMPLETED',
-  POST_REPORT: 'POST_REPORT',
-  POST_REPORT_COMPLETED: 'POST_REPORT_COMPLETED'
+
+  // reports
+  FETCH_CURRENT_REPORTS:             'FETCH_CURRENT_REPORTS',
+  FETCH_CURRENT_REPORTS_COMPLETED:   'FETCH_CURRENT_REPORTS_COMPLETED'
 }
 
 function createAction(type, payload) {
@@ -37,18 +42,26 @@ export function setAuthor(author) {
   return createAction(types.SET_AUTHOR, author);
 }
 
-export function fetchUpdatesByAuthor(author) {
-  return createAsyncAction(types.FETCH_UPDATES_BY_AUTHOR, types.FETCH_UPDATES_BY_AUTHOR_COMPLETED, () => {
-    return alf.fetchUpdatesByAuthor(author).then(updates => {
-      return updates;
-    });
-  });
+export function fetchCurrentReports() {
+  return createAsyncAction(types.FETCH_CURRENT_REPORTS, types.FETCH_CURRENT_REPORTS_COMPLETED, () => {
+    return alf.fetchCurrentReports().then(([prevReport, nextReport]) => {
+      return {
+        prevReportDate: prevReport.reportDate,
+        nextReportDate: nextReport.reportDate,
+        nextReportSlug: nextReport.slug
+      };
+    })
+  })
 }
 
-export function postReport() {
-  return createAsyncAction(types.POST_REPORT, types.POST_REPORT_COMPLETED, () => {
-    return alf.postReport().then(report => {
-      return report;
+export function fetchUpdatesByAuthor(author, slug) {
+  return createAsyncAction(types.FETCH_UPDATES_BY_AUTHOR, types.FETCH_UPDATES_BY_AUTHOR_COMPLETED, () => {
+    return Promise.all([
+      alf.fetchCurrentUpdatesByAuthor(author),
+      alf.fetchPrevUpdatesByAuthor(author, slug),
+      alf.fetchNextUpdatesByAuthor(author, slug)
+    ]).then(([current, prev, next]) => {
+      return [ ...current, ...prev, ...next ];
     });
   });
 }
