@@ -1,4 +1,5 @@
 import { types } from '../actions';
+import { makeUpdate } from '../utils';
 
 const defaultState = {
   author: '',
@@ -43,6 +44,40 @@ export default function(state = defaultState, action) {
           return up;
         })
       };
+
+    case types.START_ADD:
+    const update = {
+      _id: Date.now(),
+      author: state.author,
+      reportDate: state.nextReportDate,
+      status: action.payload,
+      text: '',
+      resolved: false,
+      editable: true,
+      adding: true
+    };
+      return {
+        ...state,
+        updates: [ ...state.updates, update ]
+      };
+
+    case types.CANCEL_ADD:
+      return {
+        ...state,
+        updates: state.updates.filter(up => up._id !== action.payload._id)
+      };
+
+    case types.POST_UPDATE_COMPLETED:
+      if (!action.error) {
+        return {
+          ...state,
+          updates: state.updates.map(
+            up => up._id === action.payload._id ?
+              makeUpdate(action.payload) : up
+          )
+        };
+      }
+      break;
 
     case types.RECEIVE_CURRENT_REPORTS:
       if (!action.error) {

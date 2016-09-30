@@ -68,40 +68,23 @@ class InboxContainer extends Component {
   }
 
   handleStartAdd(status) {
-    const { inbox, updates } = this.props;
-    const { author } = inbox;
-    const update = {
-      _id: Date.now(), author, reportDate: inbox.nextReportDate, status,
-      text: '', resolved: false, editable: true, adding: true
-    };
-    this.setState({
-      updates: updates.concat(update)
-    });
+    const { startAdd } = this.props;
+    startAdd(status);
   }
 
   handleCancelAdd(update, evt) {
-    const { updates } = this.props;
+    const { cancelAdd } = this.props;
     evt.preventDefault();
-    this.setState({
-      updates: updates.filter(
-        other => other._id !== update._id
-      )
-    });
+    cancelAdd(update);
   }
 
   handleSubmitAdd(update, evt) {
-    const { updates } = this.props;
+    const { postUpdate } = this.props;
     evt.preventDefault();
-    post(`${API_URL}/updates`, makeUpdate(update)).then(
-      resp => resp.json()
-    ).then(
-      created => this.setState({
-        updates: updates.map(
-          up => up._id === update._id ?
-            makeUpdate(created) : up
-        )
-      })
-    )
+    postUpdate({
+      ...update,
+      text: this.state.editText
+    });
   }
 
   // used when an update is moved to another section
@@ -210,7 +193,10 @@ const mapDispatchToProps = {
   patchUpdate: actions.patchUpdate,
   setAuthor: actions.setAuthor,
   setEditing: actions.setEditing,
-  cancelEditing: actions.cancelEditing
+  cancelEditing: actions.cancelEditing,
+  startAdd: actions.startAdd,
+  cancelAdd: actions.cancelAdd,
+  postUpdate: actions.postUpdate
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InboxContainer);

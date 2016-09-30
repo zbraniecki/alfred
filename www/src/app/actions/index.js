@@ -7,12 +7,16 @@ export const types = {
   //ui
   SET_EDITING:                       'SET_EDITING',
   CANCEL_EDITING:                    'CANCEL_EDITING',
+  START_ADD:                         'START_ADD',
+  CANCEL_ADD:                        'CANCEL_ADD',
 
   // updates
   REQUEST_UPDATES_BY_AUTHOR:         'REQUEST_UPDATES_BY_AUTHOR',
   RECEIVE_UPDATES_BY_AUTHOR:         'RECEIVE_UPDATES_BY_AUTHOR',
   PATCH_UPDATE:                      'PATCH_UPDATE',
   PATCH_UPDATE_COMPLETED:            'PATCH_UPDATE_COMPLETED',
+  POST_UPDATE:                       'POST_UPDATE',
+  POST_UPDATE_COMPLETED:             'POST_UPDATE_COMPLETED',
 
   // reports
   REQUEST_CURRENT_REPORTS:           'REQUEST_CURRENT_REPORTS',
@@ -56,6 +60,14 @@ export function cancelEditing(update) {
   return createAction(types.CANCEL_EDITING, update);
 }
 
+export function startAdd(status) {
+  return createAction(types.START_ADD, status);
+}
+
+export function cancelAdd(update) {
+  return createAction(types.CANCEL_ADD, update);
+}
+
 export function fetchCurrentReports() {
   return createAsyncAction(types.REQUEST_CURRENT_REPORTS,
                            types.RECEIVE_CURRENT_REPORTS,
@@ -89,6 +101,14 @@ export function patchUpdate(update) {
                            types.PATCH_UPDATE_COMPLETED,
                            () => {
     return alf.patchUpdate(update).then(() => update);
+  });
+}
+
+export function postUpdate(update) {
+  return createAsyncAction(types.POST_UPDATE,
+                           types.POST_UPDATE_COMPLETED,
+                           () => {
+    return alf.postUpdate(update).then(() => update);
   });
 }
 
