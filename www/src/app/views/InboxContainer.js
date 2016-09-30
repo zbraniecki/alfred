@@ -22,6 +22,11 @@ class InboxContainer extends Component {
 
     this.handleResolve = this.handleResolve.bind(this);
     this.handleArchive = this.handleArchive.bind(this);
+
+    this.state = {
+      editText: '',
+      updates: []
+    };
   }
 
   componentWillMount() {
@@ -30,59 +35,35 @@ class InboxContainer extends Component {
 
     setAuthor(params.author);
     fetchCurrentReports().then(reports => {
-      fetchUpdatesByAuthor(params.author, reports.nextReportSlug).then(res => console.log(res));
+      fetchUpdatesByAuthor(params.author, reports.nextReportSlug)
     });
   }
 
   handleStartEdit(update) {
-    const { updates } = this.props;
+    const { setEditing } = this.props;
+    setEditing(update);
     this.setState({
-      updates: updates.map(
-        other => other._id === update._id ?
-          Object.assign({}, other, {
-            bkptext: update.text,
-            editable: true
-          }) : other
-      )
+      editText: update.text
     });
   }
 
-  handleTextChange(update, evt) {
-    const { updates } = this.props;
+  handleTextChange(evt) {
     this.setState({
-      updates: updates.map(
-        other => other._id === update._id ?
-          Object.assign({}, other, { text: evt.target.value }) : other
-      )
+      editText: evt.target.value
     });
   }
 
   handleCancelEdit(update, evt) {
-    const { updates } = this.props;
-    evt.preventDefault();
-    this.setState({
-      updates: updates.map(
-        other => other._id === update._id ?
-          Object.assign({}, other, {
-            text: update.bkptext,
-            editable: false
-          }) : other
-      )
-    });
+    const { cancelEditing } = this.props;
+    cancelEditing(update);
   }
 
   handleSubmitEdit(update, evt) {
-    const { updates } = this.props;
+    const { patchUpdate } = this.props;
     evt.preventDefault();
-    post(`${API_URL}/updates/${update._id}`, {
-      text: update.text
-    }).then(result => {
-      this.setState({
-        updates: updates.map(
-          other => other._id === update._id ?
-            Object.assign({}, other, { editable: false }) : other
-        )
-      });
+    patchUpdate({
+      ...update,
+      text: this.state.editText
     });
   }
 
@@ -195,7 +176,7 @@ class InboxContainer extends Component {
 
         goals={updates.filter(
           up => up.status === 'goal' &&
-            up.reportDate.getTime() === inbox.nextReportDate.getTime()
+            new Date(up.reportDate).getTime() === inbox.nextReportDate.getTime()
         )}
         struggles={updates.filter(up => up.status === 'struggle')}
         achievements={updates.filter(up => up.status === 'achievement')}
@@ -219,14 +200,17 @@ class InboxContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    inbox: state.inbox,
-    updates: state.inbox.updates
+  inbox: state.inbox,
+  updates: state.inbox.updates
 });
 
 const mapDispatchToProps = {
   fetchCurrentReports: actions.fetchCurrentReports,
   fetchUpdatesByAuthor: actions.fetchUpdatesByAuthor,
-  setAuthor: actions.setAuthor
+  patchUpdate: actions.patchUpdate,
+  setAuthor: actions.setAuthor,
+  setEditing: actions.setEditing,
+  cancelEditing: actions.cancelEditing
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InboxContainer);

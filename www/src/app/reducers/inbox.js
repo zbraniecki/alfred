@@ -16,7 +16,35 @@ export default function(state = defaultState, action) {
         author: action.payload
       };
 
-    case types.FETCH_CURRENT_REPORTS_COMPLETED:
+    case types.SET_EDITING:
+      return {
+        ...state,
+        updates: state.updates.map(up => {
+          if (up._id === action.payload._id) {
+            return {
+              ...up,
+              editable: true
+            };
+          }
+          return up;
+        })
+      };
+
+    case types.CANCEL_EDITING:
+      return {
+        ...state,
+        updates: state.updates.map(up => {
+          if (up._id === action.payload._id) {
+            return {
+              ...up,
+              editable: false
+            };
+          }
+          return up;
+        })
+      };
+
+    case types.RECEIVE_CURRENT_REPORTS:
       if (!action.error) {
         return {
           ...state,
@@ -27,11 +55,23 @@ export default function(state = defaultState, action) {
       }
       break;
 
-    case types.FETCH_UPDATES_BY_AUTHOR_COMPLETED:
+    case types.RECEIVE_UPDATES_BY_AUTHOR:
       if (!action.error) {
         return {
           ...state,
           updates: action.payload
+        };
+      }
+      break;
+
+    case types.PATCH_UPDATE_COMPLETED:
+      if (!action.error) {
+        return {
+          ...state,
+          updates: state.updates.map(
+            update => update._id === action.payload._id ?
+              { ...action.payload, editable: false } : update
+          )
         };
       }
       break;

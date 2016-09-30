@@ -4,13 +4,19 @@ export const types = {
   // user
   SET_AUTHOR:                        'SET_AUTHOR',
 
+  //ui
+  SET_EDITING:                       'SET_EDITING',
+  CANCEL_EDITING:                    'CANCEL_EDITING',
+
   // updates
-  FETCH_UPDATES_BY_AUTHOR:           'FETCH_UPDATES_BY_AUTHOR',
-  FETCH_UPDATES_BY_AUTHOR_COMPLETED: 'FETCH_UPDATES_BY_AUTHOR_COMPLETED',
+  REQUEST_UPDATES_BY_AUTHOR:         'REQUEST_UPDATES_BY_AUTHOR',
+  RECEIVE_UPDATES_BY_AUTHOR:         'RECEIVE_UPDATES_BY_AUTHOR',
+  PATCH_UPDATE:                      'PATCH_UPDATE',
+  PATCH_UPDATE_COMPLETED:            'PATCH_UPDATE_COMPLETED',
 
   // reports
-  FETCH_CURRENT_REPORTS:             'FETCH_CURRENT_REPORTS',
-  FETCH_CURRENT_REPORTS_COMPLETED:   'FETCH_CURRENT_REPORTS_COMPLETED'
+  REQUEST_CURRENT_REPORTS:           'REQUEST_CURRENT_REPORTS',
+  RECEIVE_CURRENT_REPORTS:           'RECEIVE_CURRENT_REPORTS'
 }
 
 function createAction(type, payload) {
@@ -42,8 +48,18 @@ export function setAuthor(author) {
   return createAction(types.SET_AUTHOR, author);
 }
 
+export function setEditing(update) {
+  return createAction(types.SET_EDITING, update);
+}
+
+export function cancelEditing(update) {
+  return createAction(types.CANCEL_EDITING, update);
+}
+
 export function fetchCurrentReports() {
-  return createAsyncAction(types.FETCH_CURRENT_REPORTS, types.FETCH_CURRENT_REPORTS_COMPLETED, () => {
+  return createAsyncAction(types.REQUEST_CURRENT_REPORTS,
+                           types.RECEIVE_CURRENT_REPORTS,
+                           () => {
     return alf.fetchCurrentReports().then(([prevReport, nextReport]) => {
       return {
         prevReportDate: prevReport.reportDate,
@@ -55,7 +71,9 @@ export function fetchCurrentReports() {
 }
 
 export function fetchUpdatesByAuthor(author, slug) {
-  return createAsyncAction(types.FETCH_UPDATES_BY_AUTHOR, types.FETCH_UPDATES_BY_AUTHOR_COMPLETED, () => {
+  return createAsyncAction(types.REQUEST_UPDATES_BY_AUTHOR,
+                           types.RECEIVE_UPDATES_BY_AUTHOR,
+                           () => {
     return Promise.all([
       alf.fetchCurrentUpdatesByAuthor(author),
       alf.fetchPrevUpdatesByAuthor(author, slug),
@@ -63,6 +81,14 @@ export function fetchUpdatesByAuthor(author, slug) {
     ]).then(([current, prev, next]) => {
       return [ ...current, ...prev, ...next ];
     });
+  });
+}
+
+export function patchUpdate(update) {
+  return createAsyncAction(types.PATCH_UPDATE,
+                           types.PATCH_UPDATE_COMPLETED,
+                           () => {
+    return alf.patchUpdate(update).then(() => update);
   });
 }
 

@@ -1,5 +1,5 @@
 import { API_URL } from '../../config';
-import { get } from '../utils';
+import { get, post } from '../utils';
 
 
 export function fetchCurrentUpdatesByAuthor(author) {
@@ -19,5 +19,12 @@ export function fetchNextUpdatesByAuthor(author, reportSlug) {
 
 export function fetchCurrentReports() {
   return get(`${API_URL}/reports/current`);
+}
+
+export function patchUpdate(update) {
+  const edit = {
+    text: update.text
+  };
+  return post(`${API_URL}/updates/${update._id}`, edit);
 }
 

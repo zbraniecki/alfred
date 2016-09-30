@@ -84,7 +84,7 @@ function Editable(props) {
           className="update__edit"
           autoFocus
           required
-          value={value}
+          defaultValue={value}
           onChange={onChange}
           onBlur={onBlur}
         />
@@ -102,7 +102,7 @@ export function createUpdate(Update, props, update) {
       props.handleSubmitAdd : props.handleSubmitEdit;
     return <Editable
       key={update._id}
-      onChange={evt => props.handleTextChange(update, evt)}
+      onChange={evt => props.handleTextChange(evt)}
       onBlur={evt => handleCancel(update, evt)}
       onSubmit={evt => handleSubmit(update, evt)}
       value={update.text}
