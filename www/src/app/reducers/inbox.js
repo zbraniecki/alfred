@@ -17,7 +17,7 @@ export default function(state = defaultState, action) {
         author: action.payload
       };
 
-    case types.SET_EDITING:
+    case types.START_EDITING:
       return {
         ...state,
         updates: state.updates.map(up => {
@@ -67,7 +67,7 @@ export default function(state = defaultState, action) {
         updates: state.updates.filter(up => up._id !== action.payload._id)
       };
 
-    case types.POST_UPDATE_COMPLETED:
+    case types.RECEIVE_UPDATE_POST:
       if (!action.error) {
         return {
           ...state,
@@ -99,7 +99,7 @@ export default function(state = defaultState, action) {
       }
       break;
 
-    case types.PATCH_UPDATE_COMPLETED:
+    case types.RECEIVE_UPDATE_PATCH:
       if (!action.error) {
         return {
           ...state,

@@ -5,7 +5,7 @@ export const types = {
   SET_AUTHOR:                        'SET_AUTHOR',
 
   //ui
-  SET_EDITING:                       'SET_EDITING',
+  START_EDITING:                     'START_EDITING',
   CANCEL_EDITING:                    'CANCEL_EDITING',
   START_ADD:                         'START_ADD',
   CANCEL_ADD:                        'CANCEL_ADD',
@@ -13,10 +13,10 @@ export const types = {
   // updates
   REQUEST_UPDATES_BY_AUTHOR:         'REQUEST_UPDATES_BY_AUTHOR',
   RECEIVE_UPDATES_BY_AUTHOR:         'RECEIVE_UPDATES_BY_AUTHOR',
-  PATCH_UPDATE:                      'PATCH_UPDATE',
-  PATCH_UPDATE_COMPLETED:            'PATCH_UPDATE_COMPLETED',
-  POST_UPDATE:                       'POST_UPDATE',
-  POST_UPDATE_COMPLETED:             'POST_UPDATE_COMPLETED',
+  REQUEST_UPDATE_PATCH:              'REQUEST_UPDATE_PATCH',
+  RECEIVE_UPDATE_PATCH:              'RECEIVE_UPDATE_PATCH',
+  REQUEST_UPDATE_POST:               'REQUEST_UPDATE_POST',
+  RECEIVE_UPDATE_POST:               'RECEIVE_UPDATE_POST',
 
   // reports
   REQUEST_CURRENT_REPORTS:           'REQUEST_CURRENT_REPORTS',
@@ -53,7 +53,7 @@ export function setAuthor(author) {
 }
 
 export function setEditing(update) {
-  return createAction(types.SET_EDITING, update);
+  return createAction(types.START_EDITING, update);
 }
 
 export function cancelEditing(update) {
@@ -97,16 +97,16 @@ export function fetchUpdatesByAuthor(author, slug) {
 }
 
 export function patchUpdate(update) {
-  return createAsyncAction(types.PATCH_UPDATE,
-                           types.PATCH_UPDATE_COMPLETED,
+  return createAsyncAction(types.REQUEST_UPDATE_PATCH,
+                           types.RECEIVE_UPDATE_PATCH,
                            () => {
     return alf.patchUpdate(update).then(() => update);
   });
 }
 
 export function postUpdate(update) {
-  return createAsyncAction(types.POST_UPDATE,
-                           types.POST_UPDATE_COMPLETED,
+  return createAsyncAction(types.REQUEST_UPDATE_POST,
+                           types.RECEIVE_UPDATE_POST,
                            () => {
     return alf.postUpdate(update).then(() => update);
   });
