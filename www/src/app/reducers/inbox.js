@@ -45,21 +45,22 @@ export default function(state = defaultState, action) {
         })
       };
 
-    case types.START_ADD:
-    const update = {
-      _id: Date.now(),
-      author: state.author,
-      reportDate: state.nextReportDate,
-      status: action.payload,
-      text: '',
-      resolved: false,
-      editable: true,
-      adding: true
-    };
+    case types.START_ADD: {
+      const newUpdate = {
+        _id: Date.now(),
+        author: state.author,
+        reportDate: state.nextReportDate,
+        status: action.payload,
+        text: '',
+        resolved: false,
+        editable: true,
+        adding: true
+      };
       return {
         ...state,
-        updates: [ ...state.updates, update ]
+        updates: [ ...state.updates, newUpdate ]
       };
+    }
 
     case types.CANCEL_ADD:
       return {
@@ -67,7 +68,7 @@ export default function(state = defaultState, action) {
         updates: state.updates.filter(up => up._id !== action.payload._id)
       };
 
-    case types.RECEIVE_UPDATE_POST:
+    case types.RECEIVE_UPDATE_CREATE:
       if (!action.error) {
         return {
           ...state,
@@ -130,3 +131,4 @@ export default function(state = defaultState, action) {
 
   return state;
 }
+

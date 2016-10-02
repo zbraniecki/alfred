@@ -28,7 +28,7 @@ export function patchUpdate(update) {
   return post(`${API_URL}/updates/${update._id}`, edit);
 }
 
-export function postUpdate(update) {
+export function createUpdate(update) {
   return post(`${API_URL}/updates`, update).then(res => res.json());
 }
 

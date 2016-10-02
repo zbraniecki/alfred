@@ -1,5 +1,5 @@
 import * as alf from '../services/alfred-api-service';
-import { createAction, createAsyncAction } from '../utils';
+import { makeUpdate, createAction, createAsyncAction } from '../utils';
 
 export const types = {
   // user
@@ -16,8 +16,8 @@ export const types = {
   RECEIVE_UPDATES_BY_AUTHOR:         'RECEIVE_UPDATES_BY_AUTHOR',
   REQUEST_UPDATE_PATCH:              'REQUEST_UPDATE_PATCH',
   RECEIVE_UPDATE_PATCH:              'RECEIVE_UPDATE_PATCH',
-  REQUEST_UPDATE_POST:               'REQUEST_UPDATE_POST',
-  RECEIVE_UPDATE_POST:               'RECEIVE_UPDATE_POST',
+  REQUEST_UPDATE_CREATE:             'REQUEST_UPDATE_CREATE',
+  RECEIVE_UPDATE_CREATE:             'RECEIVE_UPDATE_CREATE',
   REQUEST_UPDATE_RESOLVE:            'REQUEST_UPDATE_RESOLVE',
   RECEIVE_UPDATE_RESOLVE:            'RECEIVE_UPDATE_RESOLVE',
 
@@ -47,54 +47,58 @@ export function cancelAdd(update) {
 }
 
 export function fetchCurrentReports() {
-  return createAsyncAction(types.REQUEST_CURRENT_REPORTS,
-                           types.RECEIVE_CURRENT_REPORTS,
-                           () => {
-    return alf.fetchCurrentReports().then(([prevReport, nextReport]) => {
-      return {
-        prevReportDate: prevReport.reportDate,
-        nextReportDate: nextReport.reportDate,
-        nextReportSlug: nextReport.slug
-      };
-    })
-  })
+  return createAsyncAction(
+    types.REQUEST_CURRENT_REPORTS,
+    types.RECEIVE_CURRENT_REPORTS,
+    () => alf.fetchCurrentReports().then(
+      ([prevReport, nextReport]) => {
+        return {
+          prevReportDate: prevReport.reportDate,
+          nextReportDate: nextReport.reportDate,
+          nextReportSlug: nextReport.slug
+        };
+      }
+    )
+  );
 }
 
 export function fetchUpdatesByAuthor(author, slug) {
-  return createAsyncAction(types.REQUEST_UPDATES_BY_AUTHOR,
-                           types.RECEIVE_UPDATES_BY_AUTHOR,
-                           () => {
-    return Promise.all([
-      alf.fetchCurrentUpdatesByAuthor(author),
-      alf.fetchPrevUpdatesByAuthor(author, slug),
-      alf.fetchNextUpdatesByAuthor(author, slug)
-    ]).then(([current, prev, next]) => {
-      return [ ...current, ...prev, ...next ];
-    });
-  });
+  return createAsyncAction(
+    types.REQUEST_UPDATES_BY_AUTHOR,
+    types.RECEIVE_UPDATES_BY_AUTHOR,
+    () => {
+      return Promise.all([
+        alf.fetchCurrentUpdatesByAuthor(author),
+        alf.fetchPrevUpdatesByAuthor(author, slug),
+        alf.fetchNextUpdatesByAuthor(author, slug)
+      ]).then(
+        ([current, prev, next]) => [ ...current, ...prev, ...next ]
+      );
+    }
+  );
 }
 
 export function patchUpdate(update) {
-  return createAsyncAction(types.REQUEST_UPDATE_PATCH,
-                           types.RECEIVE_UPDATE_PATCH,
-                           () => {
-    return alf.patchUpdate(update).then(() => update);
-  });
+  return createAsyncAction(
+    types.REQUEST_UPDATE_PATCH,
+    types.RECEIVE_UPDATE_PATCH,
+    () => alf.patchUpdate(update).then(() => update)
+  );
 }
 
-export function postUpdate(update) {
-  return createAsyncAction(types.REQUEST_UPDATE_POST,
-                           types.RECEIVE_UPDATE_POST,
-                           () => {
-    return alf.postUpdate(update).then(() => update);
-  });
+export function createUpdate(update) {
+  return createAsyncAction(
+    types.REQUEST_UPDATE_CREATE,
+    types.RECEIVE_UPDATE_CREATE,
+    () => alf.createUpdate(makeUpdate(update)).then(() => update)
+  );
 }
 
 export function resolveUpdate(body) {
-  return createAsyncAction(types.REQUEST_UPDATE_RESOLVE,
-                           types.RECEIVE_UPDATE_RESOLVE,
-                           () => {
-    return alf.resolveUpdate(body).then(update => update);
-  });
+  return createAsyncAction(
+    types.REQUEST_UPDATE_RESOLVE,
+    types.RECEIVE_UPDATE_RESOLVE,
+    () => alf.resolveUpdate(body).then(update => update)
+  );
 }
 

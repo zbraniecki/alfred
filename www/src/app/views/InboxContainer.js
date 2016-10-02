@@ -32,9 +32,9 @@ class InboxContainer extends Component {
     const { fetchCurrentReports, fetchUpdatesByAuthor } = this.props;
 
     setAuthor(params.author);
-    fetchCurrentReports().then(reports => {
-      fetchUpdatesByAuthor(params.author, reports.nextReportSlug)
-    });
+    fetchCurrentReports().then(
+      reports => fetchUpdatesByAuthor(params.author, reports.nextReportSlug)
+    );
   }
 
   handleStartEdit(update) {
@@ -77,9 +77,9 @@ class InboxContainer extends Component {
   }
 
   handleSubmitAdd(update, evt) {
-    const { postUpdate } = this.props;
+    const { createUpdate } = this.props;
     evt.preventDefault();
-    postUpdate({
+    createUpdate({
       ...update,
       text: this.state.editText
     });
@@ -178,7 +178,7 @@ const mapDispatchToProps = {
   cancelEditing: actions.cancelEditing,
   startAdd: actions.startAdd,
   cancelAdd: actions.cancelAdd,
-  postUpdate: actions.postUpdate,
+  createUpdate: actions.createUpdate,
   resolveUpdate: actions.resolveUpdate
 };
 
