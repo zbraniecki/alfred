@@ -40,3 +40,29 @@ export function makeUpdate(up) {
 export function randElem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+
+export function createAction(type, payload) {
+  let error = payload instanceof Error;
+
+  return {
+    type,
+    payload,
+    error
+  };
+}
+
+export function createAsyncAction(startType, completeType, asyncFn) {
+  return (dispatch) => {
+    dispatch(createAction(startType));
+
+    let actionCompleted = createAction.bind(null, completeType);
+    return asyncFn(dispatch).then((data) => {
+      dispatch(actionCompleted(data));
+      return data;
+    }).catch((error) => {
+      dispatch(actionCompleted(error));
+      throw error;
+    });
+  };
+}
+

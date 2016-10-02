@@ -1,5 +1,5 @@
 import { API_URL } from '../../config';
-import { get, post, makeUpdate } from '../utils';
+import { get, post } from '../utils';
 
 
 export function fetchCurrentUpdatesByAuthor(author) {
@@ -29,6 +29,10 @@ export function patchUpdate(update) {
 }
 
 export function postUpdate(update) {
-  return post(`${API_URL}/updates`, makeUpdate(update)).then(res => res.json());
+  return post(`${API_URL}/updates`, update).then(res => res.json());
+}
+
+export function resolveUpdate(body) {
+  return post(`${API_URL}/resolve`, body).then(res => res.json());
 }
 

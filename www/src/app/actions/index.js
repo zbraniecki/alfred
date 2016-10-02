@@ -1,4 +1,5 @@
 import * as alf from '../services/alfred-api-service';
+import { createAction, createAsyncAction } from '../utils';
 
 export const types = {
   // user
@@ -17,35 +18,12 @@ export const types = {
   RECEIVE_UPDATE_PATCH:              'RECEIVE_UPDATE_PATCH',
   REQUEST_UPDATE_POST:               'REQUEST_UPDATE_POST',
   RECEIVE_UPDATE_POST:               'RECEIVE_UPDATE_POST',
+  REQUEST_UPDATE_RESOLVE:            'REQUEST_UPDATE_RESOLVE',
+  RECEIVE_UPDATE_RESOLVE:            'RECEIVE_UPDATE_RESOLVE',
 
   // reports
   REQUEST_CURRENT_REPORTS:           'REQUEST_CURRENT_REPORTS',
   RECEIVE_CURRENT_REPORTS:           'RECEIVE_CURRENT_REPORTS'
-}
-
-function createAction(type, payload) {
-  let error = payload instanceof Error;
-
-  return {
-    type,
-    payload,
-    error
-  };
-}
-
-function createAsyncAction(startType, completeType, asyncFn) {
-  return (dispatch) => {
-    dispatch(createAction(startType));
-
-    let actionCompleted = createAction.bind(null, completeType);
-    return asyncFn(dispatch).then((data) => {
-      dispatch(actionCompleted(data));
-      return data;
-    }).catch((error) => {
-      dispatch(actionCompleted(error));
-      throw error;
-    });
-  };
 }
 
 export function setAuthor(author) {
@@ -109,6 +87,14 @@ export function postUpdate(update) {
                            types.RECEIVE_UPDATE_POST,
                            () => {
     return alf.postUpdate(update).then(() => update);
+  });
+}
+
+export function resolveUpdate(body) {
+  return createAsyncAction(types.REQUEST_UPDATE_RESOLVE,
+                           types.RECEIVE_UPDATE_RESOLVE,
+                           () => {
+    return alf.resolveUpdate(body).then(update => update);
   });
 }
 

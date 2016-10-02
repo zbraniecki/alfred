@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import Inbox from '../components/inbox/Inbox';
-import { API_URL } from '../../config';
-import { makeUpdate, post } from '../utils';
 
 class InboxContainer extends Component {
   constructor(props) {
@@ -89,7 +87,7 @@ class InboxContainer extends Component {
 
   // used when an update is moved to another section
   handleResolve(update, status) {
-    const { updates, inbox } = this.props;
+    const { inbox, resolveUpdate } = this.props;
     const body = {
       _id: update._id,
       status
@@ -109,34 +107,18 @@ class InboxContainer extends Component {
         break;
     }
 
-    post(`${API_URL}/resolve`, body).then(
-      // XXX find a better way to get the newly created update?
-      resp => resp.json()
-    ).then(
-      created => this.setState({
-        updates: updates.map(
-          up => up._id === update._id ?
-            makeUpdate(created) : up
-        )
-      })
-    )
+    resolveUpdate(body);
   }
 
   // used when an update is removed from the page
   handleArchive(update, status) {
-    const { updates } = this.props;
+    const { resolveUpdate } = this.props;
     const body = {
       _id: update._id,
       status
     };
 
-    post(`${API_URL}/resolve`, body).then(
-      () => this.setState({
-        updates: updates.filter(
-          other => other._id !== update._id
-        )
-      })
-    );
+    resolveUpdate(body);
   }
 
   render() {
@@ -159,7 +141,7 @@ class InboxContainer extends Component {
 
         goals={updates.filter(
           up => up.status === 'goal' &&
-            new Date(up.reportDate).getTime() === inbox.nextReportDate.getTime()
+            up.reportDate.getTime() === inbox.nextReportDate.getTime()
         )}
         struggles={updates.filter(up => up.status === 'struggle')}
         achievements={updates.filter(up => up.status === 'achievement')}
@@ -196,7 +178,8 @@ const mapDispatchToProps = {
   cancelEditing: actions.cancelEditing,
   startAdd: actions.startAdd,
   cancelAdd: actions.cancelAdd,
-  postUpdate: actions.postUpdate
+  postUpdate: actions.postUpdate,
+  resolveUpdate: actions.resolveUpdate
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InboxContainer);

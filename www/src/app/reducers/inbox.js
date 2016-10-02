@@ -94,18 +94,32 @@ export default function(state = defaultState, action) {
       if (!action.error) {
         return {
           ...state,
-          updates: action.payload
+          updates: action.payload.map(up => makeUpdate(up))
         };
       }
       break;
 
     case types.RECEIVE_UPDATE_PATCH:
       if (!action.error) {
+        let payload = makeUpdate(action.payload);
         return {
           ...state,
           updates: state.updates.map(
-            update => update._id === action.payload._id ?
-              { ...action.payload, editable: false } : update
+            update => update._id === payload._id ?
+              { ...payload, editable: false } : update
+          )
+        };
+      }
+      break;
+
+    case types.RECEIVE_UPDATE_RESOLVE:
+      if (!action.error) {
+        let payload = makeUpdate(action.payload);
+        return {
+          ...state,
+          updates: state.updates.map(
+            update => update._id === payload.prev ?
+              payload : update
           )
         };
       }
