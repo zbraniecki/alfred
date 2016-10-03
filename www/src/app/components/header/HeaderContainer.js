@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import Header from './Header';
 
 export default class HeaderContainer extends Component {
-  shouldComponentUpdate() {
-    return false;
+  shouldComponentUpdate(nextProps) {
+    return this.props.author !== nextProps.author;
   }
 
   render() {
