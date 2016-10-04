@@ -36,16 +36,8 @@ function saveUpdate(db, author, channel, text) {
   );
 }
 
-const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
 
-function createReport(db, text) {
-  const [, slug] = createDateRe.exec(text);
-  const ts = Date.parse(slug);
-
-  if (isNaN(ts)) {
-    return Promise.resolve('that\'s not a valid date');
-  }
-
+function createReport(db, ts) {
   return db.collection('reports').insert({
     slug,
     reportDate: new Date(ts)
@@ -90,10 +82,65 @@ export function createBot(url, name, db) {
   });
 }
 
+const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
+
 function parseCommand(db, author, channel, message) {
-  if (message.startsWith('create a report for')) {
-    return createReport(db, message);
+  let test = false;
+
+  const command = {
+    type: null,
+  };
+
+  if (message.startWith('test')) {
+    test = true;
+    message = message.substr(4);
   }
 
-  return saveUpdate(db, author, channel, message);
+  if (message.startsWith('create a report for')) {
+    const [, slug] = createDateRe.exec(message);
+    const ts = Date.parse(slug);
+
+    if (isNaN(ts)) {
+      return Promise.reject('that\'s not a valid date');
+    }
+    command.type = 'create-report';
+    command.ts = ts;
+  } else if (message.startsWith(`i've done`) ||
+             message.startsWith(`i've completed`)) {
+    return ;
+  } else if (message.startsWith('i need to') ||
+             message.startsWith('i should')) {
+
+  } else if (message.startsWith('next week')) {
+
+  } else if (message.startsWith('scratch that') ||
+             message.startsWith('remove last command')) {
+  } else {
+    command.type = 'update';
+    command.text = message;
+  }
+
+  if (test) {
+    return reportTest(command);
+  }
+  return executeCommand(db, command);
+}
+
+function reportTest(command) {
+  switch (command.type) {
+    case 'create-report':
+      return `The command will create a report for ${command.ts}`
+    case 'update':
+      return `The command will insert a new inbox item
+      for author "${command.author}" from channel "${command.channel}" with message "${command.text}"`;
+  }
+}
+
+function executeCommand(db, command) {
+  switch(command.type) {
+    case 'update':
+      return saveUpdate(db, command.author, command.channel, command.text);
+    case 'create-report':
+      return createReport(db, command.ts);
+  }
 }
