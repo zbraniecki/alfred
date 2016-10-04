@@ -17,6 +17,10 @@ export function fetchNextUpdatesByAuthor(author, reportSlug) {
   return get(`${updatesByAuthor}&report=${reportSlug}&status=goal&status=struggle&status=achievement`);
 }
 
+export function fetchReports() {
+  return get(`${API_URL}/reports`);
+}
+
 export function fetchCurrentReports() {
   return get(`${API_URL}/reports/current`);
 }

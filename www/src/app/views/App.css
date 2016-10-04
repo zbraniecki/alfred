@@ -100,6 +100,10 @@ body {
   padding: 1rem;
 }
 
+.tile--notitle {
+  margin-top: 0;
+}
+
 .tile__title {
   color: #121212;
   font-size: 1.25rem;

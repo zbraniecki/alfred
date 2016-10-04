@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import inbox from './inbox';
-import reports from './reports';
+import report from './report';
+import reportList from './reportList';
 
 export default combineReducers({
   inbox,
-  reports
+  report,
+  reportList
 });
 

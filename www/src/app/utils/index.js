@@ -23,6 +23,13 @@ export function reportName(date) {
   return dtf.format(date);
 }
 
+export function makeReport(report) {
+  return {
+    slug: report.slug,
+    reportDate: new Date(report.reportDate),
+  };
+}
+
 export function makeUpdate(up) {
   return {
     _id: up._id,

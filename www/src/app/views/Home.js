@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import ReportListContainer
+  from '../components/report-list/ReportListContainer';
+
 export default function Home() {
   return (
     <div>
@@ -12,11 +15,16 @@ export default function Home() {
 
       <div className="content content--tiles">
         <div className="content__column">
-          <section className="tile">
+          <ReportListContainer />
+        </div>
+
+        <div className="content__column">
+          <section className="tile tile--notitle">
             <p>
-              Alfred is an IRC bot and a status board used by the Localization 
-              Drivers team at Mozilla.  It automatically tracks GitHub issues 
-              and pull requests, and listens to IRC conversations.
+              Alfred is an IRC bot and a status board used by
+              the <a href="https://wiki.mozilla.org/L10n">Localization 
+              Drivers</a> team at Mozilla.  It automatically tracks GitHub 
+              issues and pull requests, and listens to IRC conversations.
             </p>
           </section>
         </div>

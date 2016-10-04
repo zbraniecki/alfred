@@ -1,3 +1,13 @@
+export function get(coll) {
+  return function(req, res, next) {
+    getAll(coll, req.query).then(
+      reports => res.json(reports)
+    ).catch(
+      err => res.status(500).send(err.message)
+    );
+  }
+}
+
 export function current(coll) {
   return function(req, res, next) {
     getCurrent(coll, req.query).then(
@@ -16,6 +26,15 @@ export function create(coll) {
       err => res.status(500).send(err.message)
     );
   }
+}
+
+// get all reports, the most recent first
+function getAll(coll) {
+  return coll.find({}, {
+    _id: 0
+  }).sort({
+    reportDate: -1
+  }).limit(200).toArray();
 }
 
 // get the previous and the next report

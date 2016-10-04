@@ -22,8 +22,7 @@ class InboxContainer extends Component {
     this.handleArchive = this.handleArchive.bind(this);
 
     this.state = {
-      editText: '',
-      updates: []
+      editText: ''
     };
   }
 

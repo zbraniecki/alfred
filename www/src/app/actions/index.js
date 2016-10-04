@@ -22,6 +22,8 @@ export const types = {
   RECEIVE_UPDATE_RESOLVE:            'RECEIVE_UPDATE_RESOLVE',
 
   // reports
+  REQUEST_REPORTS:                   'REQUEST_REPORTS',
+  RECEIVE_REPORTS:                   'RECEIVE_REPORTS',
   REQUEST_CURRENT_REPORTS:           'REQUEST_CURRENT_REPORTS',
   RECEIVE_CURRENT_REPORTS:           'RECEIVE_CURRENT_REPORTS'
 }
@@ -44,6 +46,14 @@ export function startAdd(status) {
 
 export function cancelAdd(update) {
   return createAction(types.CANCEL_ADD, update);
+}
+
+export function fetchReports() {
+  return createAsyncAction(
+    types.REQUEST_REPORTS,
+    types.RECEIVE_REPORTS,
+    () => alf.fetchReports()
+  );
 }
 
 export function fetchCurrentReports() {
