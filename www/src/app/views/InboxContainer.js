@@ -124,7 +124,6 @@ class InboxContainer extends Component {
   render() {
     const { updates, inbox } = this.props;
     return (
-      <section>
       <Inbox
         author={inbox.author}
         nextReportDate={inbox.nextReportDate}
@@ -159,7 +158,6 @@ class InboxContainer extends Component {
         handleResolve={this.handleResolve}
         handleArchive={this.handleArchive}
       />
-      </section>
     );
   }
 }

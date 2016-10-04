@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
+
 import { WEBHOOK_URL } from '../../config';
 
 export default function About() {
@@ -6,7 +8,7 @@ export default function About() {
     <div>
 
       <header className="header">
-        <div className="logo logo"></div>
+        <Link to="/" className="logo" />
         <h1 className="header__title">About Alfred</h1>
       </header>
 

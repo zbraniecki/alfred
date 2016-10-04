@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import UserReport from './UserReport';
 import { reportName } from '../../utils';
@@ -8,7 +9,7 @@ export default function Report(props) {
     <div>
 
       <header className="header">
-        <div className="logo"></div>
+        <Link to="/" className="logo" />
         <h1 className="header__title">Report for {reportName(props.reportDate)}</h1>
       </header>
 
