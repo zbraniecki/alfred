@@ -10,6 +10,7 @@ export function Incoming(props) {
       <div className="update__actions">
         <span className="update__hint">mark as</span>
         <button className="action" onClick={() => onResolve('curgoal')}>current goal</button>
+        <button className="action" onClick={() => onResolve('goal')}>goal for next week</button>
         <button className="action" onClick={() => onResolve('todo')}>todo</button>
         <button className="action" onClick={() => onResolve('done')}>done</button>
         <button className="action action--danger" title="remove forever" onClick={() => onArchive('removed')}>x</button>
