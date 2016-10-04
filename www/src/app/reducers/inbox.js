@@ -10,6 +10,11 @@ const defaultState = {
 };
 
 export default function(state = defaultState, action) {
+  if (action.error) {
+    console.error(action);
+    return state;
+  }
+
   switch (action.type) {
     case types.SET_AUTHOR:
       return {
@@ -69,66 +74,52 @@ export default function(state = defaultState, action) {
       };
 
     case types.RECEIVE_UPDATE_CREATE:
-      if (!action.error) {
-        return {
-          ...state,
-          updates: state.updates.map(
-            up => up._id === action.payload._id ?
-              makeUpdate(action.payload) : up
-          )
-        };
-      }
-      break;
+      return {
+        ...state,
+        updates: state.updates.map(
+          up => up._id === action.payload._id ?
+            makeUpdate(action.payload) : up
+        )
+      };
 
     case types.RECEIVE_CURRENT_REPORTS:
-      if (!action.error) {
-        return {
-          ...state,
-          prevReportDate: new Date(action.payload.prevReportDate),
-          nextReportDate: new Date(action.payload.nextReportDate),
-          nextReportSlug: action.payload.nextReportSlug
-        };
-      }
-      break;
+      return {
+        ...state,
+        prevReportDate: new Date(action.payload.prevReportDate),
+        nextReportDate: new Date(action.payload.nextReportDate),
+        nextReportSlug: action.payload.nextReportSlug
+      };
 
     case types.RECEIVE_UPDATES_BY_AUTHOR:
-      if (!action.error) {
-        return {
-          ...state,
-          updates: action.payload.map(up => makeUpdate(up))
-        };
-      }
-      break;
+      return {
+        ...state,
+        updates: action.payload.map(up => makeUpdate(up))
+      };
 
-    case types.RECEIVE_UPDATE_PATCH:
-      if (!action.error) {
-        let payload = makeUpdate(action.payload);
-        return {
-          ...state,
-          updates: state.updates.map(
-            update => update._id === payload._id ?
-              { ...payload, editable: false } : update
-          )
-        };
-      }
-      break;
+    case types.RECEIVE_UPDATE_PATCH: {
+      const payload = makeUpdate(action.payload);
+      return {
+        ...state,
+        updates: state.updates.map(
+          update => update._id === payload._id ?
+            { ...payload, editable: false } : update
+        )
+      };
+    }
 
-    case types.RECEIVE_UPDATE_RESOLVE:
-      if (!action.error) {
-        let payload = makeUpdate(action.payload);
-        return {
-          ...state,
-          updates: state.updates.map(
-            update => update._id === payload.prev ?
-              payload : update
-          )
-        };
-      }
-      break;
+    case types.RECEIVE_UPDATE_RESOLVE: {
+      const payload = makeUpdate(action.payload);
+      return {
+        ...state,
+        updates: state.updates.map(
+          update => update._id === payload.prev ?
+            payload : update
+        )
+      };
+    }
 
-    default: return state;
+    default:
+      return state;
   }
-
-  return state;
 }
 
