@@ -10,7 +10,7 @@ export default function About() {
         <h1 className="header__title">About Alfred</h1>
       </header>
 
-      <div className="content">
+      <div className="content content--columns">
         <div className="content__column">
           <section className="tile">
             <p>

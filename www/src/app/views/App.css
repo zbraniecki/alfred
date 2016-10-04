@@ -59,18 +59,31 @@ body {
 
 .content {
   display: flex;
+}
+
+.content--tiles {
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: space-between;
   align-items: flex-start;
 }
 
+.content--columns {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
 .content__column {
-  width: 31.25rem;
-  margin: 1rem;
+  min-width: 21rem;
+  max-width: 29rem;
+}
+
+.content__tile {
+  width: 29rem;
 }
 
 .tile {
+  margin: 1rem;
   padding: 1rem;
   margin-bottom: 2rem;
 }

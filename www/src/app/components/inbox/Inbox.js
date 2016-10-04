@@ -18,7 +18,7 @@ export default function Inbox(props) {
         author={props.author}
       />
 
-      <div className="content">
+      <div className="content content--columns">
 
         <div className="content__column">
           <UpdateList

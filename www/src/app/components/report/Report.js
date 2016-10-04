@@ -12,7 +12,7 @@ export default function Report(props) {
         <h1 className="header__title">Report for {reportName(props.reportDate)}</h1>
       </header>
 
-      <div className="content">
+      <div className="content content--tiles">
         {Array.from(props.updatesByAuthor).map(
           ([author, updates]) =>
             <UserReport
