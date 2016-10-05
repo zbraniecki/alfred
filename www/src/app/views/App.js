@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import './App.css';
-
 export default function App(props) {
   return (
     <div>
