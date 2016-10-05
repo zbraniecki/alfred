@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { WEBHOOK_URL } from '../../config';
+const { REACT_APP_WEBHOOK_URL } = process.env;
 
 export default function About() {
   return (
@@ -41,7 +41,7 @@ export default function About() {
 
             <blockquote>
               <p>
-                <code>{WEBHOOK_URL}/github</code>
+                <code>{REACT_APP_WEBHOOK_URL}/github</code>
               </p>
             </blockquote>
 

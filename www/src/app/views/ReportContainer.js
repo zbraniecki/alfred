@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 import Report from  '../components/report/Report';
-import { API_URL } from '../../config';
 import { makeUpdate, get } from '../utils';
+
+const { REACT_APP_API_URL } = process.env;
 
 function byAuthorThenDate(a, b) {
   if (a.author !== b.author) {
@@ -28,7 +29,7 @@ export default class ReportContainer extends Component {
 
   componentDidMount() {
     const { reportSlug } = this.state;
-    const url = `${API_URL}/updates?report=${reportSlug}`;
+    const url = `${REACT_APP_API_URL}/updates?report=${reportSlug}`;
     get(url).then(
       updates => this.setState({
         updates: updates.map(makeUpdate)
