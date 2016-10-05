@@ -68,12 +68,12 @@ export function createBot(url, name, db) {
   client.addListener('message#', function(author, channel, message) {
     console.log(` --- got a message from ${author} in ${channel}: ${message}`);
 
-    if (message.indexOf(`${name}: `) !== 0) {
+    if (!message.startsWith(`${client.nick}: `)) {
       // the message wasn't directed at the bot
       return;
     }
 
-    const text = message.slice(name.length + 2);
+    const text = message.slice(client.nick.length + 2);
     parseCommand(db, author, channel, text).then(
       response => client.say(channel, `${author}: ${response}`)
     );
