@@ -72,13 +72,13 @@ body {
   flex-wrap: nowrap;
 }
 
-.content__column {
-  min-width: 21rem;
-  max-width: 29rem;
-}
-
+.content__column,
 .content__tile {
-  width: 29rem;
+  flex: 1 1 auto;
+  min-width: 20rem;
+  max-width: 40rem;
+  width: 30rem;
+
 }
 
 .tile {
