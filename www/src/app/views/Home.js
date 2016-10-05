@@ -14,11 +14,11 @@ export default function Home() {
       </header>
 
       <div className="content content--tiles">
-        <div className="content__column">
+        <div className="content__tile">
           <ReportListContainer />
         </div>
 
-        <div className="content__column">
+        <div className="content__tile">
           <section className="tile tile--notitle">
             <p>
               Alfred is an IRC bot and a status board used by
@@ -28,6 +28,8 @@ export default function Home() {
             </p>
           </section>
         </div>
+
+        <div className="content__tile"></div>
       </div>
 
     </div>

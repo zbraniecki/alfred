@@ -12,8 +12,8 @@ export default function About() {
         <h1 className="header__title">About Alfred</h1>
       </header>
 
-      <div className="content content--columns">
-        <div className="content__column">
+      <div className="content content--tiles">
+        <div className="content__tile">
           <section className="tile tile--notitle">
             <p>
               Alfred is an IRC bot and a status board. It automatically tracks 
@@ -51,6 +51,8 @@ export default function About() {
             </p>
           </section>
         </div>
+        <div className="content__tile"></div>
+        <div className="content__tile"></div>
       </div>
 
     </div>
