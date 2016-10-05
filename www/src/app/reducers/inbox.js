@@ -2,6 +2,7 @@ import { types } from '../actions';
 import { makeUpdate } from '../utils';
 
 const defaultState = {
+  isFetching: false,
   author: '',
   updates: [],
   prevReportDate: null,
@@ -82,6 +83,12 @@ export default function(state = defaultState, action) {
         )
       };
 
+    case types.REQUEST_CURRENT_REPORTS:
+      return {
+        ...state,
+        isFetching: true,
+      };
+
     case types.RECEIVE_CURRENT_REPORTS:
       return {
         ...state,
@@ -93,6 +100,7 @@ export default function(state = defaultState, action) {
     case types.RECEIVE_UPDATES_BY_AUTHOR:
       return {
         ...state,
+        isFetching: false,
         updates: action.payload.map(up => makeUpdate(up))
       };
 

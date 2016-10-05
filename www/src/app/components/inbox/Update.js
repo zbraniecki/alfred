@@ -123,12 +123,11 @@ export function createUpdate(Update, props, update) {
 }
 
 export function UpdateList(props) {
-  const { className, children, name, item, quips } = props;
-  // XXX should this use React.Children?
-  const content = children.length === 0 ?
+  const { className, items, name, item, quips } = props;
+  const content = items.length === 0 ?
     <div className="tile__hint">{randElem(quips)}</div> :
     <ul className="tile__updates">
-      {children.map(up => createUpdate(item, props, up))}
+      {items.map(up => createUpdate(item, props, up))}
     </ul>
 
   return (

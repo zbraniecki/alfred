@@ -121,9 +121,11 @@ class InboxContainer extends Component {
   }
 
   render() {
-    const { updates, inbox } = this.props;
+    const { isFetching, updates, inbox } = this.props;
+
     return (
       <Inbox
+        isFetching={isFetching}
         author={inbox.author}
         nextReportDate={inbox.nextReportDate}
         nextReportSlug={inbox.nextReportSlug}
@@ -162,6 +164,7 @@ class InboxContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  isFetching: state.inbox.isFetching,
   inbox: state.inbox,
   updates: state.inbox.updates
 });
