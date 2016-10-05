@@ -7,7 +7,6 @@ import {
 import WikiTextLink from '../report/WikiTextLink';
 
 import { reportName } from '../../utils';
-import { genericMessages } from '../../messages';
 
 export default function Board(props) {
   return (
@@ -17,19 +16,17 @@ export default function Board(props) {
         <UpdateList
           {...props}
           className="tile"
-          quips={genericMessages}
-          item={Incoming}
-          name="Inbox"
+          itemComponent={Incoming}
           items={props.inbox}
+          name="Inbox"
         />
 
         <UpdateList
           {...props}
           className="tile"
-          quips={genericMessages}
-          item={Incoming}
-          name="Recent activity"
+          itemComponent={Incoming}
           items={props.events}
+          name="Recent activity"
         />
       </div>
 
@@ -37,28 +34,25 @@ export default function Board(props) {
         <UpdateList
           {...props}
           className="tile tile--scratchpad"
-          quips={genericMessages}
-          item={CurrentGoal}
-          name="Your current goals"
+          itemComponent={CurrentGoal}
           items={props.prevgoals}
+          name="Your current goals"
         />
 
         <UpdateList
           {...props}
           className="tile tile--scratchpad"
-          quips={genericMessages}
-          item={Todo}
-          name="To do"
+          itemComponent={Todo}
           items={props.todo}
+          name="To do"
         />
 
         <UpdateList
           {...props}
           className="tile tile--scratchpad"
-          quips={genericMessages}
-          item={Done}
-          name="Done"
+          itemComponent={Done}
           items={props.done}
+          name="Done"
         />
       </div>
 

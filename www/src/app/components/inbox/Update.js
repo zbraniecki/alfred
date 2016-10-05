@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { randElem } from '../../utils';
+import { genericMessages } from '../../messages';
 
 export function Incoming(props) {
   const { onStartEdit, onResolve, onArchive } = props;
@@ -123,11 +124,13 @@ export function createUpdate(Update, props, update) {
 }
 
 export function UpdateList(props) {
-  const { className, items, name, item, quips } = props;
+  const {
+    className, itemComponent, items, name, quips = genericMessages
+  } = props;
   const content = items.length === 0 ?
     <div className="tile__hint">{randElem(quips)}</div> :
     <ul className="tile__updates">
-      {items.map(up => createUpdate(item, props, up))}
+      {items.map(up => createUpdate(itemComponent, props, up))}
     </ul>
 
   return (
