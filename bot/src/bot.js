@@ -13,10 +13,9 @@ function parseCommand(commands, author, channel, message) {
 }
 
 export class Bot {
-  constructor(url, name, api_url, db) {
+  constructor(url, name, api_url) {
     this.url = url;
     this.name = name;
-    this.db = db;
     this.commands = Commands.map(Command => new Command(api_url));
   }
 
@@ -49,7 +48,7 @@ export class Bot {
       console.log(` --- got a private message from ${author}: ${message}`);
 
       // private messages are saved with channel = author
-      parseCommand(db, author, author, message).then(
+      parseCommand(this.commands, author, author, message).then(
         response => this.client.say(author, response)
       );
     });
