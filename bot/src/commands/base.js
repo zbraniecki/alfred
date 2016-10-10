@@ -3,10 +3,6 @@ export class BaseCommand {
     this.api_url = api_url;
   }
 
-  matches(str) {
-    return false;
-  }
-
   execute(author, channel, str, test=false) {
 
   }
@@ -14,4 +10,8 @@ export class BaseCommand {
   revert() {
 
   }
+}
+
+BaseCommand.matches = function(str) {
+  return false;
 }

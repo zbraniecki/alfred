@@ -10,9 +10,9 @@ export function get(coll) {
 
 export function create(coll) {
   return function(req, res, next) {
-    createUpdate(coll, req.body).then(
-      ({ops}) => res.json(ops[0])
-    ).catch(console.error);
+    createUpdate(coll, req.body)
+      .then(resp => res.json(resp))
+      .catch(console.error);
   }
 }
 
@@ -60,11 +60,15 @@ function getUpdates(coll, raw) {
 function createUpdate(coll, body) {
   delete body._id;
   const d = new Date();
-  return coll.insert(Object.assign(body, {
+
+  let o = Object.assign(body, {
     createdAt: d,
     firstCreatedAt: d,
     reportDate: new Date(body.reportDate)
-  }));
+  });
+  return coll.insertOne(o).then(() => {
+    return o._id;
+  })
 }
 
 function updateUpdate(coll, id, body) {

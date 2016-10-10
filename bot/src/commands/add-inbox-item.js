@@ -1,5 +1,4 @@
-import { BaseCommand } from './base';
-import { get, post } from '../utils';
+import { get, post, log } from '../utils';
 
 const CONFIRMATION_MESSAGES = [
   'naturally',
@@ -21,14 +20,15 @@ function randElem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function describeTest(item) {
+}
 
-export class AddInboxItem extends BaseCommand {
-  matches(str) {
+export const AddInboxItem = {
+  matches: (str) => {
     return true;
-  }
+  },
 
-  execute(author, channel, text, test=false) {
-    const d = new Date();
+  execute: (api_url, author, channel, text, test=false) => {
     const update = {
       author,
       channel,
@@ -36,28 +36,21 @@ export class AddInboxItem extends BaseCommand {
       resolved: false,
       text
     };
-    return post(`${this.api_url}/updates`, update).then(
-      () => randElem(CONFIRMATION_MESSAGES),
-      () => randElem(ERROR_MESSAGES)
-    );
-    /*
-    const d = new Date();
-    return this.db.collection('updates').insertOne({
-      author,
-      channel,
-      status: 'inbox',
-      resolved: false,
-      text,
-      createdAt: d,
-      firstCreatedAt: d,
+    return post(`${api_url}/updates`, update).then((resp) => {
+      return post(`${api_url}/log`, Object.assign({
+        id: resp
+      }, update));
     }).then(
       () => randElem(CONFIRMATION_MESSAGES),
       () => randElem(ERROR_MESSAGES)
     );
-    */
-  }
+  },
 
-  revert(str) {
+  test: (api_url, author, channel, text) => {
+    return `The command will insert a new inbox item for author "${author}" with message "${text}"`;
+  },
+
+  revert: (str) => {
 
   }
-}
+};
