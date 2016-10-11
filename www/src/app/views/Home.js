@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import Footer from '../components/footer/Footer';
 import ReportListContainer
   from '../components/report-list/ReportListContainer';
 
@@ -32,6 +33,7 @@ export default function Home() {
         <div className="content__tile"></div>
       </div>
 
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import Footer from '../footer/Footer';
 import UserReport from './UserReport';
 import WikifyLink from './WikifyLink';
 
@@ -14,11 +15,6 @@ export default function Report(props) {
       <header className="header">
         <Link to="/" className="logo" />
         <h1 className="header__title">Report for {reportName(reportDate)}</h1>
-        <div className="header__actions">
-          <WikifyLink updatesByAuthor={updatesByAuthor} className="action">
-            wikify
-          </WikifyLink>
-        </div>
       </header>
 
       <div className="content content--tiles">
@@ -33,6 +29,12 @@ export default function Report(props) {
             />
         )}
       </div>
+
+      <Footer>
+        <WikifyLink updatesByAuthor={updatesByAuthor}>
+          Wikify this report
+        </WikifyLink>
+      </Footer>
     </div>
   );
 }
