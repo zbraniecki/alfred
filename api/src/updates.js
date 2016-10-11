@@ -24,6 +24,14 @@ export function update(coll) {
   }
 }
 
+export function remove(coll) {
+  return function(req, res, next) {
+    removeUpdate(coll, req.params.id).then(
+      ({result}) => res.sendStatus(result.ok ? 200 : 500)
+    ).catch(console.error);
+  }
+}
+
 export function resolve(coll) {
   return function(req, res, next) {
     resolveUpdate(coll, req.body).then(
@@ -74,6 +82,11 @@ function createUpdate(coll, body) {
 function updateUpdate(coll, id, body) {
   const _id = new ObjectID(id);
   return coll.update({_id}, { $set: body });
+}
+
+function removeUpdate(coll, id) {
+  const _id = new ObjectID(id);
+  return coll.remove({_id});
 }
 
 function resolveUpdate(coll, body) {

@@ -8,6 +8,16 @@ export function insert(coll) {
   }
 }
 
+export function get(coll) {
+  return function(req, res, next) {
+    getLastItem(coll, req.author, req.channel).then(
+      (resp) => res.json(resp)
+    ).catch(
+      err => res.status(500).send(err.message)
+    );
+  }
+}
+
 
 function insertLog(coll, body) {
   let ts = Date.now();
@@ -17,4 +27,13 @@ function insertLog(coll, body) {
   return coll.insertOne(o).then(() => {
     return o._id;
   });
+}
+
+function getLastItem(coll, author, channel) {
+  return coll.find({
+    author: author,
+    channel: channel
+  }).sort({
+    ts: -1
+  }).limit(1);
 }
