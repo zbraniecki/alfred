@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import {
   UpdateList, createUpdate, Incoming, CurrentGoal, Todo, Done, Reviewed
 } from './Update';
-import WikiTextLink from '../report/WikiTextLink';
 
 import { reportName } from '../../utils';
 
@@ -61,8 +60,7 @@ export default function Board(props) {
           <h2 className="tile__title tile__title--report">
             Report for {reportName(props.nextReportDate)}
             <div className="tile__actions">
-              <Link className="action" to={`/report/${props.nextReportSlug}`}>see full report</Link>
-              <WikiTextLink {...props} className="action">wikify</WikiTextLink>
+              <Link className="action" to={`/report/${props.nextReportSlug}`}>full report</Link>
             </div>
           </h2>
           <p className="tile__hint">Prepare the report for the next weekly meeting.</p>

@@ -2,19 +2,27 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import UserReport from './UserReport';
+import WikifyLink from './WikifyLink';
+
 import { reportName } from '../../utils';
 
 export default function Report(props) {
+  const { reportDate, updatesByAuthor } = props;
   return (
     <div>
 
       <header className="header">
         <Link to="/" className="logo" />
-        <h1 className="header__title">Report for {reportName(props.reportDate)}</h1>
+        <h1 className="header__title">Report for {reportName(reportDate)}</h1>
+        <div className="header__actions">
+          <WikifyLink updatesByAuthor={updatesByAuthor} className="action">
+            wikify
+          </WikifyLink>
+        </div>
       </header>
 
       <div className="content content--tiles">
-        {Array.from(props.updatesByAuthor).map(
+        {Array.from(updatesByAuthor).map(
           ([author, updates]) =>
             <UserReport
               key={author}

@@ -19,14 +19,23 @@ body {
 
 .header {
   margin: 1rem 1rem 4rem;
+  display: flex;
 }
 
 .header__title {
-  display: inline-block;
-  height: 4rem;
-  margin: 0;
-  padding-top: 0.5rem;
-  vertical-align: top;
+  margin: .5rem 0 0;
+}
+
+.header__actions {
+  display: none;
+  color: #424242;
+  font-size: .8rem;
+  opacity: 0.3;
+  margin: .75rem 0 0 .5rem;
+}
+
+.header:hover .header__actions {
+  display: block;
 }
 
 .logo {
