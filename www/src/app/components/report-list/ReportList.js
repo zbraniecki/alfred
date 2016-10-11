@@ -15,7 +15,7 @@ function ReportLink(props) {
 }
 
 export default function ReportList(props) {
-  const { isFetching, reports } = props;
+  const { title, isFetching, reports } = props;
   const content = isFetching ?
     <div className="tile__hint">Loading…</div> :
     <ul className="tile__updates">
@@ -24,7 +24,7 @@ export default function ReportList(props) {
 
   return (
     <section className="tile">
-      <h2 className="tile__title">Recent reports</h2>
+      <h2 className="tile__title">{title}</h2>
       {content}
     </section>
   );

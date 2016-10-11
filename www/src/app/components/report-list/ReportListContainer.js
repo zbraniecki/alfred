@@ -11,19 +11,28 @@ class ReportListContainer extends Component {
   }
 
   render() {
-    const { isFetching, reports } = this.props;
+    const { isFetching, recent, upcoming } = this.props;
     return (
-      <ReportList
-        isFetching={isFetching}
-        reports={reports}
-      />
+      <div>
+        <ReportList
+          title="Upcoming report"
+          isFetching={isFetching}
+          reports={upcoming}
+        />
+        <ReportList
+          title="Recent reports"
+          isFetching={isFetching}
+          reports={recent}
+        />
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
   isFetching: state.reportList.isFetching,
-  reports: state.reportList.reports
+  recent: state.reportList.recent,
+  upcoming: state.reportList.upcoming
 });
 
 const mapDispatchToProps = {

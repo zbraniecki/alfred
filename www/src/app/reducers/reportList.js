@@ -3,7 +3,8 @@ import { makeReport } from '../utils';
 
 const defaultState = {
   isFetching: false,
-  reports: []
+  recent: [],
+  upcoming: []
 };
 
 export default function(state = defaultState, action) {
@@ -17,18 +18,21 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         isFetching: true,
-        reports: []
+        recent: [],
+        upcoming: []
       };
 
-    case types.RECEIVE_REPORTS:
+    case types.RECEIVE_REPORTS: {
+      const [upcoming, ...recent] = action.payload.map(makeReport);
       return {
         ...state,
         isFetching: false,
-        reports: action.payload.map(makeReport)
+        recent,
+        upcoming: [upcoming]
       };
+    }
 
     default:
       return state;
   }
 }
-
