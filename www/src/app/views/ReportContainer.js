@@ -7,10 +7,10 @@ const { REACT_APP_API_URL } = process.env;
 
 function byAuthorThenDate(a, b) {
   if (a.author !== b.author) {
-    return a.author < b.author;
+    return a.author.localeCompare(b.author, 'en', { sensitivity: 'base' });
   }
 
-  return a.createdAt < b.createdAt;
+  return a.createdAt - b.createdAt;
 }
 
 export default class ReportContainer extends Component {
