@@ -25,7 +25,7 @@ export default function WikifyLink(props) {
   const sections = Array.from(updatesByAuthor).map(
     updatesOfAuthor => section(...updatesOfAuthor)
   );
-  const content = sections.join('\n\n');
+  const content = ['==Roundtable==', ...sections].join('\n\n');
   const href=`data:text/plain;charset=utf-8,${encodeURIComponent(content)}`;
 
   return (
