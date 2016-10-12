@@ -13,18 +13,11 @@ class ReportListContainer extends Component {
   render() {
     const { isFetching, recent, upcoming } = this.props;
     return (
-      <div>
-        <ReportList
-          title="Upcoming report"
-          isFetching={isFetching}
-          reports={upcoming}
-        />
-        <ReportList
-          title="Recent reports"
-          isFetching={isFetching}
-          reports={recent}
-        />
-      </div>
+      <ReportList
+        isFetching={isFetching}
+        recent={recent}
+        upcoming={upcoming}
+      />
     );
   }
 }

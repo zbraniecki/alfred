@@ -1,6 +1,8 @@
 import { types } from '../actions';
 import { makeReport } from '../utils';
 
+const DAY = 1000 * 60 * 60 * 24;
+
 const defaultState = {
   isFetching: false,
   recent: [],
@@ -23,12 +25,13 @@ export default function(state = defaultState, action) {
       };
 
     case types.RECEIVE_REPORTS: {
-      const [upcoming, ...recent] = action.payload.map(makeReport);
+      const [next, ...recent] = action.payload.map(makeReport);
+      const upcoming = next.reportDate - Date.now() < DAY ? [next] : [];
       return {
         ...state,
         isFetching: false,
         recent,
-        upcoming: [upcoming]
+        upcoming
       };
     }
 

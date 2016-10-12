@@ -14,18 +14,39 @@ function ReportLink(props) {
   );
 }
 
-export default function ReportList(props) {
-  const { title, isFetching, reports } = props;
-  const content = isFetching ?
-    <div className="tile__hint">Loading…</div> :
-    <ul className="tile__updates">
-      {reports.map(report => <ReportLink key={report.slug} report={report} />)}
-    </ul>;
-
+function ReportListTile(props) {
+  const { title, reports } = props;
   return (
     <section className="tile">
-      <h2 className="tile__title">{title}</h2>
-      {content}
+      <h2 className="tile__title">{ title }</h2>
+      <ul className="tile__updates">
+        {reports.map(report => <ReportLink key={report.slug} report={report} />)}
+      </ul>
     </section>
   );
+}
+
+export default function ReportList(props) {
+  const { isFetching, recent, upcoming } = props;
+
+  if (isFetching) {
+    return (
+      <section className="tile">
+        <h2 className="tile__title">Recent reports</h2>
+        <div className="tile__hint">Loading…</div>
+      </section>
+    );
+  }
+
+  if (upcoming.length === 0) {
+    return <ReportListTile title="Recent reports" reports={recent} />;
+  }
+
+  return (
+    <div>
+      <ReportListTile title="Upcoming report" reports={upcoming} />
+      <ReportListTile title="Recent reports" reports={recent} />
+    </div>
+  );
+
 }
