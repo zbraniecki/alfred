@@ -6,6 +6,7 @@ const defaultState = {
   author: '',
   updates: [],
   prevReportDate: null,
+  prevReportSlug: '',
   nextReportDate: null,
   nextReportSlug: ''
 };
@@ -93,6 +94,7 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         prevReportDate: new Date(action.payload.prevReportDate),
+        prevReportSlug: action.payload.prevReportSlug,
         nextReportDate: new Date(action.payload.nextReportDate),
         nextReportSlug: action.payload.nextReportSlug
       };

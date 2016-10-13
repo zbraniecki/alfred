@@ -127,6 +127,8 @@ class InboxContainer extends Component {
       <Inbox
         isFetching={isFetching}
         author={inbox.author}
+
+        prevReportSlug={inbox.prevReportSlug}
         nextReportDate={inbox.nextReportDate}
         nextReportSlug={inbox.nextReportSlug}
 

@@ -8,6 +8,11 @@ import {
 import { reportName } from '../../utils';
 
 export default function Board(props) {
+  const prevReportHref = `/report/${props.prevReportSlug}`;
+  const prevReportLink = <Link className="action" to={prevReportHref}>view full report</Link>;
+  const nextReportHref = `/report/${props.nextReportSlug}`;
+  const nextReportLink = <Link className="action" to={nextReportHref}>preview</Link>;
+
   return (
     <div className="content content--columns">
 
@@ -36,6 +41,7 @@ export default function Board(props) {
           itemComponent={CurrentGoal}
           items={props.prevgoals}
           name="Your current goals"
+          link={prevReportLink}
         />
 
         <UpdateList
@@ -60,7 +66,7 @@ export default function Board(props) {
           <h2 className="tile__title tile__title--report">
             Report for {reportName(props.nextReportDate)}
             <div className="tile__actions">
-              <Link className="action" to={`/report/${props.nextReportSlug}`}>full report</Link>
+              {nextReportLink}
             </div>
           </h2>
           <p className="tile__hint">Prepare the report for the next weekly meeting.</p>

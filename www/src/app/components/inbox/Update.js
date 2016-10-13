@@ -125,7 +125,7 @@ export function createUpdate(Update, props, update) {
 
 export function UpdateList(props) {
   const {
-    className, itemComponent, items, name, quips = genericMessages
+    className, itemComponent, items, name, link, quips = genericMessages
   } = props;
   const content = items.length === 0 ?
     <div className="tile__hint">{randElem(quips)}</div> :
@@ -135,7 +135,12 @@ export function UpdateList(props) {
 
   return (
     <section className={className}>
-      <h2 className="tile__title">{name}</h2>
+      <h2 className="tile__title">
+        {name}
+        <div className="tile__actions">
+          {link}
+        </div>
+      </h2>
       {content}
     </section>
   );

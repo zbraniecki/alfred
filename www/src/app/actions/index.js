@@ -64,6 +64,7 @@ export function fetchCurrentReports() {
       ([prevReport, nextReport]) => {
         return {
           prevReportDate: prevReport.reportDate,
+          prevReportSlug: prevReport.slug,
           nextReportDate: nextReport.reportDate,
           nextReportSlug: nextReport.slug
         };
