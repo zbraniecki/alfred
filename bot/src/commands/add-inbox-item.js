@@ -35,11 +35,14 @@ export const AddInboxItem = {
       resolved: false,
       text
     };
-    return post(`${api_url}/updates`, update).then((resp) => {
-      return post(`${api_url}/log`, Object.assign({
-        command: this.name,
-        id: resp
-      }, update));
+    return post(`${api_url}/updates`, update, 'json').then((resp) => {
+      return post(`${api_url}/log`, {
+        command: AddInboxItem.name,
+        author: author,
+        channel: channel,
+        id: resp,
+        object: update
+      });
     }).then(
       () => randElem(CONFIRMATION_MESSAGES),
       () => randElem(ERROR_MESSAGES)
@@ -50,7 +53,7 @@ export const AddInboxItem = {
     return `The command will insert a new inbox item for author "${author}" with message "${text}"`;
   },
 
-  revert: (obj) => {
-    return post(`${api_url}/updates/remove/${obj.id}`).then
+  revert: (api_url, id) => {
+    return post(`${api_url}/updates/remove/${id}`);
   }
 };

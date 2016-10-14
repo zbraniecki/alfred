@@ -4,13 +4,20 @@ export function get(url) {
   return fetch(url).then(resp => resp.json());
 }
 
-export function post(url, body) {
-  return fetch(url, {
+export function post(url, body, ret) {
+  let p = fetch(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
-  }).then(resp => resp.json());
+  });
+  if (ret === 'text') {
+    return p.then(res => res.text());
+  }
+  if (ret === 'json') {
+    return p.then(res => res.json());
+  }
+  return p;
 }

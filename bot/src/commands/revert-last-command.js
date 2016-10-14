@@ -1,4 +1,4 @@
-import { post } from '../utils';
+import { get, post } from '../utils';
 import { Commands } from './index';
 
 function getCommandByName(name) {
@@ -13,25 +13,45 @@ function getCommandByName(name) {
 export const RevertLastCommand = {
   name: 'revert-last-command',
 
-  mathes: (str) => {
+  matches: (str) => {
     return str === 'scratch that';
   },
 
   execute: (api_url, author, channel, text) => {
-    return post(`${api_url}/log?author=${author}&channel=${channel}`).then(res => {
-      let Command = getCommandByName(res.command);
-      if (Command === null) {
-        return Promise.reject(`Unknown command ${res.command}.`);
+    return get(`${api_url}/log?author=${author}&channel=${channel}`).then(res => {
+      if (res.length === 0) {
+        return 'There is no command to revert';
       }
-      return Command.revert(res).then(() => {
-        return `Reverted command ${res.command}.`;
+      let log = res[0];
+      let Command = getCommandByName(log.command);
+      if (Command === null) {
+        return Promise.reject(`Unknown command ${log.command}.`);
+      }
+      if (!Command.revert) {
+        return Promise.reject(`Can't revert a command of type ${log.command}.`);
+      }
+      return Command.revert(api_url, log.id).then(() => {
+        return post(`${api_url}/log`, {
+          command: RevertLastCommand.name,
+          author: author,
+          channel: channel,
+          id: log.id
+        });
       });
-    });
+    }).then(
+      () => 'Command reverted.',
+      (err) => `Failed to revert the command: ${err}`
+    );
   },
 
   test: (api_url, author, channel, text) => {
-    return post(`${api_url}/log?author=${author}&channel=${channel}`).then(res => {
-      return `This command will revert the command ${res}`;
+    return get(`${api_url}/log?author=${author}&channel=${channel}`).then(res => {
+      if (res.length === 0) {
+        return 'There is no command to revert';
+      }
+      let log = res[0];
+      let ts = new Date(log.ts).toLocaleString();
+      return `This command will revert the command of type "${log.command}" from ${ts}`;
     });
   },
 }

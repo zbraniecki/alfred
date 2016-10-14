@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb';
+
 export function get(coll) {
   return function(req, res, next) {
     getAll(coll, req.query).then(
@@ -21,12 +23,21 @@ export function current(coll) {
 export function create(coll) {
   return function(req, res, next) {
     createReport(coll, req.body).then(
-      ({ops}) => res.json(ops[0])
+      (resp) => res.json(resp)
     ).catch(
       err => res.status(500).send(err.message)
     );
   }
 }
+
+export function remove(coll) {
+  return function(req, res, next) {
+    removeReport(coll, req.params.id).then(
+      ({result}) => res.sendStatus(result.ok ? 200 : 500)
+    ).catch(console.error);
+  }
+}
+
 
 // get all reports, the most recent first
 function getAll(coll) {
@@ -64,8 +75,17 @@ function createReport(coll, body) {
   const month = reportDate.getUTCMonth() + 1;
   const day = reportDate.getUTCDate();
   const slug = `${year}-${pad(month)}-${pad(day)}`;
-  return coll.insert(Object.assign(body, {
+
+  let o = Object.assign(body, {
     slug,
     reportDate
-  }));
+  });
+  return coll.insertOne(o).then(() => {
+    return o._id;
+  });
+}
+
+function removeReport(coll, id) {
+  const _id = new ObjectID(id);
+  return coll.remove({_id});
 }

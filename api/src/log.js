@@ -10,7 +10,7 @@ export function insert(coll) {
 
 export function get(coll) {
   return function(req, res, next) {
-    getLastItem(coll, req.author, req.channel).then(
+    getLastItem(coll, req.query.author).then(
       (resp) => res.json(resp)
     ).catch(
       err => res.status(500).send(err.message)
@@ -30,10 +30,10 @@ function insertLog(coll, body) {
 }
 
 function getLastItem(coll, author, channel) {
-  return coll.find({
-    author: author,
-    channel: channel
-  }).sort({
+  let query = {};
+  if (author) query.author = author;
+  if (channel) query.channel = channel;
+  return coll.find(query).sort({
     ts: -1
-  }).limit(1);
+  }).limit(1).toArray();
 }
