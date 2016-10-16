@@ -61,12 +61,12 @@ export function fetchCurrentReports() {
     types.REQUEST_CURRENT_REPORTS,
     types.RECEIVE_CURRENT_REPORTS,
     () => alf.fetchCurrentReports().then(
-      ([prevReport, nextReport]) => {
+      ({prev, current}) => {
         return {
-          prevReportDate: prevReport.reportDate,
-          prevReportSlug: prevReport.slug,
-          nextReportDate: nextReport.reportDate,
-          nextReportSlug: nextReport.slug
+          prevReportDate: prev.reportDate,
+          prevReportSlug: prev.slug,
+          nextReportDate: current.reportDate,
+          nextReportSlug: current.slug
         };
       }
     )

@@ -23,18 +23,43 @@ export default class ReportContainer extends Component {
     this.state = {
       updates: [],
       reportSlug,
+      prevReport: undefined,
+      nextReport: undefined,
       reportDate: new Date(reportSlug)
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { year, month, day } = nextProps.params;
+    const reportSlug = `${year}-${month}-${day}`;
+    this._getReportData(reportSlug);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.prevReport === undefined ||
+      this.state.reportSlug !== nextState.reportSlug;
+  }
+
   componentDidMount() {
     const { reportSlug } = this.state;
+    this._getReportData(reportSlug);
+  }
+
+  _getReportData(reportSlug) {
     const url = `${REACT_APP_API_URL}/updates?report=${reportSlug}`;
-    get(url).then(
-      updates => this.setState({
-        updates: updates.map(makeUpdate)
-      })
-    ).catch(console.error);
+    const url2 = `${REACT_APP_API_URL}/reports/${reportSlug}`;
+    Promise.all([
+      get(url),
+      get(url2)
+    ]).then(([updates, reports]) => {
+      this.setState({
+        reportSlug,
+        reportDate: new Date(reportSlug),
+        updates: updates.map(makeUpdate),
+        prevReport: reports.prev,
+        nextReport: reports.next
+      }) 
+    }).catch(console.error);
   }
 
   render() {
@@ -44,9 +69,16 @@ export default class ReportContainer extends Component {
       ), new Map()
     );
 
+    const prevReportSlug = this.state.prevReport ?
+      this.state.prevReport.slug : null;
+    const nextReportSlug = this.state.nextReport ?
+      this.state.nextReport.slug : null;
+
     return (
       <Report
         reportDate={this.state.reportDate}
+        prevReportSlug={prevReportSlug}
+        nextReportSlug={nextReportSlug}
         updatesByAuthor={updatesByAuthor}
       />
     );

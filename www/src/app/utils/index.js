@@ -25,6 +25,10 @@ export function reportName(date) {
   return dtf.format(date);
 }
 
+export function reportNameFromSlug(slug) {
+  return reportName(new Date(slug));
+}
+
 export function makeReport(report) {
   return {
     slug: report.slug,

@@ -18,13 +18,26 @@ body {
 }
 
 .header {
-  margin: 1rem 1rem 4rem;
+  margin: 1rem 1rem 0rem;
   display: flex;
 }
 
 .header__title {
   margin: .5rem 0 0;
 }
+
+.navbar {
+  margin-left: 6rem;
+  margin-bottom: 4rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 30rem;
+}
+
+.navbar > a {
+  font-size: 0.75rem; 
+}
+
 
 .logo {
   background-color: #121212;

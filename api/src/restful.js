@@ -13,7 +13,7 @@ export default function createRouter(db) {
   router.use(bodyParser.json());
 
   router.route('/reports').get(reports.get(reportsColl));
-  router.route('/reports/current').get(reports.current(reportsColl));
+  router.route('/reports/:slug').get(reports.current(reportsColl));
   router.route('/reports').post(reports.create(reportsColl));
 
   router.route('/updates').get(updates.get(updatesColl));
