@@ -1,21 +1,26 @@
 import { Client } from  'irc';
 
-import { Commands } from './commands/index';
+import { Commands } from './commands';
 
+function testCommand(commands, api_url, author, channel, message) {
+  for (let command of commands) {
+    if (command.matches(message)) {
+      return Promise.resolve(command.test(api_url, author, channel, message));
+    }
+  }
+  return Promise.resolve(null);
+}
 
 function parseCommand(commands, api_url, author, channel, message) {
   let test = false;
 
   if (message.startsWith('test ')) {
     message = message.substr(5);
-    test = true;
+    return testCommand(commands, api_url, author, channel, message);
   }
 
   for (let command of commands) {
     if (command.matches(message)) {
-      if (test) {
-        return Promise.resolve(command.test(api_url, author, channel, message));
-      }
       return command.execute(api_url, author, channel, message);
     }
   }

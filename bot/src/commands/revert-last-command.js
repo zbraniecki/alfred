@@ -13,11 +13,11 @@ function getCommandByName(name) {
 export const RevertLastCommand = {
   name: 'revert-last-command',
 
-  matches: (str) => {
+  matches(str) {
     return str === 'scratch that';
   },
 
-  execute: (api_url, author, channel, text) => {
+  execute(api_url, author, channel, text) {
     return get(`${api_url}/log?author=${author}&channel=${channel}`).then(res => {
       if (res.length === 0) {
         return 'There is no command to revert';
@@ -44,7 +44,7 @@ export const RevertLastCommand = {
     );
   },
 
-  test: (api_url, author, channel, text) => {
+  test(api_url, author, channel, text) {
     return get(`${api_url}/log?author=${author}&channel=${channel}`).then(res => {
       if (res.length === 0) {
         return 'There is no command to revert';

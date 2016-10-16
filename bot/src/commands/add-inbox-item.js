@@ -23,11 +23,11 @@ function randElem(arr) {
 export const AddInboxItem = {
   name: 'add-inbox-item',
 
-  matches: (str) => {
+  matches(str) {
     return true;
   },
 
-  execute: (api_url, author, channel, text) => {
+  execute(api_url, author, channel, text) {
     const update = {
       author,
       channel,
@@ -40,7 +40,7 @@ export const AddInboxItem = {
         command: AddInboxItem.name,
         author: author,
         channel: channel,
-        id: resp,
+        id: resp._id,
         object: update
       });
     }).then(
@@ -49,11 +49,11 @@ export const AddInboxItem = {
     );
   },
 
-  test: (api_url, author, channel, text) => {
+  test(api_url, author, channel, text) {
     return `The command will insert a new inbox item for author "${author}" with message "${text}"`;
   },
 
-  revert: (api_url, id) => {
+  revert(api_url, id) {
     return post(`${api_url}/updates/remove/${id}`);
   }
 };

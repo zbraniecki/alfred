@@ -14,11 +14,11 @@ const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
 export const CreateReport = {
   name: 'create-report',
 
-  matches: (str) => {
+  matches(str) {
     return str.startsWith('create a report for');
   },
 
-  execute: (api_url, author, channel, text) => {
+  execute(api_url, author, channel, text) {
     const [, slug] = createDateRe.exec(text);
     const ts = Date.parse(slug);
 
@@ -44,12 +44,12 @@ export const CreateReport = {
     );
   },
 
-  test: (api_url, author, channel, text) => {
+  test(api_url, author, channel, text) {
     const [, slug] = createDateRe.exec(text);
     return `The command will create a new report for date ${slug}`;
   },
 
-  revert: (api_url, id) => {
+  revert(api_url, id) {
     return post(`${api_url}/reports/remove/${id}`);
   }
 };

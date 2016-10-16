@@ -69,13 +69,13 @@ function createUpdate(coll, body) {
   delete body._id;
   const d = new Date();
 
-  let o = Object.assign(body, {
+  const o = Object.assign(body, {
     createdAt: d,
     firstCreatedAt: d,
     reportDate: new Date(body.reportDate)
   });
   return coll.insertOne(o).then(() => {
-    return o._id;
+    return o;
   })
 }
 
