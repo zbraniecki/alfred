@@ -76,14 +76,21 @@ export function createAsyncAction(startType, completeType, asyncFn) {
 }
 
 const bugRe = /bug ([0-9]+)/ig;
+const urlRe =
+  /(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/ig;
 
 export function linkify(str) {
+  str = str.replace(
+    urlRe,
+    '<a href="$&">$&</a>'
+  );
+  str = str.replace(
+    bugRe,
+    '<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=$1">$&</a>'
+  );
   return React.createElement('span', {
     dangerouslySetInnerHTML: {
-      __html: str.replace(
-        bugRe,
-        '<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=$1">$&</a>'
-      )
+      __html: str
     }
   })
 }
