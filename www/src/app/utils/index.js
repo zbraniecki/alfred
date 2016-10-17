@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function get(url) {
   return fetch(url).then(resp => resp.json());
 }
@@ -71,4 +73,17 @@ export function createAsyncAction(startType, completeType, asyncFn) {
       throw error;
     });
   };
+}
+
+const bugRe = /bug ([0-9]+)/ig;
+
+export function linkify(str) {
+  return React.createElement('span', {
+    dangerouslySetInnerHTML: {
+      __html: str.replace(
+        bugRe,
+        '<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=$1">$&</a>'
+      )
+    }
+  })
 }
