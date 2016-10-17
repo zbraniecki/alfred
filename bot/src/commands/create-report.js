@@ -18,7 +18,7 @@ export const CreateReport = {
     return str.startsWith('create a report for');
   },
 
-  execute(api_url, author, channel, text) {
+  execute(bot, author, channel, text) {
     const [, slug] = createDateRe.exec(text);
     const ts = Date.parse(slug);
 
@@ -30,13 +30,10 @@ export const CreateReport = {
       date: slug
     }
 
-    return post(`${api_url}/reports`, obj, 'json').then(resp => {
-      return post(`${api_url}/log`, {
+    return post(`${bot.api_url}/reports`, obj, 'json').then(resp => {
+      bot.logAction(author, channel, {
         command: CreateReport.name,
-        author: author,
-        channel: channel,
         id: resp,
-        object: obj
       });
     }).then(
       () => 'report created',
@@ -44,12 +41,12 @@ export const CreateReport = {
     );
   },
 
-  test(api_url, author, channel, text) {
+  test(bot, author, channel, text) {
     const [, slug] = createDateRe.exec(text);
     return `The command will create a new report for date ${slug}`;
   },
 
-  revert(api_url, id) {
-    return post(`${api_url}/reports/remove/${id}`);
+  revert(bot, id) {
+    return post(`${bot.api_url}/reports/delete/${id}`);
   }
 };

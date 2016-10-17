@@ -2,26 +2,25 @@ import { Client } from  'irc';
 
 import { Commands } from './commands';
 
-function testCommand(commands, api_url, author, channel, message) {
-  for (let command of commands) {
+function testCommand(bot, author, channel, message) {
+  for (let command of bot.commands) {
     if (command.matches(message)) {
-      return Promise.resolve(command.test(api_url, author, channel, message));
+      return Promise.resolve(command.test(bot, author, channel, message));
     }
   }
   return Promise.resolve(null);
 }
 
-function parseCommand(commands, api_url, author, channel, message) {
-  let test = false;
-
+function parseCommand(bot, author, channel, message) {
+  console.log(message);
   if (message.startsWith('test ')) {
     message = message.substr(5);
-    return testCommand(commands, api_url, author, channel, message);
+    return testCommand(bot, author, channel, message);
   }
 
-  for (let command of commands) {
+  for (let command of bot.commands) {
     if (command.matches(message)) {
-      return command.execute(api_url, author, channel, message);
+      return command.execute(bot, author, channel, message);
     }
   }
   return Promise.resolve(null);
@@ -33,6 +32,7 @@ export class Bot {
     this.name = name;
     this.api_url = api_url;
     this.commands = Commands;
+    this.actionLog = new Map();
   }
 
   start() {
@@ -54,7 +54,7 @@ export class Bot {
       }
 
       const text = message.slice(this.client.nick.length + 2);
-      parseCommand(this.commands, this.api_url, author, channel, text).then(
+      parseCommand(this, author, channel, text).then(
         response => this.client.say(channel, `${author}: ${response}`)
       );
     });
@@ -64,9 +64,33 @@ export class Bot {
       console.log(` --- got a private message from ${author}: ${message}`);
 
       // private messages are saved with channel = author
-      parseCommand(this.commands, this.api_url, author, author, message).then(
+      parseCommand(this, author, author, message).then(
         response => this.client.say(author, response)
       );
+    });
+  }
+
+  getActionLog(user, channel) {
+    const hash = `${user}-${channel}`;
+    if (!this.actionLog.has(hash)) {
+      return [];
+    }
+    return this.actionLog.get(hash);
+  }
+
+  logAction(user, channel, action) {
+    const ts = Date.now();
+    const hash = `${user}-${channel}`;
+    if (!this.actionLog.has(hash)) {
+      this.actionLog.set(hash, []);
+    }
+    const log = this.actionLog.get(hash);
+    if (log.length > 10) {
+      log.shift();
+    }
+    log.push({
+      ts,
+      object: action
     });
   }
 }

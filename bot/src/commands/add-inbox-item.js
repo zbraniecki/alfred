@@ -27,7 +27,7 @@ export const AddInboxItem = {
     return true;
   },
 
-  execute(api_url, author, channel, text) {
+  execute(bot, author, channel, text) {
     const update = {
       author,
       channel,
@@ -35,13 +35,10 @@ export const AddInboxItem = {
       resolved: false,
       text
     };
-    return post(`${api_url}/updates`, update, 'json').then((resp) => {
-      return post(`${api_url}/log`, {
+    return post(`${bot.api_url}/updates`, update, 'json').then(resp => {
+      bot.logAction(author, channel, {
         command: AddInboxItem.name,
-        author: author,
-        channel: channel,
         id: resp._id,
-        object: update
       });
     }).then(
       () => randElem(CONFIRMATION_MESSAGES),
@@ -49,11 +46,11 @@ export const AddInboxItem = {
     );
   },
 
-  test(api_url, author, channel, text) {
+  test(bot, author, channel, text) {
     return `The command will insert a new inbox item for author "${author}" with message "${text}"`;
   },
 
-  revert(api_url, id) {
-    return post(`${api_url}/updates/remove/${id}`);
+  revert(bot, id) {
+    return post(`${bot.api_url}/updates/delete/${id}`);
   }
 };

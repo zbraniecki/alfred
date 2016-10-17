@@ -3,13 +3,11 @@ import bodyParser from 'body-parser';
 
 import * as reports from './reports';
 import * as updates from './updates';
-import * as log from './log';
 
 export default function createRouter(db) {
   const router = express.Router();
   const reportsColl = db.collection('reports');
   const updatesColl = db.collection('updates');
-  const logColl = db.collection('log');
 
   router.use(cors);
   router.use(bodyParser.json());
@@ -24,9 +22,6 @@ export default function createRouter(db) {
   router.route('/updates/delete/:id').post(updates.remove(updatesColl));
   router.route('/updates/:id').post(updates.update(updatesColl));
   router.route('/resolve').post(updates.resolve(updatesColl));
-
-  router.route('/log').get(log.get(logColl));
-  router.route('/log').post(log.insert(logColl));
 
   return router;
 }
