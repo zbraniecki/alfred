@@ -1,3 +1,6 @@
+import React from 'react';
+import { Link } from 'react-router';
+
 export function get(url) {
   return fetch(url).then(resp => resp.json());
 }
@@ -21,6 +24,10 @@ const dtf = Intl.DateTimeFormat('en', {
 
 export function reportName(date) {
   return dtf.format(date);
+}
+
+export function reportNameFromSlug(slug) {
+  return reportName(new Date(slug));
 }
 
 export function makeReport(report) {
@@ -71,4 +78,17 @@ export function createAsyncAction(startType, completeType, asyncFn) {
       throw error;
     });
   };
+}
+
+const bugRe = /bug ([0-9]+)/ig;
+
+export function linkify(str) {
+  return React.createElement('span', {
+    dangerouslySetInnerHTML: {
+      __html: str.replace(
+        bugRe,
+        '<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=$1">$&</a>'
+      )
+    }
+  })
 }

@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 
-import { randElem } from '../../utils';
+import { randElem, linkify } from '../../utils';
 import { genericMessages } from '../../messages';
 
 export function Incoming(props) {
@@ -118,7 +119,7 @@ export function createUpdate(Update, props, update) {
       onResolve={status => props.handleResolve(update, status)}
       onArchive={status => props.handleArchive(update, status)}
     >
-      {update.text}
+      {linkify(update.text)}
     </Update>
   );
 }
