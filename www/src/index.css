@@ -188,6 +188,30 @@ body {
   opacity: 1;
 }
 
+.update > .reactions {
+  float: right;
+  opacity: 0.5;
+}
+
+.update > .reactions > .heart {
+  width: 2rem;
+  height: 1rem;
+  display: inline-block;
+}
+
+.update > .reactions > .heart:after {
+  content: '♡';
+}
+
+.update > .reactions > .heart:hover:after {
+  content: '❤';
+  cursor: 'pointer';
+}
+
+.update:hover > .reactions {
+  opacity: 1;
+}
+
 .action:active,
 .action:hover {
   background: #1a00f2;
