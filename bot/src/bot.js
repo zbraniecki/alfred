@@ -1,99 +1,98 @@
 import { Client } from  'irc';
 
-const CONFIRMATION_MESSAGES = [
-  'naturally',
-  'of course',
-  'splendid',
-  'jolly good',
-  'noted',
-  'point taken',
-  'at your service',
-  'sounds good'
-];
+import Commands from './commands';
 
-const ERROR_MESSAGES = [
-  'uh-oh, that didn\'t work out',
-  'something went wrong'
-];
-
-function randElem(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function saveUpdate(db, author, channel, text) {
-  const d = new Date();
-  return db.collection('updates').insert({
-    author,
-    channel,
-    status: 'inbox',
-    resolved: false,
-    text,
-    createdAt: d,
-    firstCreatedAt: d,
-  }).then(
-    () => randElem(CONFIRMATION_MESSAGES),
-    () => randElem(ERROR_MESSAGES)
-  );
-}
-
-const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
-
-function createReport(db, text) {
-  const [, slug] = createDateRe.exec(text);
-  const ts = Date.parse(slug);
-
-  if (isNaN(ts)) {
-    return Promise.resolve('that\'s not a valid date');
-  }
-
-  return db.collection('reports').insert({
-    slug,
-    reportDate: new Date(ts)
-  }).then(
-    () => 'report created',
-    () => randElem(ERROR_MESSAGES)
-  );
-}
-
-export function createBot(url, name, db) {
-  const client = new Client(url, name);
-
-  client.addListener('invite', function(channel) {
-    console.log(` --- got an invite to ${channel}`);
-
-    client.join(channel, () => client.say(channel, 'hello'));
-  });
-
-  // listen to messages in public channels
-  client.addListener('message#', function(author, channel, message) {
-    console.log(` --- got a message from ${author} in ${channel}: ${message}`);
-
-    if (!message.startsWith(`${client.nick}: `)) {
-      // the message wasn't directed at the bot
-      return;
+function testCommand(bot, author, channel, message) {
+  for (let command of bot.commands) {
+    if (command.matches(message)) {
+      return Promise.resolve(command.test(bot, author, channel, message));
     }
-
-    const text = message.slice(client.nick.length + 2);
-    parseCommand(db, author, channel, text).then(
-      response => client.say(channel, `${author}: ${response}`)
-    );
-  });
-
-  // listen to private messages
-  client.addListener('pm', function(author, message) {
-    console.log(` --- got a private message from ${author}: ${message}`);
-
-    // private messages are saved with channel = author
-    parseCommand(db, author, author, message).then(
-      response => client.say(author, response)
-    );
-  });
-}
-
-function parseCommand(db, author, channel, message) {
-  if (message.startsWith('create a report for')) {
-    return createReport(db, message);
   }
 
-  return saveUpdate(db, author, channel, message);
+  return Promise.resolve(null);
+}
+
+function parseCommand(bot, author, channel, message) {
+  if (message.startsWith('test ')) {
+    message = message.substr(5);
+    return testCommand(bot, author, channel, message);
+  }
+
+  for (let command of bot.commands) {
+    if (command.matches(message)) {
+      return command.execute(bot, author, channel, message).catch(
+        e => console.error(`Command ${command.name} failed with error "${e}"`));
+    }
+  }
+
+  return Promise.resolve(null);
+}
+
+export class Bot {
+  constructor(url, name, api_url) {
+    this.url = url;
+    this.name = name;
+    this.api_url = api_url;
+    this.commands = Commands;
+    this.actionLog = new Map();
+  }
+
+  start() {
+    this.client = new Client(this.url, this.name);
+
+    this.client.addListener('invite', (channel) => {
+      console.log(` --- got an invite to ${channel}`);
+
+      this.client.join(channel, () => this.client.say(channel, 'hello'));
+    });
+
+    // listen to messages in public channels
+    this.client.addListener('message#', (author, channel, message) => {
+      console.log(` --- got a message from ${author} in ${channel}: ${message}`);
+
+      if (!message.startsWith(`${this.client.nick}: `)) {
+        // the message wasn't directed at the bot
+        return;
+      }
+
+      const text = message.slice(this.client.nick.length + 2);
+      parseCommand(this, author, channel, text).then(
+        response => this.client.say(channel, `${author}: ${response}`)
+      );
+    });
+
+    // listen to private messages
+    this.client.addListener('pm', (author, message) => {
+      console.log(` --- got a private message from ${author}: ${message}`);
+
+      // private messages are saved with channel = author
+      parseCommand(this, author, author, message).then(
+        response => this.client.say(author, response)
+      );
+    });
+  }
+
+  getActionLog(user, channel) {
+    const hash = `${user}-${channel}`;
+    if (!this.actionLog.has(hash)) {
+      return [];
+    }
+    return this.actionLog.get(hash);
+  }
+
+  logAction(user, channel, action) {
+    const ts = Date.now();
+    const hash = `${user}-${channel}`;
+    if (!this.actionLog.has(hash)) {
+      this.actionLog.set(hash, []);
+    }
+    const log = this.getActionLog(user, channel);
+    if (log.length > 10) {
+      log.shift();
+    }
+    log.push({
+      ts,
+      object: action
+    });
+  }
 }

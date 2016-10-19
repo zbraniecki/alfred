@@ -10,15 +10,23 @@ export function get(coll) {
 
 export function create(coll) {
   return function(req, res, next) {
-    createUpdate(coll, req.body).then(
-      ({ops}) => res.json(ops[0])
-    ).catch(console.error);
+    createUpdate(coll, req.body)
+      .then(resp => res.json(resp))
+      .catch(console.error);
   }
 }
 
 export function update(coll) {
   return function(req, res, next) {
     updateUpdate(coll, req.params.id, req.body).then(
+      ({result}) => res.sendStatus(result.ok ? 200 : 500)
+    ).catch(console.error);
+  }
+}
+
+export function remove(coll) {
+  return function(req, res, next) {
+    removeUpdate(coll, req.params.id).then(
       ({result}) => res.sendStatus(result.ok ? 200 : 500)
     ).catch(console.error);
   }
@@ -60,16 +68,23 @@ function getUpdates(coll, raw) {
 function createUpdate(coll, body) {
   delete body._id;
   const d = new Date();
-  return coll.insert(Object.assign(body, {
+
+  const o = Object.assign(body, {
     createdAt: d,
     firstCreatedAt: d,
     reportDate: new Date(body.reportDate)
-  }));
+  });
+  return coll.insertOne(o).then(() => o);
 }
 
 function updateUpdate(coll, id, body) {
   const _id = new ObjectID(id);
   return coll.update({_id}, { $set: body });
+}
+
+function removeUpdate(coll, id) {
+  const _id = new ObjectID(id);
+  return coll.remove({_id});
 }
 
 function resolveUpdate(coll, body) {

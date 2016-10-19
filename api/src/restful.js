@@ -15,9 +15,11 @@ export default function createRouter(db) {
   router.route('/reports').get(reports.get(reportsColl));
   router.route('/reports/current').get(reports.current(reportsColl));
   router.route('/reports').post(reports.create(reportsColl));
+  router.route('/reports/:id').delete(reports.remove(reportsColl));
 
   router.route('/updates').get(updates.get(updatesColl));
   router.route('/updates').post(updates.create(updatesColl));
+  router.route('/updates/:id').delete(updates.remove(updatesColl));
   router.route('/updates/:id').post(updates.update(updatesColl));
   router.route('/resolve').post(updates.resolve(updatesColl));
 
