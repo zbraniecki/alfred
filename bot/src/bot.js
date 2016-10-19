@@ -8,6 +8,7 @@ function testCommand(bot, author, channel, message) {
       return Promise.resolve(command.test(bot, author, channel, message));
     }
   }
+
   return Promise.resolve(null);
 }
 
@@ -19,11 +20,11 @@ function parseCommand(bot, author, channel, message) {
 
   for (let command of bot.commands) {
     if (command.matches(message)) {
-      return command.execute(bot, author, channel, message).catch(e => {
-        console.log(`Command ${command.name} failed with error "${e}"`);
-      });
+      return command.execute(bot, author, channel, message).catch(
+        e => console.error(`Command ${command.name} failed with error "${e}"`));
     }
   }
+
   return Promise.resolve(null);
 }
 

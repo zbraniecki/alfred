@@ -22,15 +22,18 @@ export const RevertLastCommand = {
     if (log.length === 0) {
       return Promise.resolve('There is no command to revert');
     }
+
     const entry = log[log.length - 1];
 
     let command = getCommandByName(bot, entry.object.command);
     if (command === null) {
       return Promise.resolve(`Unknown command ${log.command}.`);
     }
+
     if (!command.revert) {
       return Promise.resolve(`Can't revert a command of type ${entry.object.command}.`);
     }
+
     return command.revert(bot, entry.object.id).then(() => {
       bot.logAction(author, channel, {
         command: RevertLastCommand.name,
