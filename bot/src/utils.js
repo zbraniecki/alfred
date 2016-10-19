@@ -21,3 +21,13 @@ export function post(url, body, ret) {
   }
   return p;
 }
+
+export function del(url) {
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  });
+}

@@ -1,4 +1,4 @@
-import { get, post } from '../utils';
+import { get, post, del } from '../utils';
 
 const ERROR_MESSAGES = [
   'uh-oh, that didn\'t work out',
@@ -43,6 +43,6 @@ export const CreateReport = {
   },
 
   revert(bot, id) {
-    return post(`${bot.api_url}/reports/delete/${id}`);
+    return del(`${bot.api_url}/reports/${id}`);
   }
 };

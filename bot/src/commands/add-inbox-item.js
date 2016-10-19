@@ -1,4 +1,4 @@
-import { get, post } from '../utils';
+import { get, post, del } from '../utils';
 
 const CONFIRMATION_MESSAGES = [
   'naturally',
@@ -51,6 +51,6 @@ export const AddInboxItem = {
   },
 
   revert(bot, id) {
-    return post(`${bot.api_url}/updates/delete/${id}`);
+    return del(`${bot.api_url}/updates/${id}`);
   }
 };
