@@ -1,6 +1,6 @@
 import { Client } from  'irc';
 
-import { Commands } from './commands';
+import Commands from './commands';
 
 function testCommand(bot, author, channel, message) {
   for (let command of bot.commands) {
@@ -12,7 +12,6 @@ function testCommand(bot, author, channel, message) {
 }
 
 function parseCommand(bot, author, channel, message) {
-  console.log(message);
   if (message.startsWith('test ')) {
     message = message.substr(5);
     return testCommand(bot, author, channel, message);
@@ -20,7 +19,9 @@ function parseCommand(bot, author, channel, message) {
 
   for (let command of bot.commands) {
     if (command.matches(message)) {
-      return command.execute(bot, author, channel, message);
+      return command.execute(bot, author, channel, message).catch(e => {
+        console.log(`Command ${command.name} failed with error "${e}"`);
+      });
     }
   }
   return Promise.resolve(null);
@@ -84,7 +85,7 @@ export class Bot {
     if (!this.actionLog.has(hash)) {
       this.actionLog.set(hash, []);
     }
-    const log = this.actionLog.get(hash);
+    const log = this.getActionLog(user, channel);
     if (log.length > 10) {
       log.shift();
     }

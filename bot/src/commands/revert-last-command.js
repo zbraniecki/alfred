@@ -1,8 +1,8 @@
 import { get, post } from '../utils';
-import { Commands } from './index';
+import Commands from './index';
 
-function getCommandByName(name) {
-  for (let Command of Commands) {
+function getCommandByName(bot, name) {
+  for (let Command of bot.commands) {
     if (Command.name === name) {
       return Command;
     }
@@ -11,10 +11,10 @@ function getCommandByName(name) {
 }
 
 export const RevertLastCommand = {
-  name: 'revert-last-command',
+  name: 'RevertLastCommand',
 
   matches(str) {
-    return str === 'scratch that';
+    return str === 'undo';
   },
 
   execute(bot, author, channel, text) {
@@ -24,14 +24,14 @@ export const RevertLastCommand = {
     }
     const entry = log[log.length - 1];
 
-    let Command = getCommandByName(entry.object.command);
-    if (Command === null) {
+    let command = getCommandByName(bot, entry.object.command);
+    if (command === null) {
       return Promise.resolve(`Unknown command ${log.command}.`);
     }
-    if (!Command.revert) {
+    if (!command.revert) {
       return Promise.resolve(`Can't revert a command of type ${entry.object.command}.`);
     }
-    return Command.revert(bot, entry.object.id).then(() => {
+    return command.revert(bot, entry.object.id).then(() => {
       bot.logAction(author, channel, {
         command: RevertLastCommand.name,
         id: entry.object.id

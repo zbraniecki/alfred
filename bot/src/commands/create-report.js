@@ -12,7 +12,7 @@ function randElem(arr) {
 const createDateRe = /create a report for ([0-9]{4}-[0-9]{2}-[0-9]{2})/;
 
 export const CreateReport = {
-  name: 'create-report',
+  name: 'CreateReport',
 
   matches(str) {
     return str.startsWith('create a report for');
@@ -33,7 +33,7 @@ export const CreateReport = {
     return post(`${bot.api_url}/reports`, obj, 'json').then(resp => {
       bot.logAction(author, channel, {
         command: CreateReport.name,
-        id: resp,
+        id: resp._id,
       });
     }).then(
       () => 'report created',

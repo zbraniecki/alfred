@@ -21,7 +21,7 @@ function randElem(arr) {
 }
 
 export const AddInboxItem = {
-  name: 'add-inbox-item',
+  name: 'AddInboxItem',
 
   matches(str) {
     return true;
@@ -35,12 +35,12 @@ export const AddInboxItem = {
       resolved: false,
       text
     };
-    return post(`${bot.api_url}/updates`, update, 'json').then(resp => {
-      bot.logAction(author, channel, {
+    return post(`${bot.api_url}/updates`, update, 'json').then(
+      resp => bot.logAction(author, channel, {
         command: AddInboxItem.name,
         id: resp._id,
-      });
-    }).then(
+      })
+    ).then(
       () => randElem(CONFIRMATION_MESSAGES),
       () => randElem(ERROR_MESSAGES)
     );

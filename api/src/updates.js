@@ -74,9 +74,7 @@ function createUpdate(coll, body) {
     firstCreatedAt: d,
     reportDate: new Date(body.reportDate)
   });
-  return coll.insertOne(o).then(() => {
-    return o;
-  })
+  return coll.insertOne(o).then(() => o);
 }
 
 function updateUpdate(coll, id, body) {

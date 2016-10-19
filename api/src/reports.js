@@ -76,13 +76,11 @@ function createReport(coll, body) {
   const day = reportDate.getUTCDate();
   const slug = `${year}-${pad(month)}-${pad(day)}`;
 
-  let o = Object.assign(body, {
+  const o = Object.assign(body, {
     slug,
     reportDate
   });
-  return coll.insertOne(o).then(() => {
-    return o._id;
-  });
+  return coll.insertOne(o).then(() => o);
 }
 
 function removeReport(coll, id) {
