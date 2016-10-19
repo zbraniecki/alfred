@@ -26,11 +26,7 @@ export const CreateReport = {
       return Promise.resolve(`that's not a valid date`);
     }
 
-    let obj = {
-      date: slug
-    }
-
-    return post(`${bot.api_url}/reports`, obj, 'json').then(resp => {
+    return post(`${bot.api_url}/reports`, { date: slug }, 'json').then(resp => {
       bot.logAction(author, channel, {
         command: CreateReport.name,
         id: resp._id,

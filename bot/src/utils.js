@@ -5,7 +5,7 @@ export function get(url) {
 }
 
 export function post(url, body, ret) {
-  let p = fetch(url, {
+  const p = fetch(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
