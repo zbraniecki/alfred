@@ -39,10 +39,14 @@ function getUpdates(coll, raw) {
 function createTerm(coll, body) {
   delete body._id;
 
-  const o = Object.assign(body, {
+  if (!body.term) {
+    return Promise.reject(new Error('Missing term'));
+  }
+
+  const o = Object.assign({
     desc: null,
     url: null
-  });
+  }, body);
   return coll.insertOne(o).then(() => o);
 }
 
