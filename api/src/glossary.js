@@ -49,11 +49,16 @@ function createTerm(coll, body) {
     return Promise.reject(new Error('Missing term'));
   }
 
-  const o = Object.assign({
-    desc: null,
-    url: null
-  }, body);
-  return coll.insertOne(o).then(() => o);
+  return getTerms(coll, {term: body.term}).then(resp => {
+    if (resp.length !== 0) {
+      return Promise.reject(new Error("Can't redefine a term"));
+    }
+    const o = Object.assign({
+      desc: null,
+      url: null
+    }, body);
+    return coll.insertOne(o).then(() => o);
+  });
 }
 
 function updateTerm(coll, id, body) {
