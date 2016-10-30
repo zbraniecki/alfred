@@ -3,11 +3,13 @@ import bodyParser from 'body-parser';
 
 import * as reports from './reports';
 import * as updates from './updates';
+import * as glossary from './glossary';
 
 export default function createRouter(db) {
   const router = express.Router();
   const reportsColl = db.collection('reports');
   const updatesColl = db.collection('updates');
+  const glossaryColl = db.collection('glossary');
 
   router.use(cors);
   router.use(bodyParser.json());
@@ -23,6 +25,10 @@ export default function createRouter(db) {
   router.route('/updates/:id').post(updates.update(updatesColl));
   router.route('/resolve').post(updates.resolve(updatesColl));
 
+  router.route('/glossary').get(glossary.get(glossaryColl));
+  router.route('/glossary').post(glossary.create(glossaryColl));
+  router.route('/glossary/:id').delete(glossary.remove(glossaryColl));
+  router.route('/glossary/:id').post(glossary.update(glossaryColl));
   return router;
 }
 
