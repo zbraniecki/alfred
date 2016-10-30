@@ -19,19 +19,23 @@ export const ShowGlossaryTerm = {
   },
 
   execute(bot, author, channel, text) {
-    const [, term, desc] = whatDoesRe.exec(text);
+    const [, term] = whatDoesRe.exec(text);
 
-    return get(`${bot.api_url}/glossary`, { term }, 'json').then(resp => {
+    return get(`${bot.api_url}/glossary?term=${term}`).then(resp => {
+      if (resp.length === 0) {
+        return `I don't know :(`;
+      }
+      let res = resp[0];
       bot.logAction(author, channel, {
         command: ShowGlossaryTerm.name,
-        id: resp._id,
+        id: res._id,
       });
-      return `${term} is ${desc}`;
+      return `${res.term} is ${res.desc}`;
     }, () => randElem(ERROR_MESSAGES));
   },
 
   test(bot, author, channel, text) {
-    const [, term, desc] = whatDoesRe.exec(text);
-    return `The command will look up "${term}" in our glossary`;
+    const [, term] = whatDoesRe.exec(text);
+    return `The command will look up "${term}" in the glossary`;
   }
 };

@@ -2,7 +2,7 @@ import { ObjectID } from 'mongodb';
 
 export function get(coll) {
   return function(req, res, next) {
-    getUpdates(coll, req.query).then(
+    getTerms(coll, req.query).then(
       updates => res.json(updates)
     ).catch(console.error);
   }
@@ -32,8 +32,14 @@ export function remove(coll) {
   }
 }
 
-function getUpdates(coll, raw) {
-  return coll.find({}).limit(1000).toArray();
+function getTerms(coll, raw) {
+  const query = {};
+
+  if (raw.term) {
+    query.term = new RegExp(`^${raw.term}$`, 'i');
+  }
+
+  return coll.find(query).limit(1000).toArray();
 }
 
 function createTerm(coll, body) {
